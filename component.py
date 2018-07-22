@@ -1,3 +1,6 @@
+from component_display import ComponentDisplay
+
+
 class ComponentException(Exception):
     pass
 
@@ -14,6 +17,8 @@ class Component:
         self._output_components = [set() for i in range(num_outputs)]
 
         self._func = func
+        self._display = ComponentDisplay(self)
+        self._circuit.add_component(self)
 
     @property
     def inputs(self):
@@ -24,8 +29,16 @@ class Component:
         return _ReadOnlyList(self._old_inputs)
 
     @property
+    def new_inputs(self):
+        return _ReadOnlyList(self._new_inputs)
+
+    @property
     def outputs(self):
         return _OutputProxy(self)
+
+    @property
+    def input_connections(self):
+        return iter(self._input_components)
 
     @outputs.setter
     def outputs(self, lst):
@@ -36,6 +49,10 @@ class Component:
         outputs = self.outputs
         for idx, value in enumerate(lst):
             outputs[idx] = value
+
+    @property
+    def display(self):
+        return self._display
 
     def schedule_update(self, delay=1):
         self._circuit.schedule_update(self, delay)
@@ -59,8 +76,11 @@ class Component:
         component._output_components[output_idx].remove((self, input_idx))
 
     def __str__(self):
-        return 'Component[old_inputs={} inputs={} new_inputs={} outputs={}]'.format(
-            self._old_inputs, self._inputs, self._new_inputs, self._outputs)
+        return (
+            'Component[old_inputs={} inputs={}'
+            ' new_inputs={} outputs={}]'.format(
+                self._old_inputs, self._inputs,
+                self._new_inputs, self._outputs))
 
 
 class _OutputProxy:
@@ -76,12 +96,24 @@ class _OutputProxy:
             component._new_inputs[input_idx] = value
             component.schedule_update()
 
+    def __str__(self):
+        return str(self._component._outputs)
+
+    def __repr__(self):
+        return repr(self._component._outputs)
+
+    def __iter__(self):
+        return iter(self._component._outputs)
+
+    def __len__(self):
+        return len(self._component._outputs)
+
 
 class _ReadOnlyList:
     def __init__(self, lst):
         self._lst = lst
 
-    def __getitem(self, idx):
+    def __getitem__(self, idx):
         return self._lst[idx]
 
     def __str__(self):

@@ -1,18 +1,24 @@
 #!/usr/bin/env python3.6
 
+import gi
+gi.require_version('Gtk', '3.0')
+
+from application import Application
 from circuit import Circuit
 from component import Component
 
 
 def main():
     circuit = Circuit()
-    constant = make_constant(circuit, [1, 2])
+    constant = make_constant(circuit, [1, 0])
+    constant.display.position = (200, 200)
     adder = make_adder(circuit)
     adder.connect_input(0, constant, 0)
     adder.connect_input(1, constant, 1)
-    print(adder)
-    circuit.update()
-    print(adder)
+    adder.display.position = (400, 400)
+
+    app = Application(circuit)
+    app.loop()
 
 
 def make_constant(circuit, values):
