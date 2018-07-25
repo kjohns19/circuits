@@ -28,5 +28,5 @@ class Circuit:
         for component in components_to_update:
             component.update_inputs()
         for component in components_to_update:
-            component.update()
+            component.on_update()
         del self._updates[self._time]

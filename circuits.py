@@ -30,10 +30,7 @@ def main():
 
 
 def make_constant(circuit, values):
-    def noop(component):
-        pass
-    component = Component(
-        circuit, num_inputs=0, num_outputs=len(values), update_func=noop)
+    component = Component(circuit, num_inputs=0, num_outputs=len(values))
     component.outputs = values
     return component
 
@@ -45,15 +42,12 @@ def make_adder(circuit, num_inputs=2):
         except TypeError:
             result = 0
         component.outputs[0] = result
-    component = Component(
-        circuit, num_inputs=num_inputs, num_outputs=1, update_func=adder)
+    component = Component(circuit, num_inputs=num_inputs, num_outputs=1)
+    component.on_update = adder
     return component
 
 
 def make_display(circuit):
-    def noop(component):
-        pass
-
     def display_text(component, window, cr):
         cr.set_source_rgb(0, 0, 0)
         cr.select_font_face(
@@ -68,9 +62,8 @@ def make_display(circuit):
         cr.move_to(*(component.display.position - (w/2, -h/2)))
         cr.show_text(text)
 
-    component = Component(
-        circuit, num_inputs=1, num_outputs=0,
-        update_func=noop, display_func=display_text)
+    component = Component(circuit, num_inputs=1, num_outputs=0)
+    component.on_draw = display_text
     return component
 
 

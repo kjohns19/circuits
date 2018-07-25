@@ -1,13 +1,14 @@
 from component_display import ComponentDisplay
 
+import functools
+
 
 class ComponentException(Exception):
     pass
 
 
 class Component:
-    def __init__(self, circuit, num_inputs, num_outputs,
-                 update_func, display_func=None):
+    def __init__(self, circuit, num_inputs, num_outputs):
         self._circuit = circuit
         self._new_inputs = [None]*num_inputs
         self._old_inputs = [None]*num_inputs
@@ -17,8 +18,10 @@ class Component:
         self._outputs = [None]*num_outputs
         self._output_components = [set() for i in range(num_outputs)]
 
-        self._update_func = update_func
-        self._display = ComponentDisplay(self, display_func)
+        self.on_update = _default_on_update
+        self.on_draw   = _default_on_draw
+
+        self._display = ComponentDisplay(self)
         self._circuit.add_component(self)
 
     @property
@@ -34,12 +37,12 @@ class Component:
         return _ReadOnlyList(self._new_inputs)
 
     @property
-    def outputs(self):
-        return _OutputProxy(self)
-
-    @property
     def input_connections(self):
         return iter(self._input_components)
+
+    @property
+    def outputs(self):
+        return _OutputProxy(self)
 
     @outputs.setter
     def outputs(self, lst):
@@ -55,15 +58,28 @@ class Component:
     def display(self):
         return self._display
 
+    @property
+    def on_update(self):
+        return self._on_update
+
+    @on_update.setter
+    def on_update(self, value):
+        self._on_update = functools.partial(value, self)
+
+    @property
+    def on_draw(self):
+        return self._on_draw
+
+    @on_draw.setter
+    def on_draw(self, value):
+        self._on_draw = functools.partial(value, self)
+
     def schedule_update(self, delay=1):
         self._circuit.schedule_update(self, delay)
 
     def update_inputs(self):
         self._old_inputs = self._inputs
         self._inputs = list(self._new_inputs)
-
-    def update(self):
-        self._update_func(self)
 
     def connect_input(self, input_idx, component, output_idx):
         self._input_components[input_idx] = (component, output_idx)
@@ -82,6 +98,14 @@ class Component:
             ' new_inputs={} outputs={}]'.format(
                 self._old_inputs, self._inputs,
                 self._new_inputs, self._outputs))
+
+
+def _default_on_update(component):
+    pass
+
+
+def _default_on_draw(component, window, cr):
+    pass
 
 
 class _OutputProxy:
