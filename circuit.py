@@ -5,6 +5,7 @@ class Circuit:
     def __init__(self):
         self._components = set()
         self._updates = collections.defaultdict(set)
+        self._time = 0
 
     def add_component(self, component):
         self._components.add(component)
@@ -19,16 +20,13 @@ class Circuit:
     def schedule_update(self, component, delay):
         if delay < 1:
             delay = 1
-        self._updates[delay].add(component)
+        self._updates[self._time+delay].add(component)
 
     def update(self):
-        new_updates = collections.defaultdict(set)
-        for delay, components in self._updates.items():
-            if delay <= 1:
-                for component in components:
-                    component.update_inputs()
-                for component in components:
-                    component.update()
-            else:
-                new_updates[delay-1] = components
-        self._updates = new_updates
+        self._time += 1
+        components_to_update = self._updates[self._time]
+        for component in components_to_update:
+            component.update_inputs()
+        for component in components_to_update:
+            component.update()
+        del self._updates[self._time]
