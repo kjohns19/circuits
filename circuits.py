@@ -32,7 +32,11 @@ def make_constant(circuit, values):
 
 def make_adder(circuit, num_inputs=2):
     def adder(component):
-        component.outputs[0] = sum(component.inputs)
+        try:
+            result = sum(val for val in component.inputs if val is not None)
+        except TypeError:
+            result = 0
+        component.outputs[0] = result
     component = Component(
         circuit, num_inputs=num_inputs, num_outputs=1, func=adder)
     return component
