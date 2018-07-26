@@ -17,6 +17,12 @@ class Circuit:
     def components(self):
         return iter(self._components)
 
+    def component_at_position(self, position):
+        for component in self._components:
+            if component.display.bounds.contains(position):
+                return component
+        return None
+
     def schedule_update(self, component, delay):
         if delay < 1:
             delay = 1

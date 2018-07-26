@@ -28,6 +28,10 @@ class ComponentDisplay:
     def position(self):
         return self._rect.position
 
+    @property
+    def bounds(self):
+        return self._rect
+
     @position.setter
     def position(self, value):
         self._rect.position = value
