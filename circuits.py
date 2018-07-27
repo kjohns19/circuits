@@ -42,8 +42,8 @@ def make_adder(circuit, num_inputs=2):
         except TypeError:
             result = 0
         component.outputs[0] = result
-    component = Component(circuit, num_inputs=num_inputs, num_outputs=1)
-    component.on_update = adder
+    component = Component(
+        circuit, num_inputs=num_inputs, num_outputs=1, on_update=adder)
     return component
 
 
@@ -62,8 +62,8 @@ def make_display(circuit):
         cr.move_to(*(component.display.position - (w/2, -h/2)))
         cr.show_text(text)
 
-    component = Component(circuit, num_inputs=1, num_outputs=0)
-    component.on_draw = display_text
+    component = Component(
+        circuit, num_inputs=1, num_outputs=0, on_draw=display_text)
     return component
 
 
