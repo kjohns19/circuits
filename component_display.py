@@ -16,9 +16,14 @@ RED   = (1, 0, 0)
 GREEN = (0, 1, 0)
 
 
+def noop_display(*args):
+    pass
+
+
 class ComponentDisplay:
-    def __init__(self, component):
+    def __init__(self, component, display_func):
         self._component = component
+        self._display_func = display_func or noop_display
 
         max_nodes = max(len(component.inputs), len(component.outputs))
         height = NODE_SEPARATION * max_nodes + NODE_SEPARATION//2
@@ -66,6 +71,7 @@ class ComponentDisplay:
 
         draw_nodes(True, len(self._component.inputs))
         draw_nodes(False, len(self._component.outputs))
+        self._display_func(self._component, window, cr)
 
     def draw_input_wires(self, window, cr):
         connections = self._component.input_connections

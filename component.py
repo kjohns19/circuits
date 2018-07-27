@@ -6,7 +6,8 @@ class ComponentException(Exception):
 
 
 class Component:
-    def __init__(self, circuit, num_inputs, num_outputs, func):
+    def __init__(self, circuit, num_inputs, num_outputs,
+                 update_func, display_func=None):
         self._circuit = circuit
         self._new_inputs = [None]*num_inputs
         self._old_inputs = [None]*num_inputs
@@ -16,8 +17,8 @@ class Component:
         self._outputs = [None]*num_outputs
         self._output_components = [set() for i in range(num_outputs)]
 
-        self._func = func
-        self._display = ComponentDisplay(self)
+        self._update_func = update_func
+        self._display = ComponentDisplay(self, display_func)
         self._circuit.add_component(self)
 
     @property
@@ -62,7 +63,7 @@ class Component:
         self._inputs = list(self._new_inputs)
 
     def update(self):
-        self._func(self)
+        self._update_func(self)
 
     def connect_input(self, input_idx, component, output_idx):
         self._input_components[input_idx] = (component, output_idx)
