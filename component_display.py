@@ -73,17 +73,20 @@ class ComponentDisplay:
         self._component.on_draw(window, cr)
 
     def draw_input_wires(self, window, cr):
-        connections = self._component.input_connections
+        inputs = self._component.inputs
 
-        for input_idx, connection in enumerate(connections):
-            if connection is None:
+        for input_idx, input in enumerate(inputs):
+            output = input.connected_output
+            if output is None:
                 continue
-            component, output_idx = connection
+
+            component = output.component
+            output_idx = output.index
 
             input_pos = self._node_pos(True, input_idx)
             output_pos = component.display._node_pos(False, output_idx)
 
-            color = GREEN if self._component.new_inputs[input_idx] else RED
+            color = GREEN if input.new_value else RED
 
             cr.set_source_rgb(*color)
             cr.move_to(*input_pos)

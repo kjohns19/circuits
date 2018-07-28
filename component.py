@@ -11,13 +11,8 @@ class Component:
     def __init__(self, circuit, num_inputs, num_outputs,
                  on_update=None, on_draw=None):
         self._circuit = circuit
-        self._new_inputs = [None]*num_inputs
-        self._old_inputs = [None]*num_inputs
-        self._inputs = [None]*num_inputs
-        self._input_components = [None]*num_inputs
-
-        self._outputs = [None]*num_outputs
-        self._output_components = [set() for i in range(num_outputs)]
+        self._inputs = [_Input(self, i) for i in range(num_inputs)]
+        self._outputs = [_Output(self, i) for i in range(num_outputs)]
 
         self.on_update = on_update or _default_on_update
         self.on_draw   = on_draw or _default_on_draw
@@ -30,30 +25,8 @@ class Component:
         return _ReadOnlyList(self._inputs)
 
     @property
-    def old_inputs(self):
-        return _ReadOnlyList(self._old_inputs)
-
-    @property
-    def new_inputs(self):
-        return _ReadOnlyList(self._new_inputs)
-
-    @property
-    def input_connections(self):
-        return iter(self._input_components)
-
-    @property
     def outputs(self):
-        return _OutputProxy(self)
-
-    @outputs.setter
-    def outputs(self, lst):
-        if len(lst) != len(self._outputs):
-            raise ComponentException(
-                'Mismatched size when assigning outputs: {} vs {}'.format(
-                    len(lst), len(self._outputs)))
-        outputs = self.outputs
-        for idx, value in enumerate(lst):
-            outputs[idx] = value
+        return _ReadOnlyList(self._outputs)
 
     @property
     def display(self):
@@ -79,26 +52,13 @@ class Component:
         self._circuit.schedule_update(self, delay)
 
     def update_inputs(self):
-        self._old_inputs = self._inputs
-        self._inputs = list(self._new_inputs)
-
-    def connect_input(self, input_idx, component, output_idx):
-        self._input_components[input_idx] = (component, output_idx)
-        component._output_components[output_idx].add((self, input_idx))
-        self._new_inputs[input_idx] = component.outputs[output_idx]
-        self.schedule_update()
-
-    def disconnect_input(self, input_idx):
-        component, output_idx = self._input_components[input_idx]
-        self._input_components[input_idx] = None
-        component._output_components[output_idx].remove((self, input_idx))
+        for input in self._inputs:
+            input.update()
 
     def __str__(self):
         return (
-            'Component[old_inputs={} inputs={}'
-            ' new_inputs={} outputs={}]'.format(
-                self._old_inputs, self._inputs,
-                self._new_inputs, self._outputs))
+            'Component[inputs={} outputs={}]'.format(
+                self._inputs, self._outputs))
 
 
 def _default_on_update(component):
@@ -109,30 +69,100 @@ def _default_on_draw(component, window, cr):
     pass
 
 
-class _OutputProxy:
-    def __init__(self, component):
+class _Input:
+    def __init__(self, component, index):
         self._component = component
+        self._value = None
+        self._new_value = None
+        self._old_value = None
+        self._connected_output = None
 
-    def __getitem__(self, idx):
-        return self._component._outputs[idx]
+    @property
+    def component(self):
+        return self._component
 
-    def __setitem__(self, idx, value):
-        self._component._outputs[idx] = value
-        for component, input_idx in self._component._output_components[idx]:
-            component._new_inputs[input_idx] = value
-            component.schedule_update()
+    @property
+    def index(self):
+        return self._index
 
-    def __str__(self):
-        return str(self._component._outputs)
+    @property
+    def value(self):
+        return self._value
 
-    def __repr__(self):
-        return repr(self._component._outputs)
+    @value.setter
+    def value(self, value):
+        if self._new_value != value:
+            self._new_value = value
+            self._component.schedule_update()
 
-    def __iter__(self):
-        return iter(self._component._outputs)
+    @property
+    def new_value(self):
+        return self._new_value
 
-    def __len__(self):
-        return len(self._component._outputs)
+    @property
+    def old_value(self):
+        return self._old_value
+
+    @property
+    def connected_output(self):
+        return self._connected_output
+
+    def update(self):
+        self._old_value, self._value = self._value, self._new_value
+
+    def connect(self, output):
+        if self._connected_output is output:
+            return
+        self.disconnect()
+        self._connected_output = output
+        self.value = output.value
+        output.connect(self)
+
+    def disconnect(self):
+        output = self._connected_output
+        if output is None:
+            return
+        self.value = None
+        self._connected_output = None
+        output.disconnect(self)
+
+
+class _Output:
+    def __init__(self, component, index):
+        self._component = component
+        self._index = index
+        self._value = None
+        self._connected_inputs = set()
+
+    @property
+    def component(self):
+        return self._component
+
+    @property
+    def index(self):
+        return self._index
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
+        for input in self._connected_inputs:
+            input.value = value
+
+    def connect(self, input):
+        if input in self._connected_inputs:
+            return
+        self._connected_inputs.add(input)
+        input.connect(self)
+
+    def disconnect(self, input):
+        if input not in self._connected_inputs:
+            return
+        self._connected_inputs.remove(input)
+        input.disconnect()
 
 
 class _ReadOnlyList:
