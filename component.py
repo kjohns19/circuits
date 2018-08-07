@@ -11,14 +11,43 @@ class Component:
     def __init__(self, circuit, num_inputs, num_outputs,
                  on_update=None, on_draw=None):
         self._circuit = circuit
-        self._inputs = [_Input(self, i) for i in range(num_inputs)]
-        self._outputs = [_Output(self, i) for i in range(num_outputs)]
+        self._inputs = []
+        self._outputs = []
+
+        self.num_inputs = num_inputs
+        self.num_outputs = num_outputs
 
         self.on_update = on_update or _default_on_update
         self.on_draw   = on_draw or _default_on_draw
 
         self._display = ComponentDisplay(self)
         self._circuit.add_component(self)
+
+    @property
+    def num_inputs(self):
+        return len(self._inputs)
+
+    @num_inputs.setter
+    def num_inputs(self, value):
+        self._inputs = _resize_list(
+            lst=self._inputs,
+            size=value,
+            old_elem_func=lambda input, i: input.disconnect(),
+            new_elem_func=lambda i: _Input(self, i))
+        print(self._inputs)
+
+    @property
+    def num_outputs(self):
+        return len(self._outputs)
+
+    @num_outputs.setter
+    def num_outputs(self, value):
+        self._outputs = _resize_list(
+            lst=self._outputs,
+            size=value,
+            old_elem_func=lambda output, i: output.disconnect_all(),
+            new_elem_func=lambda i: _Output(self, i))
+        print(self._outputs)
 
     @property
     def inputs(self):
@@ -67,6 +96,18 @@ def _default_on_update(component):
 
 def _default_on_draw(component, window, cr):
     pass
+
+
+def _resize_list(lst, size, old_elem_func, new_elem_func):
+    current = len(lst)
+    if size < current:
+        for i, obj in enumerate(lst[size:]):
+            old_elem_func(obj, i)
+        return lst[:size]
+    elif size > current:
+        new_elems = [new_elem_func(current+i) for i in range(size-current)]
+        return lst + new_elems
+    return lst
 
 
 class _Input:
@@ -126,6 +167,9 @@ class _Input:
         self._connected_output = None
         output.disconnect(self)
 
+    def __str__(self):
+        return 'Input[comp={} idx={}]'.format(id(self.component, self.index))
+
 
 class _Output:
     def __init__(self, component, index):
@@ -163,6 +207,15 @@ class _Output:
             return
         self._connected_inputs.remove(input)
         input.disconnect()
+
+    def disconnect_all(self):
+        inputs = set(self._connected_inputs)
+        self._connected_inputs.clear()
+        for input in inputs:
+            input.disconnect()
+
+    def __str__(self):
+        return 'Output[comp={} idx={}]'.format(id(self.component, self.index))
 
 
 class _ReadOnlyList:
