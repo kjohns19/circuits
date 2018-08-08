@@ -11,8 +11,11 @@ class Component:
     def __init__(self, circuit, num_inputs, num_outputs,
                  on_update=None, on_draw=None):
         self._circuit = circuit
+
         self._inputs = []
         self._outputs = []
+
+        self._display = ComponentDisplay(self)
 
         self.num_inputs = num_inputs
         self.num_outputs = num_outputs
@@ -20,7 +23,6 @@ class Component:
         self.on_update = on_update or _default_on_update
         self.on_draw   = on_draw or _default_on_draw
 
-        self._display = ComponentDisplay(self)
         self._circuit.add_component(self)
 
     @property
@@ -34,7 +36,7 @@ class Component:
             size=value,
             old_elem_func=lambda input, i: input.disconnect(),
             new_elem_func=lambda i: _Input(self, i))
-        print(self._inputs)
+        self._display.recalculate_size()
 
     @property
     def num_outputs(self):
@@ -47,7 +49,7 @@ class Component:
             size=value,
             old_elem_func=lambda output, i: output.disconnect_all(),
             new_elem_func=lambda i: _Output(self, i))
-        print(self._outputs)
+        self._display.recalculate_size()
 
     @property
     def inputs(self):

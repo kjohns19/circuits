@@ -19,10 +19,7 @@ GREEN = (0, 1, 0)
 class ComponentDisplay:
     def __init__(self, component):
         self._component = component
-
-        max_nodes = max(len(component.inputs), len(component.outputs))
-        height = NODE_SEPARATION * max_nodes + NODE_SEPARATION//2
-        self._rect = shapes.Rectangle(size=(WIDTH, height))
+        self.recalculate_size()
 
     @property
     def position(self):
@@ -38,6 +35,13 @@ class ComponentDisplay:
 
     def contains(self, point):
         return self._rect.contains(point)
+
+    def recalculate_size(self):
+        max_nodes = max(
+            self._component.num_inputs,
+            self._component.num_outputs)
+        height = NODE_SEPARATION * max_nodes + NODE_SEPARATION//2
+        self._rect = shapes.Rectangle(size=(WIDTH, height))
 
     def _node_pos(self, input, idx):
         offset = WIDTH/2 * (-1 if input else 1)
