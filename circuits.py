@@ -6,6 +6,7 @@ gi.require_version('Gtk', '3.0')
 from application import Application
 from circuit import Circuit
 from component import Component
+import components
 
 import cairo
 
