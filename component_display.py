@@ -1,13 +1,14 @@
 import shapes
+import utils
 
 import math
 
 
-WIDTH = 40
+WIDTH = 72
 
 OUTLINE_WIDTH = 1
 
-NODE_SEPARATION = 20
+NODE_SEPARATION = 24
 NODE_RADIUS = 8
 
 BLACK = (0, 0, 0)
@@ -74,6 +75,12 @@ class ComponentDisplay:
 
         draw_nodes(True, len(self._component.inputs))
         draw_nodes(False, len(self._component.outputs))
+
+        name = self._component.name
+        if name:
+            position = self.position - (0, self._rect.height/2-8)
+            utils.draw_text(cr, name, position, bold=True)
+
         self._component.on_draw(window, cr)
 
     def draw_input_wires(self, window, cr):

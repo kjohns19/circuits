@@ -1,4 +1,5 @@
 import collections
+import functools
 
 
 ComponentData = collections.namedtuple(
@@ -19,9 +20,16 @@ class Registry:
             return Component(...)
         '''
         def decorator(f):
+            @functools.wraps(f)
+            def creator(circuit):
+                component = f(circuit)
+                component.name = name
+                return component
+
             self._component_data.append(ComponentData(
-                name=name, category=category, creator=f))
-            return f
+                name=name, category=category, creator=creator))
+
+            return creator
         return decorator
 
     def get_component_data(self):

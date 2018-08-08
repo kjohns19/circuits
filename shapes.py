@@ -54,6 +54,22 @@ class Rectangle:
         self._size = Vector2(value)
 
     @property
+    def width(self):
+        return self._size.x
+
+    @width.setter
+    def width(self, value):
+        self._size.x = value
+
+    @property
+    def height(self):
+        return self._size.y
+
+    @height.setter
+    def height(self, value):
+        self._size.y = value
+
+    @property
     def position(self):
         return self._position
 

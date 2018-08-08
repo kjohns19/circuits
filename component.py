@@ -25,6 +25,8 @@ class Component:
 
         self._circuit.add_component(self)
 
+        self._name = None
+
     @property
     def num_inputs(self):
         return len(self._inputs)
@@ -78,6 +80,14 @@ class Component:
     @on_draw.setter
     def on_draw(self, value):
         self._on_draw = functools.partial(value, self)
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
 
     def schedule_update(self, delay=1):
         self._circuit.schedule_update(self, delay)
