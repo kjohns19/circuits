@@ -16,14 +16,20 @@ class Application:
         self._draw_area.connect('draw', self._on_draw)
         self._draw_area.connect('button-press-event', self._on_click)
 
-        self._clicker = clickers.WireClicker()
+        self._clicker = None
 
-        self._combo_box = _make_component_selector(
-            component_registry.registry, self._clicker)
+        component_selector = _make_component_selector(
+            component_registry.registry, self)
+
+        clicker_selector = _make_clicker_selector(component_selector, self)
+
+        clicker_selector.set_active(0)
+        component_selector.set_active(0)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         vbox.pack_start(self._draw_area, True, True, 0)
-        vbox.pack_start(self._combo_box, False, False, 0)
+        vbox.pack_start(clicker_selector, False, False, 0)
+        vbox.pack_start(component_selector, False, False, 0)
 
         self._window.add(vbox)
         self._window.resize(800, 800)
@@ -87,7 +93,7 @@ class Application:
         return True
 
 
-def _make_component_selector(registry, clicker):
+def _make_component_selector(registry, app):
     by_category_name = {
         '/'.join((cd.category, cd.name)): cd
         for cd in registry.get_component_data()
@@ -100,13 +106,9 @@ def _make_component_selector(registry, clicker):
     combo_box = Gtk.ComboBox.new_with_model(store)
 
     def set_creator(combo_box):
-        iter = combo_box.get_active_iter()
-        if iter is None:
-            return
-        model = combo_box.get_model()
-        category_name = model[iter][0]
+        category_name = _get_combo_box_item(combo_box)
         component_data = by_category_name[category_name]
-        clicker.creator = component_data.creator
+        app.clicker.creator = component_data.creator
 
     combo_box.connect('changed', set_creator)
 
@@ -115,3 +117,38 @@ def _make_component_selector(registry, clicker):
     combo_box.add_attribute(text, 'text', 0)
 
     return combo_box
+
+
+def _make_clicker_selector(component_selector, app):
+    clickers_by_name = {
+        'creator': clickers.CreateClicker(),
+        'wirer': clickers.WireClicker()
+    }
+
+    store = Gtk.ListStore(str)
+    for clicker_name in sorted(clickers_by_name.keys()):
+        store.append([clicker_name])
+
+    combo_box = Gtk.ComboBox.new_with_model(store)
+
+    def set_clicker(combo_box):
+        clicker_name = _get_combo_box_item(combo_box)
+        clicker = clickers_by_name[clicker_name]
+        app.clicker = clicker
+        component_selector.set_sensitive(clicker_name == 'creator')
+
+    combo_box.connect('changed', set_clicker)
+
+    text = Gtk.CellRendererText()
+    combo_box.pack_start(text, True)
+    combo_box.add_attribute(text, 'text', 0)
+
+    return combo_box
+
+
+def _get_combo_box_item(combo_box):
+    iter = combo_box.get_active_iter()
+    if iter is None:
+        return
+    model = combo_box.get_model()
+    return model[iter][0]
