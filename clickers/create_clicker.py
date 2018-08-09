@@ -13,7 +13,7 @@ class CreateClicker(Clicker):
     def creator(self, value):
         self._creator = value
 
-    def on_click(self, app, button, position, component):
+    def on_click(self, app, event, position, component):
         if self._creator is None:
             return
         # TODO check button

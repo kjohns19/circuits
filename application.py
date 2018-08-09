@@ -16,7 +16,7 @@ class Application:
         self._draw_area.connect('draw', self._on_draw)
         self._draw_area.connect('button-press-event', self._on_click)
 
-        self._clicker = clickers.CreateClicker()
+        self._clicker = clickers.WireClicker()
 
         self._combo_box = _make_component_selector(
             component_registry.registry, self._clicker)
@@ -80,11 +80,11 @@ class Application:
         if event.type != Gdk.EventType.BUTTON_PRESS:
             return
 
-        button = event.button
         position = (event.x, event.y)
         component = self._circuit.component_at_position(position)
 
-        self._clicker.on_click(self, button, position, component)
+        self._clicker.on_click(self, event, position, component)
+        return True
 
 
 def _make_component_selector(registry, clicker):

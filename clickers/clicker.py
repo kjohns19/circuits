@@ -1,4 +1,4 @@
 class Clicker:
-    def on_click(self, app, button, position, component):
-        print('Click button={} position={} component={}'.format(
-            button, position, component))
+    def on_click(self, app, event, position, component):
+        print('Click event={} position={} component={}'.format(
+            event, position, component))
