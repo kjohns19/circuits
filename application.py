@@ -1,6 +1,6 @@
 from gi.repository import Gtk, Gdk
 
-from clicker import CreateClicker
+import clickers
 import component_registry
 
 import threading
@@ -16,7 +16,7 @@ class Application:
         self._draw_area.connect('draw', self._on_draw)
         self._draw_area.connect('button-press-event', self._on_click)
 
-        self._clicker = CreateClicker()
+        self._clicker = clickers.CreateClicker()
 
         self._combo_box = _make_component_selector(
             component_registry.registry, self._clicker)
