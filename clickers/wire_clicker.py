@@ -7,8 +7,11 @@ class WireClicker(Clicker):
         self._input = None
 
     def on_click(self, app, event, position, component):
-        if component is None:
+        if event.button == utils.MouseButton.RIGHT:
             self._input = None
+            return
+
+        if component is None or event.button != utils.MouseButton.LEFT:
             return
 
         def input_callback(selection):
@@ -31,3 +34,13 @@ class WireClicker(Clicker):
 
         options = [str(i) for i in range(count)]
         utils.show_popup(title, options, event, callback)
+
+    def draw(self, app, cr, mouse_pos):
+        if self._input is None:
+            return
+
+        display = self._input.component.display
+
+        node_pos = display.node_pos(input=True, idx=self._input.index)
+        color = (0, 0, 0)
+        utils.draw_line(cr, mouse_pos, node_pos, color)

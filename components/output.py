@@ -8,7 +8,7 @@ CATEGORY = 'Output'
 
 @registry.register('Display', CATEGORY)
 def make_display(circuit):
-    def on_draw(component, window, cr):
+    def on_draw(component, app, cr):
         text = str(component.inputs[0].value)
         position = component.display.position + (0, 8)
         utils.draw_text(cr, text, position)

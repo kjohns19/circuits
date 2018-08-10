@@ -12,9 +12,19 @@ class Application:
         self._window.connect('destroy', Gtk.main_quit)
 
         self._draw_area = Gtk.DrawingArea()
-        self._draw_area.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        self._draw_area.set_events(
+            Gdk.EventMask.BUTTON_PRESS_MASK |
+            Gdk.EventMask.POINTER_MOTION_MASK)
         self._draw_area.connect('draw', self._on_draw)
-        self._draw_area.connect('button-press-event', self._on_click)
+        self._draw_area.connect('button_press_event', self._on_click)
+
+        self._mouse_pos = (0, 0)
+
+        def update_mouse(window, event):
+            self._mouse_pos = (event.x, event.y)
+            self.repaint()
+
+        self._draw_area.connect('motion_notify_event', update_mouse)
 
         self._clicker = None
 
@@ -78,9 +88,11 @@ class Application:
 
     def _on_draw(self, window, cr):
         for component in self._circuit.components:
-            component.display.draw(window, cr)
+            component.display.draw(self, cr)
         for component in self._circuit.components:
-            component.display.draw_input_wires(window, cr)
+            component.display.draw_input_wires(self, cr)
+        if self._clicker:
+            self._clicker.draw(self, cr, self._mouse_pos)
 
     def _on_click(self, window, event):
         if event.type != Gdk.EventType.BUTTON_PRESS:

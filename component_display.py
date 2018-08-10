@@ -44,7 +44,7 @@ class ComponentDisplay:
         height = NODE_SEPARATION * max_nodes + NODE_SEPARATION//2
         self._rect = shapes.Rectangle(size=(WIDTH, height))
 
-    def _node_pos(self, input, idx):
+    def node_pos(self, input, idx):
         offset = WIDTH/2 * (-1 if input else 1)
         center = self._rect.position + (offset, 0)
         count = len(
@@ -52,7 +52,7 @@ class ComponentDisplay:
         start_y = center.y - (count-1)*NODE_SEPARATION//2
         return (center.x, start_y + NODE_SEPARATION*idx)
 
-    def draw(self, window, cr):
+    def draw(self, app, cr):
         cr.rectangle(*self._rect.top_left, *self._rect.size)
 
         cr.set_source_rgb(*WHITE)
@@ -64,7 +64,7 @@ class ComponentDisplay:
 
         def draw_nodes(input, count):
             for i in range(count):
-                position = self._node_pos(input, i)
+                position = self.node_pos(input, i)
                 cr.arc(*position, NODE_RADIUS, 0, math.pi*2)
                 cr.set_source_rgb(*WHITE)
                 cr.fill_preserve()
@@ -81,9 +81,9 @@ class ComponentDisplay:
             position = self.position - (0, self._rect.height/2-8)
             utils.draw_text(cr, name, position, bold=True)
 
-        self._component.on_draw(window, cr)
+        self._component.on_draw(app, cr)
 
-    def draw_input_wires(self, window, cr):
+    def draw_input_wires(self, app, cr):
         inputs = self._component.inputs
 
         for input_idx, input in enumerate(inputs):
@@ -94,13 +94,8 @@ class ComponentDisplay:
             component = output.component
             output_idx = output.index
 
-            input_pos = self._node_pos(True, input_idx)
-            output_pos = component.display._node_pos(False, output_idx)
+            input_pos = self.node_pos(True, input_idx)
+            output_pos = component.display.node_pos(False, output_idx)
 
             color = GREEN if input.new_value else RED
-
-            cr.set_source_rgb(*color)
-            cr.move_to(*input_pos)
-            cr.line_to(*output_pos)
-            cr.set_line_width(2)
-            cr.stroke()
+            utils.draw_line(cr, input_pos, output_pos, color)

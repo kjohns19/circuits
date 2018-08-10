@@ -113,7 +113,7 @@ def _default_on_update(component):
     pass
 
 
-def _default_on_draw(component, window, cr):
+def _default_on_draw(component, app, cr):
     pass
 
 
@@ -132,6 +132,7 @@ def _resize_list(lst, size, old_elem_func, new_elem_func):
 class _Input:
     def __init__(self, component, index):
         self._component = component
+        self._index = index
         self._value = None
         self._new_value = None
         self._old_value = None

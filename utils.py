@@ -24,6 +24,14 @@ def draw_text(cr, text, position, bold=False):
     cr.show_text(text)
 
 
+def draw_line(cr, pos1, pos2, color):
+    cr.set_source_rgb(*color)
+    cr.move_to(*pos1)
+    cr.line_to(*pos2)
+    cr.set_line_width(2)
+    cr.stroke()
+
+
 def show_popup(title, options, event, callback):
     menu = Gtk.Menu()
 
