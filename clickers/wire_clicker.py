@@ -9,6 +9,7 @@ class WireClicker(Clicker):
     def on_click(self, app, event, button, position, component):
         if button == utils.MouseButton.RIGHT:
             self._input = None
+            app.repaint()
             return
 
         if component is None or button != utils.MouseButton.LEFT:
@@ -34,6 +35,10 @@ class WireClicker(Clicker):
 
         options = [str(i) for i in range(count)]
         utils.show_popup(title, options, event, callback)
+
+    def on_move(self, app, event, position):
+        if self._input is not None:
+            app.repaint()
 
     def draw(self, app, cr, mouse_pos):
         if self._input is None:

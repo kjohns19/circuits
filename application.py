@@ -19,14 +19,9 @@ class Application:
         self._draw_area.connect('draw', self._on_draw)
         self._draw_area.connect('button_press_event', self._on_click)
         self._draw_area.connect('button_release_event', self._on_click)
+        self._draw_area.connect('motion_notify_event', self._on_move)
 
         self._mouse_pos = (0, 0)
-
-        def update_mouse(window, event):
-            self._mouse_pos = (event.x, event.y)
-            self.repaint()
-
-        self._draw_area.connect('motion_notify_event', update_mouse)
 
         self._clicker = None
 
@@ -107,6 +102,10 @@ class Application:
         self._clicker.on_click(self, event, button, position, component)
         return True
 
+    def _on_move(self, window, event):
+        self._mouse_pos = (event.x, event.y)
+        self._clicker.on_move(self, event, self._mouse_pos)
+
 
 def _make_component_selector(registry, app):
     by_category_name = {
@@ -136,9 +135,10 @@ def _make_component_selector(registry, app):
 
 def _make_clicker_selector(component_selector, app):
     clickers_by_name = {
-        'creator': clickers.CreateClicker(),
-        'wirer': clickers.WireClicker(),
-        'run': clickers.RunClicker()
+        'create': clickers.CreateClicker(),
+        'edit': clickers.EditClicker(),
+        'run': clickers.RunClicker(),
+        'wire': clickers.WireClicker()
     }
 
     store = Gtk.ListStore(str)
@@ -151,7 +151,7 @@ def _make_clicker_selector(component_selector, app):
         clicker_name = _get_combo_box_item(combo_box)
         clicker = clickers_by_name[clicker_name]
         app.clicker = clicker
-        component_selector.set_sensitive(clicker_name == 'creator')
+        component_selector.set_sensitive(clicker_name == 'create')
 
     combo_box.connect('changed', set_clicker)
 
