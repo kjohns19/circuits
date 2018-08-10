@@ -5,7 +5,7 @@ gi.require_version('Gtk', '3.0')
 
 from application import Application
 from circuit import Circuit
-import components
+import components  # noqa: F401
 
 
 def main():
