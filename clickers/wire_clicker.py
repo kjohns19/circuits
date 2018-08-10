@@ -6,12 +6,12 @@ class WireClicker(Clicker):
     def __init__(self):
         self._input = None
 
-    def on_click(self, app, event, position, component):
-        if event.button == utils.MouseButton.RIGHT:
+    def on_click(self, app, event, button, position, component):
+        if button == utils.MouseButton.RIGHT:
             self._input = None
             return
 
-        if component is None or event.button != utils.MouseButton.LEFT:
+        if component is None or button != utils.MouseButton.LEFT:
             return
 
         def input_callback(selection):

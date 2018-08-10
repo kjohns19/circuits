@@ -9,7 +9,7 @@ class ComponentException(Exception):
 
 class Component:
     def __init__(self, circuit, num_inputs, num_outputs,
-                 on_update=None, on_draw=None):
+                 on_update=None, on_draw=None, on_click=None):
         self._circuit = circuit
 
         self._inputs = []
@@ -22,6 +22,7 @@ class Component:
 
         self.on_update = on_update or _default_on_update
         self.on_draw   = on_draw or _default_on_draw
+        self.on_click = on_click or _default_on_click
 
         self._circuit.add_component(self)
 
@@ -82,6 +83,14 @@ class Component:
         self._on_draw = functools.partial(value, self)
 
     @property
+    def on_click(self):
+        return self._on_click
+
+    @on_click.setter
+    def on_click(self, value):
+        self._on_click = functools.partial(value, self)
+
+    @property
     def name(self):
         return self._name
 
@@ -114,6 +123,10 @@ def _default_on_update(component):
 
 
 def _default_on_draw(component, app, cr):
+    pass
+
+
+def _default_on_click(component, button):
     pass
 
 

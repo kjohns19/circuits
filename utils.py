@@ -7,6 +7,17 @@ class MouseButton(enum.IntEnum):
     LEFT = 1
     MIDDLE = 2
     RIGHT = 3
+    RELEASE_LEFT = -1
+    RELEASE_MIDDLE = -2
+    RELEASE_RIGHT = -3
+
+    @classmethod
+    def is_press(cls, button):
+        return button > 0
+
+    @classmethod
+    def is_release(cls, button):
+        return button < 0
 
 
 def draw_text(cr, text, position, bold=False):

@@ -14,9 +14,11 @@ class Application:
         self._draw_area = Gtk.DrawingArea()
         self._draw_area.set_events(
             Gdk.EventMask.BUTTON_PRESS_MASK |
+            Gdk.EventMask.BUTTON_RELEASE_MASK |
             Gdk.EventMask.POINTER_MOTION_MASK)
         self._draw_area.connect('draw', self._on_draw)
         self._draw_area.connect('button_press_event', self._on_click)
+        self._draw_area.connect('button_release_event', self._on_click)
 
         self._mouse_pos = (0, 0)
 
@@ -95,13 +97,14 @@ class Application:
             self._clicker.draw(self, cr, self._mouse_pos)
 
     def _on_click(self, window, event):
-        if event.type != Gdk.EventType.BUTTON_PRESS:
-            return
-
         position = (event.x, event.y)
         component = self._circuit.component_at_position(position)
 
-        self._clicker.on_click(self, event, position, component)
+        button = event.button
+        if event.type == Gdk.EventType.BUTTON_RELEASE:
+            button = -event.button
+
+        self._clicker.on_click(self, event, button, position, component)
         return True
 
 
@@ -134,7 +137,8 @@ def _make_component_selector(registry, app):
 def _make_clicker_selector(component_selector, app):
     clickers_by_name = {
         'creator': clickers.CreateClicker(),
-        'wirer': clickers.WireClicker()
+        'wirer': clickers.WireClicker(),
+        'run': clickers.RunClicker()
     }
 
     store = Gtk.ListStore(str)

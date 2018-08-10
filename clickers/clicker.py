@@ -1,7 +1,7 @@
 class Clicker:
-    def on_click(self, app, event, position, component):
-        print('Click event={} position={} component={}'.format(
-            event, position, component))
+    def on_click(self, app, event, button, position, component):
+        print('Click event={} button={} position={} component={}'.format(
+            event, button, position, component))
 
     def draw(self, app, cr, mouse_pos):
         pass

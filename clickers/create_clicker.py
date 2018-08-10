@@ -14,15 +14,15 @@ class CreateClicker(Clicker):
     def creator(self, value):
         self._creator = value
 
-    def on_click(self, app, event, position, component):
+    def on_click(self, app, event, button, position, component):
         if self._creator is None:
             return
 
-        if event.button == utils.MouseButton.LEFT:
+        if button == utils.MouseButton.LEFT:
             new_component = self._creator(app.circuit)
             new_component.display.position = position
             app.repaint()
-        elif event.button == utils.MouseButton.RIGHT and component:
+        elif button == utils.MouseButton.RIGHT and component:
             def callback(selection):
                 if selection == 'Yes':
                     component.delete()
