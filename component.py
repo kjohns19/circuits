@@ -96,6 +96,13 @@ class Component:
         for input in self._inputs:
             input.update()
 
+    def delete(self):
+        for input in self._inputs:
+            input.disconnect()
+        for output in self._outputs:
+            output.disconnect_all()
+        self._circuit.remove_component(self)
+
     def __str__(self):
         return (
             'Component[inputs={} outputs={}]'.format(

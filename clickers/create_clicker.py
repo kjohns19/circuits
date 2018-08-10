@@ -1,4 +1,5 @@
 from .clicker import Clicker
+import utils
 
 
 class CreateClicker(Clicker):
@@ -16,7 +17,15 @@ class CreateClicker(Clicker):
     def on_click(self, app, event, position, component):
         if self._creator is None:
             return
-        # TODO check button
-        new_component = self._creator(app.circuit)
-        new_component.display.position = position
-        app.repaint()
+
+        if event.button == utils.MouseButton.LEFT:
+            new_component = self._creator(app.circuit)
+            new_component.display.position = position
+            app.repaint()
+        elif event.button == utils.MouseButton.RIGHT and component:
+            def callback(selection):
+                if selection == 'Yes':
+                    component.delete()
+                    app.repaint()
+
+            utils.show_popup('Delete?', ['Yes', 'No'], event, callback)

@@ -1,5 +1,12 @@
 import cairo
+import enum
 from gi.repository import Gtk
+
+
+class MouseButton(enum.IntEnum):
+    LEFT = 1
+    MIDDLE = 2
+    RIGHT = 3
 
 
 def draw_text(cr, text, position, bold=False):
