@@ -1,4 +1,5 @@
 import cairo
+from gi.repository import Gtk
 
 
 def draw_text(cr, text, position, bold=False):
@@ -14,3 +15,22 @@ def draw_text(cr, text, position, bold=False):
 
     cr.move_to(*(position - (w/2, -h/2)))
     cr.show_text(text)
+
+
+def show_popup(title, options, event, callback):
+    menu = Gtk.Menu()
+
+    title_menu = Gtk.MenuItem(title)
+    title_menu.set_sensitive(False)
+    menu.append(title_menu)
+
+    for option in options:
+        def activate(widget, option=option):
+            callback(option)
+
+        item = Gtk.MenuItem(option)
+        item.connect('activate', activate)
+        menu.append(item)
+
+    menu.show_all()
+    menu.popup(None, None, None, None, event.button, event.time)
