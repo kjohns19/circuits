@@ -8,11 +8,25 @@ class WireClicker(Clicker):
 
     def on_click(self, app, event, button, position, component):
         if button == utils.MouseButton.RIGHT:
+            self.right_click(app, event, button, position, component)
+        elif button == utils.MouseButton.LEFT:
+            self.left_click(app, event, button, position, component)
+
+    def right_click(self, app, event, button, position, component):
+        if self._input is None and component is not None:
+            def callback(selection):
+                component.inputs[int(selection)].disconnect()
+                app.repaint()
+
+            title = 'Delete Input?'
+            options = [str(i) for i in range(component.num_inputs)]
+            utils.show_popup(title, options, event, callback)
+        else:
             self._input = None
             app.repaint()
-            return
 
-        if component is None or button != utils.MouseButton.LEFT:
+    def left_click(self, app, event, button, position, component):
+        if component is None:
             return
 
         def input_callback(selection):
