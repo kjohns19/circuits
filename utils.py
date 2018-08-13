@@ -1,6 +1,10 @@
+from component_registry import registry
+from component import Component
+
 import cairo
 import enum
 from gi.repository import Gtk
+import inspect
 
 
 class MouseButton(enum.IntEnum):
@@ -60,3 +64,22 @@ def show_popup(title, options, event, callback):
 
     menu.show_all()
     menu.popup(None, None, None, None, event.button, event.time)
+
+
+def create_nary_component(name, category, function, default_value=None):
+    signature = inspect.signature(function)
+    num_inputs = len(signature.parameters)
+
+    @registry.register(name, category)
+    def creator(circuit):
+        def on_update(component):
+            operands = (input.value for input in component.inputs)
+            try:
+                result = function(*operands)
+            except Exception:
+                result = default_value
+            component.outputs[0].value = result
+        component = Component(
+            circuit, num_inputs=num_inputs, num_outputs=1, on_update=on_update)
+        on_update(component)
+        return component
