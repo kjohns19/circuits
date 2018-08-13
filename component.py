@@ -12,6 +12,8 @@ class Component:
                  on_update=None, on_draw=None, on_click=None):
         self._circuit = circuit
 
+        self._data = {}
+
         self._inputs = []
         self._outputs = []
 
@@ -65,6 +67,10 @@ class Component:
     @property
     def display(self):
         return self._display
+
+    @property
+    def data(self):
+        return self._data
 
     @property
     def on_update(self):

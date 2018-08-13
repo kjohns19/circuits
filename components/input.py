@@ -20,12 +20,19 @@ def button(circuit):
     def on_click(component, button):
         if button == utils.MouseButton.LEFT:
             component.outputs[0].value = 1
+            component.data['pressed'] = True
         elif button == -utils.MouseButton.LEFT:
+            component.data['pressed'] = False
+            component.schedule_update()
+
+    def on_update(component):
+        if not component.data.get('pressed'):
             component.outputs[0].value = 0
 
     component = Component(
         circuit,
         num_inputs=0, num_outputs=1,
-        on_click=on_click)
+        on_click=on_click,
+        on_update=on_update)
     component.outputs[0].value = 0
     return component
