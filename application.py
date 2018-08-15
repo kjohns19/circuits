@@ -3,6 +3,7 @@ from gi.repository import Gtk, Gdk
 import clickers
 import component_registry
 
+import collections
 import threading
 
 
@@ -15,9 +16,8 @@ class Application:
             'Wire': clickers.WireClicker()
         }
 
-        self._clicker = self._clickers['Create']
-        data = component_registry.registry.get_component_data()
-        self._clicker.creator = data[0].creator
+        self._create_clicker = self._clickers['Create']
+        self._clicker = self._create_clicker
 
         self._mouse_pos = (0, 0)
 
@@ -25,6 +25,11 @@ class Application:
         builder.connect_signals(self)
         self._window = builder.get_object('main_window')
         self._draw_area = builder.get_object('draw_area')
+
+        self._component_creators = {}
+        selector_store = builder.get_object('component_selector_store')
+        self.populate_selector_store(
+            selector_store, component_registry.registry)
 
         self._circuit = circuit
         self._update_time = 0.5
@@ -61,6 +66,18 @@ class Application:
     def repaint(self):
         self._draw_area.queue_draw()
 
+    def populate_selector_store(self, selector_store, registry):
+        data = collections.defaultdict(list)
+        for cd in registry.get_component_data():
+            data[cd.category].append(cd.name)
+            category_name = '/'.join([cd.category, cd.name])
+            self._component_creators[category_name] = cd.creator
+
+        for category, names in data.items():
+            iter = selector_store.append(None, [category, None])
+            for name in names:
+                selector_store.append(iter, [name, category])
+
     def handler_exit(self, widget):
         Gtk.main_quit()
 
@@ -72,6 +89,18 @@ class Application:
         if widget.get_active():
             label = widget.get_label()
             self._clicker = self._clickers[label]
+
+    def handler_component_selection(self, widget):
+        model, iter = widget.get_selected()
+        if iter is not None:
+            selected = model[iter]
+            name = selected[0]
+            category = selected[1]
+            if category is None:
+                return
+            category_name = '/'.join([category, name])
+            creator = self._component_creators[category_name]
+            self._create_clicker.creator = creator
 
     def handler_draw_area_draw(self, widget, cr):
         for component in self._circuit.components:
