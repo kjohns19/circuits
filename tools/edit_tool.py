@@ -1,8 +1,8 @@
-from .clicker import Clicker
+from .tool import Tool
 from utils import MouseButton
 
 
-class EditClicker(Clicker):
+class EditTool(Tool):
     def __init__(self):
         self._component = None
 

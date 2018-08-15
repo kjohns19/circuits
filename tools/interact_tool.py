@@ -1,8 +1,8 @@
-from .clicker import Clicker
+from .tool import Tool
 from utils import MouseButton
 
 
-class InteractClicker(Clicker):
+class InteractTool(Tool):
     def __init__(self):
         self._component = None
 

@@ -1,8 +1,8 @@
-from .clicker import Clicker
+from .tool import Tool
 import utils
 
 
-class WireClicker(Clicker):
+class WireTool(Tool):
     def __init__(self):
         self._input = None
 

@@ -1,6 +1,6 @@
 from gi.repository import Gtk, Gdk
 
-import clickers
+import tools
 import component_registry
 
 import collections
@@ -9,15 +9,15 @@ import threading
 
 class Application:
     def __init__(self, circuit, ui_config_file):
-        self._clickers = {
-            'Create': clickers.CreateClicker(),
-            'Edit': clickers.EditClicker(),
-            'Interact': clickers.InteractClicker(),
-            'Wire': clickers.WireClicker()
+        self._tools = {
+            'Create': tools.CreateTool(),
+            'Edit': tools.EditTool(),
+            'Interact': tools.InteractTool(),
+            'Wire': tools.WireTool()
         }
 
-        self._create_clicker = self._clickers['Create']
-        self._clicker = self._create_clicker
+        self._create_tool = self._tools['Create']
+        self._tool = self._create_tool
 
         self._mouse_pos = (0, 0)
 
@@ -88,7 +88,7 @@ class Application:
     def handler_toggle_mode(self, widget):
         if widget.get_active():
             label = widget.get_label()
-            self._clicker = self._clickers[label]
+            self._tool = self._tools[label]
 
     def handler_component_selection(self, widget):
         model, iter = widget.get_selected()
@@ -100,15 +100,15 @@ class Application:
                 return
             category_name = '/'.join([category, name])
             creator = self._component_creators[category_name]
-            self._create_clicker.creator = creator
+            self._create_tool.creator = creator
 
     def handler_draw_area_draw(self, widget, cr):
         for component in self._circuit.components:
             component.display.draw(self, cr)
         for component in self._circuit.components:
             component.display.draw_input_wires(self, cr)
-        if self._clicker:
-            self._clicker.draw(self, cr, self._mouse_pos)
+        if self._tool:
+            self._tool.draw(self, cr, self._mouse_pos)
 
     def handler_draw_area_mouse_button(self, widget, event):
         position = (event.x, event.y)
@@ -118,9 +118,9 @@ class Application:
         if event.type == Gdk.EventType.BUTTON_RELEASE:
             button = -event.button
 
-        self._clicker.on_click(self, event, button, position, component)
+        self._tool.on_click(self, event, button, position, component)
         return True
 
     def handler_draw_area_mouse_move(self, widget, event):
         self._mouse_pos = (event.x, event.y)
-        self._clicker.on_move(self, event, self._mouse_pos)
+        self._tool.on_move(self, event, self._mouse_pos)

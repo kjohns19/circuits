@@ -1,8 +1,8 @@
-from .clicker import Clicker
+from .tool import Tool
 import utils
 
 
-class CreateClicker(Clicker):
+class CreateTool(Tool):
     def __init__(self, creator=None):
         self._creator = creator
 
