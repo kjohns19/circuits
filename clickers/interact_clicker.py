@@ -2,7 +2,7 @@ from .clicker import Clicker
 from utils import MouseButton
 
 
-class RunClicker(Clicker):
+class InteractClicker(Clicker):
     def __init__(self):
         self._component = None
 

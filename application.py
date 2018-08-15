@@ -137,7 +137,7 @@ def _make_clicker_selector(component_selector, app):
     clickers_by_name = {
         'create': clickers.CreateClicker(),
         'edit': clickers.EditClicker(),
-        'run': clickers.RunClicker(),
+        'interact': clickers.RunClicker(),
         'wire': clickers.WireClicker()
     }
 

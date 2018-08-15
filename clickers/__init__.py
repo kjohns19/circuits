@@ -2,5 +2,5 @@
 from .clicker import Clicker
 from .create_clicker import CreateClicker
 from .edit_clicker import EditClicker
-from .run_clicker import RunClicker
+from .interact_clicker import InteractClicker
 from .wire_clicker import WireClicker
