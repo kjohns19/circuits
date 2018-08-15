@@ -13,6 +13,9 @@ class Circuit:
     def remove_component(self, component):
         self._components.remove(component)
 
+    def clear(self):
+        self._components = set()
+
     @property
     def components(self):
         return iter(self._components)
