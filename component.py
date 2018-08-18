@@ -30,6 +30,8 @@ class Component:
 
         self._name = None
 
+        self._creator = None
+
     @property
     def num_inputs(self):
         return len(self._inputs)
@@ -103,6 +105,14 @@ class Component:
     @name.setter
     def name(self, value):
         self._name = value
+
+    @property
+    def creator(self):
+        return self._creator
+
+    @creator.setter
+    def creator(self, value):
+        self._creator = value
 
     def schedule_update(self, delay=1):
         self._circuit.schedule_update(self, delay)

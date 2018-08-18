@@ -68,6 +68,19 @@ class Application:
     def repaint(self):
         self._draw_area.queue_draw()
 
+    def show_component_properties(self, component):
+        def callback(property, component, value):
+            self.repaint()
+        creator = component.creator
+        widgets = creator.get_property_widgets(component, callback)
+        self._recreate_properties_section(widgets)
+
+    def _recreate_properties_section(self, widgets):
+        for widget in self._property_box.get_children():
+            self._property_box.remove(widget)
+        for widget in widgets:
+            self._property_box.pack_start(widget, True, True, 0)
+
     def populate_selector_store(self, selector_store, registry):
         data = collections.defaultdict(list)
         for cd in registry.get_component_data():
@@ -104,10 +117,8 @@ class Application:
             creator = self._component_creators[category_name]
             self._create_tool.creator = creator
 
-            for widget in self._property_box.get_children():
-                self._property_box.remove(widget)
-            for widget in creator.get_property_widgets():
-                self._property_box.pack_start(widget, True, True, 0)
+            widgets = creator.get_property_widgets()
+            self._recreate_properties_section(widgets)
 
     def handler_draw_area_draw(self, widget, cr):
         for component in self._circuit.components:

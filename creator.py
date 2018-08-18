@@ -13,9 +13,11 @@ class Creator:
     def add_property(self, property):
         self._properties.append(property)
 
-    def get_property_widgets(self):
+    def get_property_widgets(self, component=None, callback=None):
+        if component is None:
+            component = self._base_component
         return [
-            property.create_widget(self._base_component)
+            property.create_widget(component, callback)
             for property in self._properties
         ]
 
@@ -23,4 +25,5 @@ class Creator:
         component = self._creator_func(circuit)
         for property in self._properties:
             property.apply(self._base_component, component)
+        component.creator = self
         return component

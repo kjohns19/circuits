@@ -24,9 +24,14 @@ class ListProperty(Property):
         self._max_values = max_values
         self._title = title
 
-    def create_widget(self, component):
+    def create_widget(self, component, callback=None):
+        def real_callback(values):
+            self.setter(component, values)
+            if callback:
+                callback(self, component, values)
+
         return property_widgets.create_value_list_widget(
             title=self._title,
-            callback=lambda values: self.setter(component, values),
+            callback=real_callback,
             max_values=self._max_values,
             initial_values=self.getter(component))

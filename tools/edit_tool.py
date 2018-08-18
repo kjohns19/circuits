@@ -13,6 +13,8 @@ class EditTool(Tool):
             self._offset = component.display.position - position
         elif button == MouseButton.RELEASE_LEFT:
             self._component = None
+        elif button == MouseButton.RIGHT and component is not None:
+            app.show_component_properties(component)
 
     def on_move(self, app, event, position):
         if self._component:
