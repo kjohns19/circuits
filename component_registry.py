@@ -1,3 +1,5 @@
+from creator import Creator
+
 import collections
 import functools
 
@@ -21,10 +23,12 @@ class Registry:
         '''
         def decorator(f):
             @functools.wraps(f)
-            def creator(circuit):
+            def creator_func(circuit):
                 component = f(circuit)
                 component.name = name
                 return component
+
+            creator = Creator(creator_func)
 
             self._component_data.append(ComponentData(
                 name=name, category=category, creator=creator))

@@ -31,6 +31,8 @@ class Application:
         self.populate_selector_store(
             selector_store, component_registry.registry)
 
+        self._property_box = builder.get_object('property_box')
+
         self._circuit = circuit
         self._update_time = 0.5
 
@@ -101,6 +103,11 @@ class Application:
             category_name = '/'.join([category, name])
             creator = self._component_creators[category_name]
             self._create_tool.creator = creator
+
+            for widget in self._property_box.get_children():
+                self._property_box.remove(widget)
+            for widget in creator.get_property_widgets():
+                self._property_box.pack_start(widget, True, True, 0)
 
     def handler_draw_area_draw(self, widget, cr):
         for component in self._circuit.components:

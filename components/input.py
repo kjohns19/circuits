@@ -2,6 +2,8 @@ from component import Component
 from component_registry import registry
 import utils
 
+from properties import ListProperty
+
 
 CATEGORY = 'Input'
 
@@ -9,10 +11,25 @@ CATEGORY = 'Input'
 @registry.register('Constant', CATEGORY)
 def constant(circuit):
     component = Component(circuit, num_inputs=0, num_outputs=2)
-    # TODO Custom values
     component.outputs[0].value = 0
     component.outputs[1].value = 1
     return component
+
+
+def constant_getter(component):
+    return [output.value for output in component.outputs]
+
+
+def constant_setter(component, values):
+    component.num_outputs = len(values)
+    for i, value in enumerate(values):
+        component.outputs[i].value = value
+
+
+constant.add_property(ListProperty(
+    getter=constant_getter,
+    setter=constant_setter,
+    title='Outputs'))
 
 
 @registry.register('Button', CATEGORY)
