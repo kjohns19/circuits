@@ -20,6 +20,7 @@ GREEN = (0, 1, 0)
 class ComponentDisplay:
     def __init__(self, component):
         self._component = component
+        self._rect = None
         self.recalculate_size()
 
     @property
@@ -42,7 +43,8 @@ class ComponentDisplay:
             self._component.num_inputs,
             self._component.num_outputs)
         height = NODE_SEPARATION * max_nodes + NODE_SEPARATION//2
-        self._rect = shapes.Rectangle(size=(WIDTH, height))
+        pos = (0, 0) if self._rect is None else self._rect.position
+        self._rect = shapes.Rectangle(size=(WIDTH, height), position=pos)
 
     def node_pos(self, input, idx):
         offset = WIDTH/2 * (-1 if input else 1)
