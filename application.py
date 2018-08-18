@@ -79,7 +79,7 @@ class Application:
         for widget in self._property_box.get_children():
             self._property_box.remove(widget)
         for widget in widgets:
-            self._property_box.pack_start(widget, True, True, 0)
+            self._property_box.pack_start(widget, False, True, 0)
 
     def populate_selector_store(self, selector_store, registry):
         data = collections.defaultdict(list)

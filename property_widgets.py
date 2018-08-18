@@ -1,16 +1,61 @@
 from gi.repository import Gtk
 
 
-def create_value_list_widget(title, callback,
-                             min_values=1, max_values=10,
-                             initial_values=None):
+def create_value_bool_widget(label, callback, initial_value=False):
+    ''' Return a widget for setting a boolean '''
+    builder = Gtk.Builder.new_from_file('./data/one_value.glade')
+    builder.get_object('switch_label').set_text(label)
+    builder.get_object('switch').set_active(initial_value)
+
+    class Handler:
+        def handler_value_set(self, widget, value):
+            callback(value)
+
+    builder.connect_signals(Handler())
+    return builder.get_object('switch_widget')
+
+
+def create_multi_value_widget(title, callback, labels, initial_values):
+    assert len(labels) == len(initial_values)
+
+    def label_func(idx):
+        return labels[idx]
+
+    return _create_generic_multi_value_widget(
+        title, callback, label_func,
+        len(initial_values), len(initial_values),
+        initial_values)
+
+
+def create_ranged_multi_value_widget(title, callback,
+                                     min_values=1, max_values=10,
+                                     initial_values=None):
+    def label_func(idx):
+        return str(idx+1)
+
+    return _create_generic_multi_value_widget(
+        title, callback, label_func, min_values, max_values, initial_values)
+
+
+def _create_generic_multi_value_widget(title, callback,
+                                       label_func,
+                                       min_values, max_values,
+                                       initial_values):
     ''' Return a widget for setting a list of values '''
+    assert min_values <= len(initial_values) <= max_values
     builder = Gtk.Builder.new_from_file('./data/list_values.glade')
 
     builder.get_object('title').set_text(title)
-    adjustment = builder.get_object('count_adjustment')
-    adjustment.set_lower(min_values)
-    adjustment.set_upper(max_values)
+
+    # Only show count selection if it can change
+    if min_values == max_values:
+        main_box = builder.get_object('main_box')
+        count_box = builder.get_object('count_box')
+        main_box.remove(count_box)
+    else:
+        adjustment = builder.get_object('count_adjustment')
+        adjustment.set_lower(min_values)
+        adjustment.set_upper(max_values)
 
     widget = builder.get_object('main')
 
@@ -86,7 +131,7 @@ def create_value_list_widget(title, callback,
             else:
                 raise TypeError('Invalid type for initial value: {}'.format(
                     type(value).__name__))
-            new_row = [str(i+1), typestr, str(value)]
+            new_row = [label_func(i), typestr, str(value)]
             values_store.append(new_row)
             row_values.append(RowValue(values_store[-1]))
         count.set_value(i+1)
@@ -103,7 +148,7 @@ def create_value_list_widget(title, callback,
                 else:
                     row = list(values_store[-1])
                 for _ in range(diff):
-                    row[0] = str(len(values_store)+1)
+                    row[0] = label_func(len(values_store))
                     values_store.append(row)
                     row_values.append(RowValue(values_store[-1]))
             elif diff < 0:

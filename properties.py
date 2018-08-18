@@ -17,21 +17,53 @@ class Property:
     def apply(self, from_component, to_component):
         self.setter(to_component, self.getter(from_component))
 
+    def create_widget(self, component, callback=None):
+        def real_callback(value):
+            self._setter(component, value)
+            if callback:
+                callback(self, component, value)
+        return self.real_create_widget(component, real_callback)
 
-class ListProperty(Property):
-    def __init__(self, getter, setter, max_values=10, title='Values'):
+
+class BoolProperty(Property):
+    def __init__(self, getter, setter, label='Value'):
         super().__init__(getter, setter)
+        self._label = label
+
+    def real_create_widget(self, component, callback):
+        return property_widgets.create_value_bool_widget(
+            label=self._label,
+            callback=callback,
+            initial_value=self.getter(component))
+
+
+class MultiValueProperty(Property):
+    def __init__(self, getter, setter, labels, title='Values'):
+        super().__init__(getter, setter)
+        self._labels = labels
+        self._title = title
+
+    def real_create_widget(self, component, callback):
+        return property_widgets.create_multi_value_widget(
+            title=self._title,
+            callback=callback,
+            labels=self._labels,
+            initial_values=self.getter(component))
+
+
+class RangedMultiValueProperty(Property):
+    def __init__(self, getter, setter,
+                 min_values=1, max_values=10,
+                 title='Values'):
+        super().__init__(getter, setter)
+        self._min_values = min_values
         self._max_values = max_values
         self._title = title
 
-    def create_widget(self, component, callback=None):
-        def real_callback(values):
-            self.setter(component, values)
-            if callback:
-                callback(self, component, values)
-
-        return property_widgets.create_value_list_widget(
+    def real_create_widget(self, component, callback):
+        return property_widgets.create_ranged_multi_value_widget(
             title=self._title,
-            callback=real_callback,
+            callback=callback,
+            min_values=self._min_values,
             max_values=self._max_values,
             initial_values=self.getter(component))
