@@ -12,9 +12,11 @@ NODE_SEPARATION = 24
 NODE_RADIUS = 8
 
 BLACK = (0, 0, 0)
+GRAY  = (0.8, 0.8, 0.8)
 WHITE = (1, 1, 1)
 RED   = (1, 0, 0)
 GREEN = (0, 1, 0)
+BLUE  = (0, 0, 1)
 
 
 class ComponentDisplay:
@@ -22,18 +24,36 @@ class ComponentDisplay:
         self._component = component
         self._rect = None
         self.recalculate_size()
+        self._outline_color = BLACK
+        self._fill_color = WHITE
 
     @property
     def position(self):
         return self._rect.position
 
+    @position.setter
+    def position(self, value):
+        self._rect.position = value
+
     @property
     def bounds(self):
         return self._rect
 
-    @position.setter
-    def position(self, value):
-        self._rect.position = value
+    @property
+    def outline_color(self):
+        return self._outline_color
+
+    @outline_color.setter
+    def outline_color(self, color):
+        self._outline_color = color
+
+    @property
+    def fill_color(self):
+        return self._fill_color
+
+    @fill_color.setter
+    def fill_color(self, color):
+        self._fill_color = color
 
     def contains(self, point):
         return self._rect.contains(point)
@@ -57,10 +77,10 @@ class ComponentDisplay:
     def draw(self, app, cr):
         cr.rectangle(*self._rect.top_left, *self._rect.size)
 
-        cr.set_source_rgb(*WHITE)
+        cr.set_source_rgb(*self._fill_color)
         cr.fill_preserve()
 
-        cr.set_source_rgb(*BLACK)
+        cr.set_source_rgb(*self._outline_color)
         cr.set_line_width(2)
         cr.stroke()
 

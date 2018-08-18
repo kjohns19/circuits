@@ -75,9 +75,12 @@ class Application:
         widgets = creator.get_property_widgets(component, callback)
         self._recreate_properties_section(widgets)
 
-    def _recreate_properties_section(self, widgets):
+    def hide_component_properties(self):
         for widget in self._property_box.get_children():
             self._property_box.remove(widget)
+
+    def _recreate_properties_section(self, widgets):
+        self.hide_component_properties()
         for widget in widgets:
             self._property_box.pack_start(widget, False, True, 0)
 
@@ -103,6 +106,7 @@ class Application:
     def handler_toggle_mode(self, widget):
         if widget.get_active():
             label = widget.get_label()
+            self._tool.reset(self)
             self._tool = self._tools[label]
 
     def handler_component_selection(self, widget):

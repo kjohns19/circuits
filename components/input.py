@@ -1,4 +1,5 @@
 from component import Component
+import component_display
 from component_registry import registry
 import utils
 
@@ -43,6 +44,8 @@ def button(circuit):
             else:
                 on = True
             component.data['on'] = on
+            color = (component_display.WHITE, component_display.GRAY)[int(on)]
+            component.display.fill_color = color
             component.outputs[0].value = component.data['off_on'][int(on)]
         elif button == -utils.MouseButton.LEFT:
             if not component.data['toggle']:
@@ -52,6 +55,7 @@ def button(circuit):
     def on_update(component):
         if not component.data['toggle'] and not component.data['on']:
             component.outputs[0].value = component.data['off_on'][0]
+            component.display.fill_color = component_display.WHITE
 
     component = Component(
         circuit,

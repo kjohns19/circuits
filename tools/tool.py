@@ -8,3 +8,6 @@ class Tool:
 
     def draw(self, app, cr, mouse_pos):
         pass
+
+    def reset(self, app):
+        pass
