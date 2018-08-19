@@ -59,9 +59,14 @@ class ComponentDisplay:
     def get_save_data(self):
         return collections.OrderedDict((
             ('position', list(self.position)),
-            ('outline_color', list(self.outline_color)),
-            ('fill_color', list(self.fill_color))
+            ('outline_color', self.outline_color),
+            ('fill_color', self.fill_color)
         ))
+
+    def load(self, data):
+        self.position = data['position']
+        self.outline_color = data['outline_color']
+        self.fill_color = data['fill_color']
 
     def contains(self, point):
         return self._rect.contains(point)

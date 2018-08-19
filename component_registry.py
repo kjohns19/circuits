@@ -36,6 +36,13 @@ class Registry:
             return creator
         return decorator
 
+    def get_creator(self, category, name):
+        for data in self._component_data:
+            creator = data.creator
+            if creator.category == category and creator.name == name:
+                return creator
+        return None
+
     def get_component_data(self):
         return list(self._component_data)
 

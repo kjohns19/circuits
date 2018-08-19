@@ -14,6 +14,14 @@ class Creator:
         self._base_component = creator_func(_CIRCUIT)
         self._properties = []
 
+    @property
+    def category(self):
+        return self._category
+
+    @property
+    def name(self):
+        return self._name
+
     def get_save_data(self):
         return collections.OrderedDict((
             ('category', self._category),

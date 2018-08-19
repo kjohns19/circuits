@@ -1,13 +1,11 @@
+from component import Component
 import collections
 import threading
 
 
 class Circuit:
     def __init__(self):
-        self._components = set()
-        self._updates = collections.defaultdict(set)
-        self._time = 0
-        self._current_id = 0
+        self.clear()
         self._update_lock = threading.Lock()
 
     def add_component(self, component):
@@ -32,14 +30,39 @@ class Circuit:
             ))
 
     def load(self, data):
-        # TODO
-        pass
+        with self._update_lock:
+            self.clear()
+
+            component_data_by_id = {}
+            components_by_id = {}
+
+            # Create components
+            for component_data in data['components']:
+                component = Component.load(self, component_data)
+                component_data_by_id[component.id] = component_data
+                components_by_id[component.id] = component
+
+            # Load input connections
+            # This must be done after component creation
+            # so all components exist
+            self._components = set(components_by_id.values())
+            for component in self._components:
+                component_data = component_data_by_id[component.id]
+                component.load_inputs(component_data, components_by_id)
+
+            self._updates = collections.defaultdict(set, (
+                (delay, set(components_by_id[id] for id in ids))
+                for delay, ids in data['updates']
+            ))
 
     def remove_component(self, component):
         self._components.remove(component)
 
     def clear(self):
         self._components = set()
+        self._updates = collections.defaultdict(set)
+        self._time = 0
+        self._current_id = 0
 
     @property
     def components(self):

@@ -1,4 +1,5 @@
 from component_display import ComponentDisplay
+import component_registry
 
 import collections
 import functools
@@ -153,6 +154,30 @@ class Component:
             ('data', self._data)
         ))
 
+    @staticmethod
+    def load(circuit, data):
+        creator_data = data['creator']
+        creator = component_registry.registry.get_creator(
+            creator_data['category'], creator_data['name'])
+        component = creator(circuit)
+        component.id = data['id']
+
+        component.num_inputs = len(data['inputs'])
+
+        output_data = data['outputs']
+        component.num_outputs = len(output_data)
+        for out_data in output_data:
+            component.outputs[out_data['index']].value = out_data['value']
+
+        component._data = data['data']
+        component.display.load(data['display'])
+        return component
+
+    def load_inputs(self, data, components_by_id):
+        input_data = data['inputs']
+        for in_data in input_data:
+            self.inputs[in_data['index']].load(in_data, components_by_id)
+
 
 def _default_on_update(component):
     pass
@@ -234,6 +259,17 @@ class _Input:
             ('connection', connected_data)
         ))
 
+    def load(self, data, components_by_id):
+        connection = data['connection']
+        if connection:
+            component = components_by_id[connection['component_id']]
+            output = component.outputs[connection['index']]
+            self._connected_output = output
+            output.connect(self)
+        self._value = data['value']
+        self._new_value = data['new_value']
+        self._old_value = data['old_value']
+
     def update(self):
         self._old_value, self._value = self._value, self._new_value
 
@@ -254,7 +290,7 @@ class _Input:
         output.disconnect(self)
 
     def __str__(self):
-        return 'Input[comp={} idx={}]'.format(id(self.component, self.index))
+        return 'Input[comp={} idx={}]'.format(self.component, self.index)
 
 
 class _Output:
@@ -307,7 +343,7 @@ class _Output:
             input.disconnect()
 
     def __str__(self):
-        return 'Output[comp={} idx={}]'.format(id(self.component, self.index))
+        return 'Output[comp={} idx={}]'.format(self.component, self.index)
 
 
 class _ReadOnlyList:

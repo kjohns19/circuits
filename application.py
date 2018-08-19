@@ -118,7 +118,14 @@ class Application:
             print(data, file=f)
 
     def handler_load(self, widget):
-        save_load.show_load_dialog(self._window)
+        filename = save_load.show_load_dialog(self._window)
+        if filename is None:
+            return
+
+        with open(filename, 'r') as f:
+            data = json.load(f)
+
+        self._circuit.load(data)
 
     def handler_toggle_mode(self, widget):
         if widget.get_active():
