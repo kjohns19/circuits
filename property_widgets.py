@@ -4,15 +4,15 @@ from gi.repository import Gtk
 def create_value_bool_widget(label, callback, initial_value=False):
     ''' Return a widget for setting a boolean '''
     builder = Gtk.Builder.new_from_file('./data/one_value.glade')
-    builder.get_object('switch_label').set_text(label)
-    builder.get_object('switch_button').set_active(initial_value)
+    builder.get_object('bool_label').set_text(label)
+    builder.get_object('bool_button').set_active(initial_value)
 
     class Handler:
         def handler_value_set(self, widget, value):
             callback(value)
 
     builder.connect_signals(Handler())
-    return builder.get_object('switch_widget')
+    return builder.get_object('bool_widget')
 
 
 def create_value_int_widget(label, callback,
@@ -20,9 +20,9 @@ def create_value_int_widget(label, callback,
                             initial_value=0):
     ''' Return a widget for setting an integer '''
     builder = Gtk.Builder.new_from_file('./data/one_value.glade')
-    builder.get_object('spin_label').set_text(label)
-    builder.get_object('spin_button').set_value(initial_value)
-    adjustment = builder.get_object('spin_adjustment')
+    builder.get_object('number_label').set_text(label)
+    builder.get_object('number_button').set_value(initial_value)
+    adjustment = builder.get_object('number_adjustment')
     adjustment.set_lower(min_value)
     adjustment.set_upper(max_value)
 
@@ -31,7 +31,21 @@ def create_value_int_widget(label, callback,
             callback(widget.get_value_as_int())
 
     builder.connect_signals(Handler())
-    return builder.get_object('spin_widget')
+    return builder.get_object('number_widget')
+
+
+def create_value_string_widget(label, callback, initial_value=''):
+    ''' Return a widget for setting a boolean '''
+    builder = Gtk.Builder.new_from_file('./data/one_value.glade')
+    builder.get_object('string_label').set_text(label)
+    builder.get_object('string_entry').set_text(initial_value)
+
+    class Handler:
+        def handler_value_set(self, widget):
+            callback(widget.get_text())
+
+    builder.connect_signals(Handler())
+    return builder.get_object('string_widget')
 
 
 def create_multi_value_widget(title, callback, labels, initial_values):

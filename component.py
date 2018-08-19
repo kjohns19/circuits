@@ -147,6 +147,7 @@ class Component:
     def get_save_data(self):
         return collections.OrderedDict((
             ('id', self.id),
+            ('name', self.name),
             ('creator', self.creator.get_save_data()),
             ('inputs', [input.get_save_data() for input in self.inputs]),
             ('outputs', [output.get_save_data() for output in self.outputs]),
@@ -161,6 +162,7 @@ class Component:
             creator_data['category'], creator_data['name'])
         component = creator(circuit)
         component.id = data['id']
+        component.name = data['name']
 
         component.num_inputs = len(data['inputs'])
 

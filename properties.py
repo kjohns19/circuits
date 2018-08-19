@@ -55,6 +55,18 @@ class NumberProperty(Property):
             initial_value=self.getter(component))
 
 
+class StringProperty(Property):
+    def __init__(self, getter, setter, label):
+        super().__init__(getter, setter)
+        self._label = label
+
+    def real_create_widget(self, component, callback):
+        return property_widgets.create_value_string_widget(
+            label=self._label,
+            callback=callback,
+            initial_value=self.getter(component))
+
+
 class MultiValueProperty(Property):
     def __init__(self, getter, setter, labels, title='Values'):
         super().__init__(getter, setter)

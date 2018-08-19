@@ -93,3 +93,11 @@ def data_setter(name):
     def setter(component, value):
         component.data[name] = value
     return setter
+
+
+def attr_getter(name):
+    return lambda component: getattr(component, name)
+
+
+def attr_setter(name):
+    return lambda component, value: setattr(component, name, value)

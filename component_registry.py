@@ -1,4 +1,6 @@
 from creator import Creator
+from properties import StringProperty
+import utils
 
 import collections
 import functools
@@ -29,6 +31,11 @@ class Registry:
                 return component
 
             creator = Creator(creator_func, name, category)
+
+            creator.add_property(StringProperty(
+                getter=utils.attr_getter('name'),
+                setter=utils.attr_setter('name'),
+                label='Name'))
 
             self._component_data.append(ComponentData(
                 name=name, category=category, creator=creator))
