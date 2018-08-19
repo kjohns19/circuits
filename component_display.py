@@ -9,8 +9,8 @@ WIDTH = 72
 
 OUTLINE_WIDTH = 1
 
-NODE_SEPARATION = 24
-NODE_RADIUS = 8
+NODE_SEPARATION = 16
+NODE_RADIUS = 4
 
 BLACK = (0, 0, 0)
 GRAY  = (0.8, 0.8, 0.8)
@@ -97,23 +97,21 @@ class ComponentDisplay:
         cr.set_line_width(2)
         cr.stroke()
 
-        def draw_nodes(input, count):
-            for i in range(count):
-                position = self.node_pos(input, i)
-                cr.arc(*position, NODE_RADIUS, 0, math.pi*2)
-                cr.set_source_rgb(*WHITE)
-                cr.fill_preserve()
+        for i, node in enumerate(self._component.inputs):
+            position = self.node_pos(True, i)
+            connected = node.is_connected()
+            fill_color = _node_color(node.new_value, connected)
+            _draw_node(cr, position, fill_color)
 
-                cr.set_source_rgb(*BLACK)
-                cr.set_line_width(2)
-                cr.stroke()
-
-        draw_nodes(True, len(self._component.inputs))
-        draw_nodes(False, len(self._component.outputs))
+        for i, node in enumerate(self._component.outputs):
+            position = self.node_pos(False, i)
+            connected = node.is_connected()
+            fill_color = _node_color(node.value, connected)
+            _draw_node(cr, position, fill_color)
 
         name = self._component.name
         if name:
-            position = self.position - (0, self._rect.height/2-8)
+            position = self.position - (0, self._rect.height/2+8)
             utils.draw_text(cr, name, position, bold=True)
 
         self._component.on_draw(app, cr)
@@ -132,5 +130,30 @@ class ComponentDisplay:
             input_pos = self.node_pos(True, input_idx)
             output_pos = component.display.node_pos(False, output_idx)
 
-            color = GREEN if input.new_value else RED
+            color = _wire_color(input.new_value)
             utils.draw_line(cr, input_pos, output_pos, color)
+
+
+def _wire_color(value):
+    if isinstance(value, bool):
+        return GREEN if value else RED
+    else:
+        return BLACK
+
+
+def _node_color(value, connected):
+    if isinstance(value, bool):
+        return GREEN if value else RED
+    else:
+        return BLACK if connected else WHITE
+
+
+def _draw_node(cr, position, fill_color):
+    cr.arc(*position, NODE_RADIUS, 0, math.pi*2)
+
+    cr.set_source_rgb(*fill_color)
+    cr.fill_preserve()
+
+    cr.set_source_rgb(*BLACK)
+    cr.set_line_width(2)
+    cr.stroke()

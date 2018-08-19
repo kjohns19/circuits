@@ -244,6 +244,9 @@ class _Input:
     def connected_output(self):
         return self._connected_output
 
+    def is_connected(self):
+        return self._connected_output is not None
+
     def get_save_data(self):
         connected = self.connected_output
         if connected is None:
@@ -319,6 +322,9 @@ class _Output:
         self._value = value
         for input in self._connected_inputs:
             input.value = value
+
+    def is_connected(self):
+        return bool(self._connected_inputs)
 
     def get_save_data(self):
         return collections.OrderedDict((
