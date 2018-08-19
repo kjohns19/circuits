@@ -83,3 +83,13 @@ def create_nary_component(name, category, function, default_value=None):
             circuit, num_inputs=num_inputs, num_outputs=1, on_update=on_update)
         on_update(component)
         return component
+
+
+def data_getter(name):
+    return lambda component: component.data[name]
+
+
+def data_setter(name):
+    def setter(component, value):
+        component.data[name] = value
+    return setter

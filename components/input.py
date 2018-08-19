@@ -4,6 +4,7 @@ from component_registry import registry
 import utils
 
 from properties import BoolProperty
+from properties import NumberProperty
 from properties import MultiValueProperty
 from properties import RangedMultiValueProperty
 
@@ -69,22 +70,10 @@ def button(circuit):
     return component
 
 
-def button_toggle_getter(component):
-    return component.data['toggle']
-
-
-def button_toggle_setter(component, value):
-    component.data['toggle'] = value
-
-
 button.add_property(BoolProperty(
-    getter=button_toggle_getter,
-    setter=button_toggle_setter,
+    getter=utils.data_getter('toggle'),
+    setter=utils.data_setter('toggle'),
     label='Toggle'))
-
-
-def button_on_off_getter(component):
-    return component.data['off_on']
 
 
 def button_on_off_setter(component, values):
@@ -94,7 +83,41 @@ def button_on_off_setter(component, values):
 
 
 button.add_property(MultiValueProperty(
-    getter=button_on_off_getter,
+    getter=utils.data_getter('off_on'),
     setter=button_on_off_setter,
     labels=['Off', 'On'],
     title='Values'))
+
+
+@registry.register('Clock', CATEGORY)
+def clock(circuit):
+    def on_update(component):
+        value = not component.outputs[0].value
+        component.outputs[0].value = value
+        delay = (
+            component.data['off_delay'],
+            component.data['on_delay']
+        )[int(value)]
+        component.schedule_update(delay)
+
+    component = Component(
+        circuit, num_inputs=0, num_outputs=1,
+        on_update=on_update)
+    component.data['off_delay'] = 1
+    component.data['on_delay'] = 1
+    component.outputs[0].value = False
+    component.schedule_update()
+    return component
+
+
+clock.add_property(NumberProperty(
+    getter=utils.data_getter('off_delay'),
+    setter=utils.data_setter('off_delay'),
+    min_value=1, max_value=10,
+    label='Off delay'))
+
+clock.add_property(NumberProperty(
+    getter=utils.data_getter('on_delay'),
+    setter=utils.data_setter('on_delay'),
+    min_value=1, max_value=10,
+    label='On delay'))

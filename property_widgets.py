@@ -5,7 +5,7 @@ def create_value_bool_widget(label, callback, initial_value=False):
     ''' Return a widget for setting a boolean '''
     builder = Gtk.Builder.new_from_file('./data/one_value.glade')
     builder.get_object('switch_label').set_text(label)
-    builder.get_object('switch').set_active(initial_value)
+    builder.get_object('switch_button').set_active(initial_value)
 
     class Handler:
         def handler_value_set(self, widget, value):
@@ -15,7 +15,27 @@ def create_value_bool_widget(label, callback, initial_value=False):
     return builder.get_object('switch_widget')
 
 
+def create_value_int_widget(label, callback,
+                            min_value=0, max_value=10,
+                            initial_value=0):
+    ''' Return a widget for setting an integer '''
+    builder = Gtk.Builder.new_from_file('./data/one_value.glade')
+    builder.get_object('spin_label').set_text(label)
+    builder.get_object('spin_button').set_value(initial_value)
+    adjustment = builder.get_object('spin_adjustment')
+    adjustment.set_lower(min_value)
+    adjustment.set_upper(max_value)
+
+    class Handler:
+        def handler_value_set(self, widget):
+            callback(widget.get_value_as_int())
+
+    builder.connect_signals(Handler())
+    return builder.get_object('spin_widget')
+
+
 def create_multi_value_widget(title, callback, labels, initial_values):
+    ''' Return a widget for setting a constant number of values '''
     assert len(labels) == len(initial_values)
 
     def label_func(idx):
@@ -30,6 +50,7 @@ def create_multi_value_widget(title, callback, labels, initial_values):
 def create_ranged_multi_value_widget(title, callback,
                                      min_values=1, max_values=10,
                                      initial_values=None):
+    ''' Return a widget for setting a variable number of values '''
     def label_func(idx):
         return str(idx+1)
 
@@ -41,7 +62,6 @@ def _create_generic_multi_value_widget(title, callback,
                                        label_func,
                                        min_values, max_values,
                                        initial_values):
-    ''' Return a widget for setting a list of values '''
     assert min_values <= len(initial_values) <= max_values
     builder = Gtk.Builder.new_from_file('./data/list_values.glade')
 

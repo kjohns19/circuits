@@ -37,6 +37,24 @@ class BoolProperty(Property):
             initial_value=self.getter(component))
 
 
+class NumberProperty(Property):
+    def __init__(self, getter, setter,
+                 min_value=0, max_value=10,
+                 label='Value'):
+        super().__init__(getter, setter)
+        self._label = label
+        self._min_value = min_value
+        self._max_value = max_value
+
+    def real_create_widget(self, component, callback):
+        return property_widgets.create_value_int_widget(
+            label=self._label,
+            callback=callback,
+            min_value=self._min_value,
+            max_value=self._max_value,
+            initial_value=self.getter(component))
+
+
 class MultiValueProperty(Property):
     def __init__(self, getter, setter, labels, title='Values'):
         super().__init__(getter, setter)
