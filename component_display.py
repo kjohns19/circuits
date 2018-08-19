@@ -1,6 +1,7 @@
 import shapes
 import utils
 
+import collections
 import math
 
 
@@ -54,6 +55,13 @@ class ComponentDisplay:
     @fill_color.setter
     def fill_color(self, color):
         self._fill_color = color
+
+    def get_save_data(self):
+        return collections.OrderedDict((
+            ('position', list(self.position)),
+            ('outline_color', list(self.outline_color)),
+            ('fill_color', list(self.fill_color))
+        ))
 
     def contains(self, point):
         return self._rect.contains(point)

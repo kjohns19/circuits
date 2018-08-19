@@ -28,7 +28,7 @@ class Registry:
                 component.name = name
                 return component
 
-            creator = Creator(creator_func)
+            creator = Creator(creator_func, name, category)
 
             self._component_data.append(ComponentData(
                 name=name, category=category, creator=creator))

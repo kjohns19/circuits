@@ -2,9 +2,11 @@ from gi.repository import Gtk, Gdk
 
 import tools
 import component_registry
+import save_load
 
 import collections
 import threading
+import json
 
 
 class Application:
@@ -102,6 +104,21 @@ class Application:
     def handler_new(self, widget):
         self._circuit.clear()
         self.repaint()
+
+    def handler_save(self, widget):
+        filename = save_load.show_save_dialog(self._window, self._circuit)
+        if filename is None:
+            return
+
+        data = json.dumps(
+            self._circuit.get_save_data(),
+            indent=4)
+
+        with open(filename, 'w') as f:
+            print(data, file=f)
+
+    def handler_load(self, widget):
+        save_load.show_load_dialog(self._window)
 
     def handler_toggle_mode(self, widget):
         if widget.get_active():

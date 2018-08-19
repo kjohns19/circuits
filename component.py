@@ -1,5 +1,6 @@
 from component_display import ComponentDisplay
 
+import collections
 import functools
 
 
@@ -11,8 +12,9 @@ class Component:
     def __init__(self, circuit, num_inputs, num_outputs,
                  on_update=None, on_draw=None, on_click=None):
         self._circuit = circuit
+        self._id = None
 
-        self._data = {}
+        self._data = collections.OrderedDict()
 
         self._inputs = []
         self._outputs = []
@@ -31,6 +33,14 @@ class Component:
         self._name = None
 
         self._creator = None
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, value):
+        self._id = value
 
     @property
     def num_inputs(self):
@@ -133,6 +143,16 @@ class Component:
             'Component[inputs={} outputs={}]'.format(
                 self._inputs, self._outputs))
 
+    def get_save_data(self):
+        return collections.OrderedDict((
+            ('id', self.id),
+            ('creator', self.creator.get_save_data()),
+            ('inputs', [input.get_save_data() for input in self.inputs]),
+            ('outputs', [output.get_save_data() for output in self.outputs]),
+            ('display', self.display.get_save_data()),
+            ('data', self._data)
+        ))
+
 
 def _default_on_update(component):
     pass
@@ -197,6 +217,23 @@ class _Input:
     def connected_output(self):
         return self._connected_output
 
+    def get_save_data(self):
+        connected = self.connected_output
+        if connected is None:
+            connected_data = None
+        else:
+            connected_data = collections.OrderedDict((
+                ('component_id', connected.component.id),
+                ('index', connected.index)
+            ))
+        return collections.OrderedDict((
+            ('index', self.index),
+            ('value', self.value),
+            ('new_value', self.new_value),
+            ('old_value', self.old_value),
+            ('connection', connected_data)
+        ))
+
     def update(self):
         self._old_value, self._value = self._value, self._new_value
 
@@ -244,6 +281,12 @@ class _Output:
         self._value = value
         for input in self._connected_inputs:
             input.value = value
+
+    def get_save_data(self):
+        return collections.OrderedDict((
+            ('index', self.index),
+            ('value', self.value)
+        ))
 
     def connect(self, input):
         if input in self._connected_inputs:
