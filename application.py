@@ -35,26 +35,23 @@ class Application:
 
         self._property_box = builder.get_object('property_box')
 
-        self._circuit = circuit
+        self._playing = threading.Event()
         self._update_time = 0.5
+        speed_button = builder.get_object('play_speed_button')
+        speed_button.set_value(self._update_time*1000)
+
+        self._circuit = circuit
 
     @property
     def circuit(self):
         return self._circuit
-
-    @property
-    def update_time(self):
-        return self._update_time
-
-    @update_time.setter
-    def update_time(self, value):
-        self._update_time = value
 
     def loop(self):
         exit_event = threading.Event()
 
         def update_thread():
             while not exit_event.wait(self._update_time):
+                self._playing.wait()
                 self._circuit.update()
                 self.repaint()
 
@@ -64,6 +61,7 @@ class Application:
         self._window.show_all()
         Gtk.main()
 
+        self._playing.set()  # so the update thread can exit
         exit_event.set()
         update_thread.join()
 
@@ -126,6 +124,20 @@ class Application:
             data = json.load(f)
 
         self._circuit.load(data)
+
+    def handler_play(self, widget):
+        active = widget.get_active()
+        if active:
+            print('Active')
+            widget.set_stock_id('gtk-media-pause')
+            self._playing.set()
+        else:
+            print('Inactive')
+            widget.set_stock_id('gtk-media-play')
+            self._playing.clear()
+
+    def handler_speed_set(self, widget):
+        self._update_time = widget.get_value_as_int() / 1000.0
 
     def handler_toggle_mode(self, widget):
         if widget.get_active():
