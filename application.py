@@ -72,17 +72,18 @@ class Application:
         def callback(property, component, value):
             self.repaint()
         creator = component.creator
+
+        dialog = Gtk.Dialog(
+            'Edit Properties', self._window, 0,
+            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
+
         widgets = creator.get_property_widgets(component, callback)
-        self._recreate_properties_section(widgets)
-
-    def hide_component_properties(self):
-        for widget in self._property_box.get_children():
-            self._property_box.remove(widget)
-
-    def _recreate_properties_section(self, widgets):
-        self.hide_component_properties()
+        box = dialog.get_content_area()
         for widget in widgets:
-            self._property_box.pack_start(widget, False, True, 0)
+            box.add(widget)
+
+        dialog.run()
+        dialog.destroy()
 
     def populate_selector_store(self, selector_store, registry):
         data = collections.defaultdict(list)
@@ -158,7 +159,10 @@ class Application:
             self._create_tool.creator = creator
 
             widgets = creator.get_property_widgets()
-            self._recreate_properties_section(widgets)
+            for widget in self._property_box.get_children():
+                self._property_box.remove(widget)
+            for widget in widgets:
+                self._property_box.add(widget)
 
     def handler_draw_area_draw(self, widget, cr):
         for component in self._circuit.components:
