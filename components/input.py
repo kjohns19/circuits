@@ -38,21 +38,26 @@ constant.add_property(RangedMultiValueProperty(
 def button(circuit):
     def on_click(component, button):
         if button == utils.MouseButton.LEFT:
+            if component.data['click_state'] != 0:
+                return
             if component.data['toggle']:
                 on = not component.data['on']
+                component.data['click_state'] = 1
             else:
                 on = True
+                component.data['click_state'] = 2
             component.data['on'] = on
             color = (component_display.WHITE, component_display.GRAY)[int(on)]
             component.display.fill_color = color
             component.outputs[0].value = component.data['off_on'][int(on)]
-        elif button == -utils.MouseButton.LEFT:
-            if not component.data['toggle']:
-                component.data['on'] = False
-                component.schedule_update()
+            component.schedule_update()
 
     def on_update(component):
-        if not component.data['toggle'] and not component.data['on']:
+        component.data['click_state'] = max(
+            0, component.data['click_state'] - 1)
+        if component.data['click_state'] > 0:
+            component.schedule_update()
+        if not component.data['toggle']:
             component.outputs[0].value = component.data['off_on'][0]
             component.display.fill_color = component_display.WHITE
 
@@ -61,6 +66,7 @@ def button(circuit):
         num_inputs=0, num_outputs=1,
         on_click=on_click,
         on_update=on_update)
+    component.data['click_state'] = 0
     component.data['on'] = False
     component.data['toggle'] = False
     component.data['off_on'] = [False, True]
