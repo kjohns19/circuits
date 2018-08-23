@@ -8,6 +8,10 @@ class Circuit:
         self.clear()
         self._update_lock = threading.Lock()
 
+    @property
+    def time(self):
+        return self._time
+
     def add_component(self, component):
         self._components.add(component)
         component.id = self._current_id
@@ -26,7 +30,8 @@ class Circuit:
             ))
             return collections.OrderedDict((
                 ('components', component_data),
-                ('updates', update_data)
+                ('updates', update_data),
+                ('time', self.time)
             ))
 
     def load(self, data):

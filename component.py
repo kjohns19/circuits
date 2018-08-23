@@ -44,6 +44,10 @@ class Component:
         self._id = value
 
     @property
+    def circuit(self):
+        return self._circuit
+
+    @property
     def num_inputs(self):
         return len(self._inputs)
 
