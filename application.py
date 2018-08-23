@@ -129,11 +129,9 @@ class Application:
     def handler_play(self, widget):
         active = widget.get_active()
         if active:
-            print('Active')
             widget.set_stock_id('gtk-media-pause')
             self._playing.set()
         else:
-            print('Inactive')
             widget.set_stock_id('gtk-media-play')
             self._playing.clear()
 
