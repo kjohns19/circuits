@@ -11,6 +11,7 @@ class ComponentException(Exception):
 
 class Component:
     def __init__(self, circuit, num_inputs, num_outputs,
+                 input_labels=None, output_labels=None,
                  on_update=None, on_draw=None, on_click=None):
         self._circuit = circuit
         self._id = None
@@ -32,6 +33,8 @@ class Component:
         self._circuit.add_component(self)
 
         self._name = None
+        self._input_labels = input_labels or []
+        self._output_labels = output_labels or []
 
         self._creator = None
 
@@ -128,6 +131,20 @@ class Component:
     @creator.setter
     def creator(self, value):
         self._creator = value
+
+    def input_label(self, idx):
+        if idx < len(self._input_labels):
+            return self._input_labels[idx]
+        if self.num_inputs == 1:
+            return 'in'
+        return 'in{}'.format(idx+1)
+
+    def output_label(self, idx):
+        if idx < len(self._output_labels):
+            return self._output_labels[idx]
+        if self.num_outputs == 1:
+            return 'out'
+        return 'out{}'.format(idx+1)
 
     def schedule_update(self, delay=1):
         self._circuit.schedule_update(self, delay)
@@ -248,6 +265,10 @@ class _Input:
     def connected_output(self):
         return self._connected_output
 
+    @property
+    def label(self):
+        return self._component.input_label(self._index)
+
     def is_connected(self):
         return self._connected_output is not None
 
@@ -320,6 +341,10 @@ class _Output:
     @property
     def value(self):
         return self._value
+
+    @property
+    def label(self):
+        return self._component.output_label(self._index)
 
     @value.setter
     def value(self, value):

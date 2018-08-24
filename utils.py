@@ -54,9 +54,9 @@ def show_popup(title, options, event, callback):
     title_menu.set_sensitive(False)
     menu.append(title_menu)
 
-    for option in options:
-        def activate(widget, option=option):
-            callback(option)
+    for i, option in enumerate(options):
+        def activate(widget, option=option, i=i):
+            callback(i, option)
 
         item = Gtk.MenuItem(option)
         item.connect('activate', activate)

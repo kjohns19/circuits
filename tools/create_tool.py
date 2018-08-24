@@ -32,7 +32,7 @@ class CreateTool(Tool):
                 self._component = None
                 return
 
-            def callback(selection):
+            def callback(idx, selection):
                 if selection == 'Yes':
                     component.delete()
                     app.repaint()

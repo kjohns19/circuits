@@ -14,12 +14,12 @@ class WireTool(Tool):
 
     def right_click(self, app, event, button, position, component):
         if self._input is None and component is not None:
-            def callback(selection):
-                component.inputs[int(selection)].disconnect()
+            def callback(idx, selection):
+                component.inputs[idx].disconnect()
                 app.repaint()
 
             title = 'Delete Input?'
-            options = [str(i) for i in range(component.num_inputs)]
+            options = [input.label for input in component.inputs]
             utils.show_popup(title, options, event, callback)
         else:
             self._input = None
@@ -29,25 +29,25 @@ class WireTool(Tool):
         if component is None:
             return
 
-        def input_callback(selection):
-            self._input = component.inputs[int(selection)]
+        def input_callback(idx, selection):
+            self._input = component.inputs[idx]
 
-        def output_callback(selection):
-            output = component.outputs[int(selection)]
+        def output_callback(idx, selection):
+            output = component.outputs[idx]
             self._input.connect(output)
             self._input = None
             app.repaint()
 
         if self._input is None:
-            count = component.num_inputs
+            nodes = component.inputs
             title = 'Inputs'
             callback = input_callback
         else:
-            count = component.num_outputs
+            nodes = component.outputs
             title = 'Outputs'
             callback = output_callback
 
-        options = [str(i) for i in range(count)]
+        options = [node.label for node in nodes]
         utils.show_popup(title, options, event, callback)
 
     def on_move(self, app, event, position):
