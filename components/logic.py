@@ -9,6 +9,7 @@ _operators = [
     ('Nand', lambda a, b: not (a and b)),
     ('Nor',  lambda a, b: not (a or b)),
     ('Xor',  lambda a, b: bool(a) != bool(b)),
+    ('Xnor', lambda a, b: bool(a) == bool(b)),
     ('Not',  lambda a: not a)
 ]
 
