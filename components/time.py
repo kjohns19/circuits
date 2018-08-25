@@ -20,6 +20,7 @@ def clock(circuit):
 
     component = Component(
         circuit, num_inputs=0, num_outputs=1,
+        output_labels=['clk'],
         on_update=on_update)
     component.data['off_delay'] = 1
     component.data['on_delay'] = 1
