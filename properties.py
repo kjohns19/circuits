@@ -1,4 +1,5 @@
 import property_widgets
+import utils
 
 
 class Property:
@@ -53,6 +54,36 @@ class NumberProperty(Property):
             min_value=self._min_value,
             max_value=self._max_value,
             initial_value=self.getter(component))
+
+
+def _create_num_inout_property(name, attr_name, label):
+    class NumInOutProperty(NumberProperty):
+        def __init__(self, callback=None,
+                     min_value=0, max_value=10,
+                     label=label):
+            super().__init__(
+                getter=utils.attr_getter(attr_name),
+                setter=utils.attr_setter(attr_name),
+                min_value=min_value, max_value=max_value, label=label)
+            self._callback = callback
+
+        def real_create_widget(self, component, callback):
+            def real_callback(value):
+                callback(value)
+                if self._callback is not None:
+                    self._callback(component, value)
+
+            return super().real_create_widget(component, real_callback)
+
+    NumInOutProperty.__name__ = name
+    return NumInOutProperty
+
+
+NumInputsProperty = _create_num_inout_property(
+    'NumInputsProperty', 'num_inputs', 'Number of inputs')
+
+NumOutputsProperty = _create_num_inout_property(
+    'NumOutputsProperty', 'num_outputs', 'Number of outputs')
 
 
 class StringProperty(Property):

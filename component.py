@@ -132,6 +132,22 @@ class Component:
     def creator(self, value):
         self._creator = value
 
+    @property
+    def input_labels(self):
+        return self._input_labels
+
+    @input_labels.setter
+    def input_labels(self, value):
+        self._input_labels = value or []
+
+    @property
+    def output_labels(self):
+        return self._output_labels
+
+    @output_labels.setter
+    def output_labels(self, value):
+        self._output_labels = value or []
+
     def input_label(self, idx):
         if idx < len(self._input_labels):
             return self._input_labels[idx]
