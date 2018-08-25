@@ -85,7 +85,7 @@ class ComponentDisplay:
         count = len(
             self._component.inputs if input else self._component.outputs)
         start_y = center.y - (count-1)*NODE_SEPARATION//2
-        return (center.x, start_y + NODE_SEPARATION*idx)
+        return shapes.Vector2((center.x, start_y + NODE_SEPARATION*idx))
 
     def draw(self, app, cr):
         cr.rectangle(*self._rect.top_left, *self._rect.size)
@@ -102,12 +102,18 @@ class ComponentDisplay:
             connected = node.is_connected()
             fill_color = _node_color(node.new_value, connected)
             _draw_node(cr, position, fill_color)
+            utils.draw_text(
+                cr, node.label, position + (NODE_RADIUS+1, 0), size=10,
+                h_align=utils.TextHAlign.LEFT)
 
         for i, node in enumerate(self._component.outputs):
             position = self.node_pos(False, i)
             connected = node.is_connected()
             fill_color = _node_color(node.value, connected)
             _draw_node(cr, position, fill_color)
+            utils.draw_text(
+                cr, node.label, position - (NODE_RADIUS+1, 0), size=10,
+                h_align=utils.TextHAlign.RIGHT)
 
         name = self._component.name
         if name:
@@ -149,6 +155,7 @@ def _node_color(value, connected):
 
 
 def _draw_node(cr, position, fill_color):
+    cr.new_path()
     cr.arc(*position, NODE_RADIUS, 0, math.pi*2)
 
     cr.set_source_rgb(*fill_color)

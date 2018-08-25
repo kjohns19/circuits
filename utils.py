@@ -1,5 +1,6 @@
 from component_registry import registry
 from component import Component
+import shapes
 
 import cairo
 import enum
@@ -24,18 +25,42 @@ class MouseButton(enum.IntEnum):
         return button < 0
 
 
-def draw_text(cr, text, position, bold=False):
+class TextHAlign(enum.Enum):
+    LEFT = 0
+    CENTER = 1
+    RIGHT = 2
+
+
+class TextVAlign(enum.Enum):
+    TOP = 0
+    MIDDLE = 1
+    BOTTOM = 2
+
+
+def draw_text(cr, text, position, size=12, bold=False,
+              h_align=TextHAlign.CENTER, v_align=TextVAlign.MIDDLE):
     weight = cairo.FONT_WEIGHT_BOLD if bold else cairo.FONT_WEIGHT_NORMAL
     cr.set_source_rgb(0, 0, 0)
     cr.select_font_face(
         'FreeSans',
         cairo.FONT_SLANT_NORMAL,
         weight)
-    cr.set_font_size(12)
+    cr.set_font_size(size)
 
     x, y, w, h, dx, dy = cr.text_extents(text)
 
-    cr.move_to(*(position - (w/2, -h/2)))
+    offset = [0, 0]
+    if h_align == TextHAlign.CENTER:
+        offset[0] = -w/2
+    elif h_align == TextHAlign.RIGHT:
+        offset[0] = -w
+
+    if v_align == TextVAlign.MIDDLE:
+        offset[1] = h/2
+    elif v_align == TextVAlign.BOTTOM:
+        offset[1] = h
+
+    cr.move_to(*(shapes.Vector2(position) + offset))
     cr.show_text(text)
 
 
