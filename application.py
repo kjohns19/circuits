@@ -2,8 +2,10 @@ from gi.repository import Gtk, Gdk
 
 import tools
 import component_registry
+import shapes
 import save_load
 
+import cairo
 import collections
 import threading
 import json
@@ -22,6 +24,10 @@ class Application:
         self._tool = self._create_tool
 
         self._mouse_pos = (0, 0)
+        self._grid_size = 20
+        self._grid_surfaces = {
+            20: cairo.ImageSurface.create_from_png('./data/grid20.png')
+        }
 
         builder = Gtk.Builder.new_from_file(ui_config_file)
         builder.connect_signals(self)
@@ -97,6 +103,17 @@ class Application:
             for name in names:
                 selector_store.append(iter, [name, category])
 
+    def snap_position(self, position):
+        def round_to_grid(value):
+            return int(
+                self._grid_size * round(
+                    float(value) / self._grid_size))
+
+        position = list(position)
+        return shapes.Vector2((
+            round_to_grid(position[0]),
+            round_to_grid(position[1])))
+
     def handler_exit(self, widget):
         Gtk.main_quit()
 
@@ -163,6 +180,9 @@ class Application:
                 self._property_box.add(widget)
 
     def handler_draw_area_draw(self, widget, cr):
+        cr.set_source_surface(self._grid_surfaces[self._grid_size], 0, 0)
+        cr.get_source().set_extend(cairo.EXTEND_REPEAT)
+        cr.paint()
         for component in self._circuit.components:
             component.display.draw(self, cr)
         for component in self._circuit.components:

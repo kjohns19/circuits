@@ -18,5 +18,6 @@ class EditTool(Tool):
 
     def on_move(self, app, event, position):
         if self._move_component:
-            self._move_component.display.position = self._offset + position
+            self._move_component.display.position = app.snap_position(
+                self._offset + position)
             app.repaint()

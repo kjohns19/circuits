@@ -41,5 +41,5 @@ class CreateTool(Tool):
 
     def on_move(self, app, event, position):
         if self._component:
-            self._component.display.position = position
+            self._component.display.position = app.snap_position(position)
             app.repaint()

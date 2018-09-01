@@ -5,11 +5,11 @@ import collections
 import math
 
 
-WIDTH = 72
+WIDTH = 80
 
 OUTLINE_WIDTH = 1
 
-NODE_SEPARATION = 16
+NODE_SEPARATION = 20
 NODE_RADIUS = 4
 
 BLACK = (0, 0, 0)
@@ -75,16 +75,17 @@ class ComponentDisplay:
         max_nodes = max(
             self._component.num_inputs,
             self._component.num_outputs)
-        height = NODE_SEPARATION * max_nodes + NODE_SEPARATION//2
+        height = NODE_SEPARATION * max_nodes  # + NODE_SEPARATION//2
         pos = (0, 0) if self._rect is None else self._rect.position
         self._rect = shapes.Rectangle(size=(WIDTH, height), position=pos)
 
     def node_pos(self, input, idx):
         offset = WIDTH/2 * (-1 if input else 1)
         center = self._rect.position + (offset, 0)
-        count = len(
-            self._component.inputs if input else self._component.outputs)
-        start_y = center.y - (count-1)*NODE_SEPARATION//2
+        max_nodes = max(
+            self._component.num_inputs,
+            self._component.num_outputs)
+        start_y = center.y - (max_nodes-1)*NODE_SEPARATION//2
         return shapes.Vector2((center.x, start_y + NODE_SEPARATION*idx))
 
     def draw(self, app, cr):
