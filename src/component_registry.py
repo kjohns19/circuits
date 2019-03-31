@@ -1,5 +1,5 @@
-from creator import Creator
-from properties import StringProperty
+import creator as creator_module
+import properties
 import utils
 
 import collections
@@ -30,9 +30,9 @@ class Registry:
                 component.name = name
                 return component
 
-            creator = Creator(creator_func, name, category)
+            creator = creator_module.Creator(creator_func, name, category)
 
-            creator.add_property(StringProperty(
+            creator.add_property(properties.StringProperty(
                 getter=utils.attr_getter('name'),
                 setter=utils.attr_setter('name'),
                 label='Name'))

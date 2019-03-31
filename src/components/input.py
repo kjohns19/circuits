@@ -1,9 +1,7 @@
-from component import Component
+import component as component_module
 import component_display
 from component_registry import registry
-from properties import BoolProperty
-from properties import MultiValueProperty
-from properties import RangedMultiValueProperty
+import properties
 import utils
 
 
@@ -12,7 +10,8 @@ CATEGORY = 'Input'
 
 @registry.register('Constant', CATEGORY)
 def constant(circuit):
-    component = Component(circuit, num_inputs=0, num_outputs=2)
+    component = component_module.Component(
+        circuit, num_inputs=0, num_outputs=2)
     component.outputs[0].value = 0
     component.outputs[1].value = 1
     return component
@@ -28,7 +27,7 @@ def constant_setter(component, values):
         component.outputs[i].value = value
 
 
-constant.add_property(RangedMultiValueProperty(
+constant.add_property(properties.RangedMultiValueProperty(
     getter=constant_getter,
     setter=constant_setter,
     title='Outputs'))
@@ -61,7 +60,7 @@ def button(circuit):
             component.outputs[0].value = component.data['off_on'][0]
             component.display.fill_color = component_display.WHITE
 
-    component = Component(
+    component = component_module.Component(
         circuit,
         num_inputs=0, num_outputs=1,
         on_click=on_click,
@@ -74,7 +73,7 @@ def button(circuit):
     return component
 
 
-button.add_property(BoolProperty(
+button.add_property(properties.BoolProperty(
     getter=utils.data_getter('toggle'),
     setter=utils.data_setter('toggle'),
     label='Toggle'))
@@ -86,7 +85,7 @@ def button_on_off_setter(component, values):
     component.outputs[0].value = component.data['off_on'][int(on)]
 
 
-button.add_property(MultiValueProperty(
+button.add_property(properties.MultiValueProperty(
     getter=utils.data_getter('off_on'),
     setter=button_on_off_setter,
     labels=['Off', 'On'],

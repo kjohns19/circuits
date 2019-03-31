@@ -1,4 +1,4 @@
-from component import Component
+import component as component_module
 import collections
 import threading
 
@@ -43,7 +43,8 @@ class Circuit:
 
             # Create components
             for component_data in data['components']:
-                component = Component.load(self, component_data)
+                component = component_module.Component.load(
+                    self, component_data)
                 component_data_by_id[component.id] = component_data
                 components_by_id[component.id] = component
 

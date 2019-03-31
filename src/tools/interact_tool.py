@@ -1,5 +1,5 @@
 from .tool import Tool
-from utils import MouseButton
+import utils
 
 
 class InteractTool(Tool):
@@ -7,7 +7,7 @@ class InteractTool(Tool):
         self._component = None
 
     def on_click(self, app, event, button, position, component):
-        if MouseButton.is_press(button):
+        if utils.MouseButton.is_press(button):
             self._component = component
         else:
             component = self._component

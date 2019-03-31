@@ -1,4 +1,4 @@
-from component import Component
+import component as component_module
 from component_registry import registry
 import utils
 
@@ -13,5 +13,5 @@ def make_display(circuit):
         position = component.display.center
         utils.draw_text(cr, text, position)
 
-    return Component(
+    return component_module.Component(
         circuit, num_inputs=1, num_outputs=0, on_draw=on_draw)

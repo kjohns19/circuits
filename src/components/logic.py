@@ -1,4 +1,4 @@
-from component import Component
+import component as component_module
 from component_registry import registry
 import properties
 import utils
@@ -32,7 +32,7 @@ def mux(circuit):
         else:
             component.outputs[0].value = component.inputs[select+1].value
 
-    component = Component(
+    component = component_module.Component(
         circuit, num_inputs=3, num_outputs=1,
         input_labels=['sel', 'in1', 'in2'],
         on_update=on_update)

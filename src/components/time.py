@@ -1,6 +1,6 @@
-from component import Component
+import component as component_module
 from component_registry import registry
-from properties import NumberProperty
+import properties
 import utils
 
 
@@ -18,7 +18,7 @@ def clock(circuit):
         )[int(value)]
         component.schedule_update(delay)
 
-    component = Component(
+    component = component_module.Component(
         circuit, num_inputs=0, num_outputs=1,
         output_labels=['clk'],
         on_update=on_update)
@@ -29,13 +29,13 @@ def clock(circuit):
     return component
 
 
-clock.add_property(NumberProperty(
+clock.add_property(properties.NumberProperty(
     getter=utils.data_getter('off_delay'),
     setter=utils.data_setter('off_delay'),
     min_value=1, max_value=100,
     label='Off delay'))
 
-clock.add_property(NumberProperty(
+clock.add_property(properties.NumberProperty(
     getter=utils.data_getter('on_delay'),
     setter=utils.data_setter('on_delay'),
     min_value=1, max_value=100,
@@ -65,7 +65,7 @@ def delay(circuit):
                 # Not very efficient
                 del updates[0]
 
-    component = Component(
+    component = component_module.Component(
         circuit, num_inputs=1, num_outputs=1,
         on_update=on_update)
     component.data['delay'] = 1
@@ -73,7 +73,7 @@ def delay(circuit):
     return component
 
 
-delay.add_property(NumberProperty(
+delay.add_property(properties.NumberProperty(
     getter=utils.data_getter('delay'),
     setter=utils.data_setter('delay'),
     min_value=1, max_value=100,

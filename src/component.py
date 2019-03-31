@@ -1,4 +1,4 @@
-from component_display import ComponentDisplay
+import component_display
 import component_registry
 
 import collections
@@ -21,7 +21,7 @@ class Component:
         self._inputs = []
         self._outputs = []
 
-        self._display = ComponentDisplay(self)
+        self._display = component_display.ComponentDisplay(self)
 
         self.num_inputs = num_inputs
         self.num_outputs = num_outputs
