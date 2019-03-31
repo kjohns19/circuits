@@ -120,15 +120,20 @@ def _create_generic_multi_value_widget(title, callback,
             return False
         return True
 
+    def to_none(value):
+        return None
+
     types = {
         'String': str,
         'Number': to_number,
-        'Boolean': to_bool
+        'Boolean': to_bool,
+        'None': to_none
     }
     defaults = {
         'String': '',
         'Number': 0,
-        'Boolean': False
+        'Boolean': False,
+        'None': None
     }
     default_type = 'Number'
     default_row = [None, default_type, str(defaults[default_type])]
@@ -158,7 +163,9 @@ def _create_generic_multi_value_widget(title, callback,
 
     if initial_values is not None:
         for i, value in enumerate(initial_values):
-            if isinstance(value, str):
+            if value is None:
+                typestr = 'None'
+            elif isinstance(value, str):
                 typestr = 'String'
             elif isinstance(value, bool):  # Must be before number check
                 typestr = 'Boolean'
