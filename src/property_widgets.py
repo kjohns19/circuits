@@ -1,9 +1,11 @@
+import utils
+
 from gi.repository import Gtk
 
 
 def create_value_bool_widget(label, callback, initial_value=False):
     ''' Return a widget for setting a boolean '''
-    builder = Gtk.Builder.new_from_file('./data/one_value.glade')
+    builder = Gtk.Builder.new_from_file(utils.data_file('one_value.glade'))
     builder.get_object('bool_label').set_text(label)
     builder.get_object('bool_button').set_active(initial_value)
 
@@ -19,7 +21,7 @@ def create_value_int_widget(label, callback,
                             min_value=0, max_value=10,
                             initial_value=0):
     ''' Return a widget for setting an integer '''
-    builder = Gtk.Builder.new_from_file('./data/one_value.glade')
+    builder = Gtk.Builder.new_from_file(utils.data_file('one_value.glade'))
     builder.get_object('number_label').set_text(label)
     builder.get_object('number_button').set_value(initial_value)
     adjustment = builder.get_object('number_adjustment')
@@ -36,7 +38,7 @@ def create_value_int_widget(label, callback,
 
 def create_value_string_widget(label, callback, initial_value=''):
     ''' Return a widget for setting a boolean '''
-    builder = Gtk.Builder.new_from_file('./data/one_value.glade')
+    builder = Gtk.Builder.new_from_file(utils.data_file('one_value.glade'))
     builder.get_object('string_label').set_text(label)
     builder.get_object('string_entry').set_text(initial_value)
 
@@ -77,7 +79,7 @@ def _create_generic_multi_value_widget(title, callback,
                                        min_values, max_values,
                                        initial_values):
     assert min_values <= len(initial_values) <= max_values
-    builder = Gtk.Builder.new_from_file('./data/list_values.glade')
+    builder = Gtk.Builder.new_from_file(utils.data_file('list_values.glade'))
 
     builder.get_object('title').set_text(title)
 

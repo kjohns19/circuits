@@ -1,18 +1,19 @@
 from gi.repository import Gtk, Gdk
 
-import tools
 import component_registry
-import shapes
 import save_load
+import shapes
+import tools
+import utils
 
 import cairo
 import collections
-import threading
 import json
+import threading
 
 
 class Application:
-    def __init__(self, circuit, ui_config_file):
+    def __init__(self, circuit):
         self._tools = {
             'Create': tools.CreateTool(),
             'Edit': tools.EditTool(),
@@ -26,10 +27,11 @@ class Application:
         self._mouse_pos = (0, 0)
         self._grid_size = 20
         self._grid_surfaces = {
-            20: cairo.ImageSurface.create_from_png('./data/grid20.png')
+            20: cairo.ImageSurface.create_from_png(
+                utils.data_file('grid20.png'))
         }
 
-        builder = Gtk.Builder.new_from_file(ui_config_file)
+        builder = Gtk.Builder.new_from_file(utils.data_file('ui.glade'))
         builder.connect_signals(self)
         self._window = builder.get_object('main_window')
         self._draw_area = builder.get_object('draw_area')

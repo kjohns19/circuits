@@ -1,11 +1,12 @@
-from component_registry import registry
-from component import Component
+import component as component_module
+import component_registry
 import shapes
 
 import cairo
 import enum
 from gi.repository import Gtk
 import inspect
+import os
 
 
 class MouseButton(enum.IntEnum):
@@ -35,6 +36,12 @@ class TextVAlign(enum.Enum):
     TOP = 0
     MIDDLE = 1
     BOTTOM = 2
+
+
+def data_file(name):
+    data_dir = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..', 'data'))
+    return os.path.join(data_dir, name)
 
 
 def draw_text(cr, text, position, size=12, bold=False,
@@ -95,7 +102,7 @@ def create_nary_component(name, category, function, default_value=None):
     signature = inspect.signature(function)
     num_inputs = len(signature.parameters)
 
-    @registry.register(name, category)
+    @component_registry.registry.register(name, category)
     def creator(circuit):
         def on_update(component):
             operands = (input.value for input in component.inputs)
@@ -104,7 +111,7 @@ def create_nary_component(name, category, function, default_value=None):
             except Exception:
                 result = default_value
             component.outputs[0].value = result
-        component = Component(
+        component = component_module.Component(
             circuit, num_inputs=num_inputs, num_outputs=1, on_update=on_update)
         on_update(component)
         return component
