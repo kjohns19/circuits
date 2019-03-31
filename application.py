@@ -112,7 +112,7 @@ class Application:
         position = list(position)
         return shapes.Vector2((
             round_to_grid(position[0]),
-            round_to_grid(position[1])))
+            round_to_grid(position[1])-self._grid_size/2))
 
     def handler_exit(self, widget):
         Gtk.main_quit()

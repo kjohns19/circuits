@@ -23,7 +23,7 @@ class CreateTool(Tool):
             self._component = None
         if button == utils.MouseButton.LEFT:
             self._component = self._creator(app.circuit)
-            self._component.display.position = position
+            self._component.display.position = app.snap_position(position)
             app.repaint()
         elif button == utils.MouseButton.RIGHT and component:
             if component is self._component:

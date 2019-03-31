@@ -10,7 +10,7 @@ CATEGORY = 'Output'
 def make_display(circuit):
     def on_draw(component, app, cr):
         text = str(component.inputs[0].value)
-        position = component.display.position
+        position = component.display.center
         utils.draw_text(cr, text, position)
 
     return Component(

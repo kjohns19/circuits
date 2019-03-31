@@ -37,6 +37,14 @@ class ComponentDisplay:
         self._rect.position = value
 
     @property
+    def center(self):
+        return self._rect.center
+
+    @center.setter
+    def center(self, value):
+        self._rect.center = value
+
+    @property
     def bounds(self):
         return self._rect
 
@@ -81,7 +89,7 @@ class ComponentDisplay:
 
     def node_pos(self, input, idx):
         offset = WIDTH/2 * (-1 if input else 1)
-        center = self._rect.position + (offset, 0)
+        center = self._rect.center + (offset, 0)
         max_nodes = max(
             self._component.num_inputs,
             self._component.num_outputs)
@@ -118,7 +126,7 @@ class ComponentDisplay:
 
         name = self._component.name
         if name:
-            position = self.position - (0, self._rect.height/2+8)
+            position = self.center - (0, self._rect.height/2+8)
             utils.draw_text(cr, name, position, bold=True)
 
         self._component.on_draw(app, cr)

@@ -78,26 +78,34 @@ class Rectangle:
         self._position = Vector2(value)
 
     @property
+    def center(self):
+        return self._position + self._size/2
+
+    @center.setter
+    def center(self, value):
+        self._position = value - self._size/2
+
+    @property
     def top_left(self):
-        return self._position - self._size/2
+        return self._position
 
     @property
     def top_right(self):
-        return self._position + (self._size.x/2, -self._size.y/2)
+        return self._position + (self._size.x, 0)
 
     @property
     def bottom_left(self):
-        return self._position + (-self._size.x/2, self._size.y/2)
+        return self._position + (0, self._size.y)
 
     @property
     def bottom_right(self):
-        return self._position + self._size/2
+        return self._position + self._size
 
     def contains(self, point):
         point = Vector2(point)
-        xmin = self._position.x - self._size.x/2
-        xmax = self._position.x + self._size.x/2
+        xmin = self._position.x
+        xmax = self._position.x + self._size.x
 
-        ymin = self._position.y - self._size.y/2
-        ymax = self._position.y + self._size.y/2
+        ymin = self._position.y
+        ymax = self._position.y + self._size.y
         return xmin < point.x < xmax and ymin < point.y < ymax
