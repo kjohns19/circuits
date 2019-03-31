@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.6
-
 import gi
 gi.require_version('Gtk', '3.0')
 

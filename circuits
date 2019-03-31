@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+dir=$(dirname "$0")
+cd "$dir/src"
+python3.6 main.py "$@"
