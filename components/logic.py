@@ -24,7 +24,7 @@ for name, op in _operators:
 def mux(circuit):
     def on_update(component):
         try:
-            select = int(component.inputs[0].value)
+            select = int(component.inputs[0].value or 0)
         except ValueError:
             select = None
         if select is None or select >= component.num_inputs-1:
@@ -43,7 +43,6 @@ def _mux_set_labels(component, value):
     component.input_labels = (
         ['sel'] + ['in{}'.format(i+1) for i in range(value-1)]
     )
-    print([component, value])
 
 
 mux.add_property(properties.NumInputsProperty(

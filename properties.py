@@ -61,9 +61,13 @@ def _create_num_inout_property(name, attr_name, label):
         def __init__(self, callback=None,
                      min_value=0, max_value=10,
                      label=label):
+            def setter(component, value):
+                utils.attr_setter(attr_name)(component, value)
+                if callback:
+                    callback(component, value)
             super().__init__(
                 getter=utils.attr_getter(attr_name),
-                setter=utils.attr_setter(attr_name),
+                setter=setter,
                 min_value=min_value, max_value=max_value, label=label)
             self._callback = callback
 
