@@ -126,7 +126,7 @@
                 <property name="tooltip_text" translatable="yes">Edit mode</property>
                 <property name="label" translatable="yes">Edit</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-edit</property>
+                <property name="stock_id">gtk-properties</property>
                 <property name="group">tool_button_mode_create</property>
                 <signal name="toggled" handler="handler_toggle_mode" swapped="no"/>
               </object>
@@ -142,7 +142,7 @@
                 <property name="tooltip_text" translatable="yes">Wire mode</property>
                 <property name="label" translatable="yes">Wire</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-network</property>
+                <property name="stock_id">gtk-edit</property>
                 <property name="group">tool_button_mode_create</property>
                 <signal name="toggled" handler="handler_toggle_mode" swapped="no"/>
               </object>
