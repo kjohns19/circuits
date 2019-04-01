@@ -1,5 +1,4 @@
 from .tool import Tool
-import utils
 
 
 class EditTool(Tool):
@@ -7,13 +6,16 @@ class EditTool(Tool):
         self._move_component = None
         self._offset = None
 
-    def on_click(self, app, event, button, position, component):
-        if button == utils.MouseButton.LEFT and component is not None:
+    def on_left_click(self, app, event, position, component):
+        if component is not None:
             self._move_component = component
             self._offset = component.display.position - position
-        elif button == utils.MouseButton.RELEASE_LEFT:
-            self._move_component = None
-        elif button == utils.MouseButton.RIGHT and component is not None:
+
+    def on_left_release(self, app, event, position, component):
+        self._move_component = None
+
+    def on_right_click(self, app, event, position, component):
+        if component is not None:
             app.show_component_properties(component)
 
     def on_move(self, app, event, position):

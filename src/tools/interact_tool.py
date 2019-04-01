@@ -6,7 +6,23 @@ class InteractTool(Tool):
     def __init__(self):
         self._component = None
 
-    def on_click(self, app, event, button, position, component):
+    def on_left_click(self, app, event, position, component):
+        self._do_click(
+            app, event, utils.MouseButton.LEFT, position, component)
+
+    def on_left_release(self, app, event, position, component):
+        self._do_click(
+            app, event, utils.MouseButton.RELEASE_LEFT, position, component)
+
+    def on_right_click(self, app, event, position, component):
+        self._do_click(
+            app, event, utils.MouseButton.RIGHT, position, component)
+
+    def on_right_release(self, app, event, position, component):
+        self._do_click(
+            app, event, utils.MouseButton.RELEASE_RIGHT, position, component)
+
+    def _do_click(self, app, event, button, position, component):
         if utils.MouseButton.is_press(button):
             self._component = component
         else:

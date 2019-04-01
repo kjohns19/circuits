@@ -6,13 +6,7 @@ class WireTool(Tool):
     def __init__(self):
         self._input = None
 
-    def on_click(self, app, event, button, position, component):
-        if button == utils.MouseButton.RIGHT:
-            self.right_click(app, event, button, position, component)
-        elif button == utils.MouseButton.LEFT:
-            self.left_click(app, event, button, position, component)
-
-    def right_click(self, app, event, button, position, component):
+    def on_right_click(self, app, event, position, component):
         if self._input is None and component is not None:
             def callback(idx, selection):
                 component.inputs[idx].disconnect()
@@ -25,7 +19,7 @@ class WireTool(Tool):
             self._input = None
             app.repaint()
 
-    def left_click(self, app, event, button, position, component):
+    def on_left_click(self, app, event, position, component):
         if component is None:
             return
 
