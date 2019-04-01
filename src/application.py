@@ -56,6 +56,10 @@ class Application:
         return self._circuit
 
     @property
+    def grid_size(self):
+        return self._grid_size
+
+    @property
     def position(self):
         return self._position
 
@@ -129,8 +133,7 @@ class Application:
 
         position = list(position)
         return shapes.Vector2((
-            round_to_grid(position[0]),
-            round_to_grid(position[1])-self._grid_size/2))
+            round_to_grid(position[0]), round_to_grid(position[1])))
 
     def handler_exit(self, widget):
         Gtk.main_quit()

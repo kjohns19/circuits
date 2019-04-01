@@ -23,5 +23,5 @@ class EditTool(Tool):
         super().on_move(app, event, position)
         if self._move_component:
             self._move_component.display.position = app.snap_position(
-                self._offset + position)
+                self._offset + position) - (0, app.grid_size/2)
             app.repaint()

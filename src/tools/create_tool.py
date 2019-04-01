@@ -19,7 +19,8 @@ class CreateTool(Tool):
     def on_left_click(self, app, event, position, component):
         if self._creator is not None:
             self._component = self._creator(app.circuit)
-            self._component.display.position = app.snap_position(position)
+            self._component.display.position = (
+                app.snap_position(position) - (0, app.grid_size/2))
             app.repaint()
 
     def on_left_release(self, app, event, position, component):
@@ -45,5 +46,6 @@ class CreateTool(Tool):
     def on_move(self, app, event, position):
         super().on_move(app, event, position)
         if self._component:
-            self._component.display.position = app.snap_position(position)
+            self._component.display.position = (
+                app.snap_position(position) - (0, app.grid_size/2))
             app.repaint()
