@@ -4,6 +4,7 @@ import utils
 
 class WireTool(Tool):
     def __init__(self):
+        super().__init__()
         self._input = None
 
     def on_right_click(self, app, event, position, component):
@@ -45,6 +46,7 @@ class WireTool(Tool):
         utils.show_popup(title, options, event, callback)
 
     def on_move(self, app, event, position):
+        super().on_move(app, event, position)
         if self._input is not None:
             app.repaint()
 

@@ -4,6 +4,7 @@ import utils
 
 class CreateTool(Tool):
     def __init__(self, creator=None):
+        super().__init__()
         self._creator = creator
         self._component = None
 
@@ -42,6 +43,7 @@ class CreateTool(Tool):
         utils.show_popup('Delete?', ['Yes', 'No'], event, callback)
 
     def on_move(self, app, event, position):
+        super().on_move(app, event, position)
         if self._component:
             self._component.display.position = app.snap_position(position)
             app.repaint()

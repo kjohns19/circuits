@@ -4,6 +4,7 @@ import utils
 
 class InteractTool(Tool):
     def __init__(self):
+        super().__init__()
         self._component = None
 
     def on_left_click(self, app, event, position, component):

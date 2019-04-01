@@ -3,6 +3,7 @@ from .tool import Tool
 
 class EditTool(Tool):
     def __init__(self):
+        super().__init__()
         self._move_component = None
         self._offset = None
 
@@ -19,6 +20,7 @@ class EditTool(Tool):
             app.show_component_properties(component)
 
     def on_move(self, app, event, position):
+        super().on_move(app, event, position)
         if self._move_component:
             self._move_component.display.position = app.snap_position(
                 self._offset + position)

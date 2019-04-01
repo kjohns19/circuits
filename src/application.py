@@ -24,6 +24,7 @@ class Application:
         self._create_tool = self._tools['Create']
         self._tool = self._create_tool
 
+        self._position = (0, 0)
         self._mouse_pos = (0, 0)
         self._grid_size = 20
         self._grid_surfaces = {
@@ -53,6 +54,21 @@ class Application:
     @property
     def circuit(self):
         return self._circuit
+
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self, value):
+        self._position = (value[0], value[1])
+        self.repaint()
+
+    def screen_position(self, position):
+        return (
+            position[0] - self._position[0],
+            position[1] - self._position[1]
+        )
 
     def loop(self):
         exit_event = threading.Event()
@@ -182,6 +198,7 @@ class Application:
                 self._property_box.add(widget)
 
     def handler_draw_area_draw(self, widget, cr):
+        cr.translate(-self._position[0], -self._position[1])
         cr.set_source_surface(self._grid_surfaces[self._grid_size], 0, 0)
         cr.get_source().set_extend(cairo.EXTEND_REPEAT)
         cr.paint()
@@ -193,7 +210,7 @@ class Application:
             self._tool.draw(self, cr, self._mouse_pos)
 
     def handler_draw_area_mouse_button(self, widget, event):
-        position = (event.x, event.y)
+        position = (event.x + self._position[0], event.y + self._position[1])
         component = self._circuit.component_at_position(position)
 
         button = event.button
@@ -204,5 +221,8 @@ class Application:
         return True
 
     def handler_draw_area_mouse_move(self, widget, event):
-        self._mouse_pos = (event.x, event.y)
+        self._mouse_pos = (
+            event.x + self._position[0],
+            event.y + self._position[1]
+        )
         self._tool.on_move(self, event, self._mouse_pos)
