@@ -58,7 +58,7 @@ class Circuit:
 
             self._updates = collections.defaultdict(set, (
                 (delay, set(components_by_id[id] for id in ids))
-                for delay, ids in data['updates']
+                for delay, ids in data['updates'].items()
             ))
 
     def remove_component(self, component):
