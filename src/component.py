@@ -1,5 +1,6 @@
 import component_display
 import component_registry
+import shapes
 
 import collections
 import functools
@@ -250,6 +251,7 @@ class _Input:
         self._new_value = None
         self._old_value = None
         self._connected_output = None
+        self._wire_positions = None
 
     @property
     def component(self):
@@ -285,6 +287,10 @@ class _Input:
     def label(self):
         return self._component.input_label(self._index)
 
+    @property
+    def wire_positions(self):
+        return self._wire_positions or []
+
     def is_connected(self):
         return self._connected_output is not None
 
@@ -302,7 +308,8 @@ class _Input:
             ('value', self.value),
             ('new_value', self.new_value),
             ('old_value', self.old_value),
-            ('connection', connected_data)
+            ('connection', connected_data),
+            ('wire_positions', [tuple(pos) for pos in self.wire_positions])
         ))
 
     def load(self, data, components_by_id):
@@ -315,17 +322,22 @@ class _Input:
         self._value = data['value']
         self._new_value = data['new_value']
         self._old_value = data['old_value']
+        self._wire_positions = [
+            shapes.Vector2(pos) for pos in data['wire_positions']
+        ]
 
     def update(self):
         self._old_value, self._value = self._value, self._new_value
 
-    def connect(self, output):
+    def connect(self, output, wire_positions=None):
         if self._connected_output is output:
+            self._wire_positions = wire_positions
             return
         self.disconnect()
         self._connected_output = output
+        self._wire_positions = wire_positions
         self.value = output.value
-        output.connect(self)
+        output.connect(self, wire_positions)
 
     def disconnect(self):
         output = self._connected_output
@@ -333,6 +345,7 @@ class _Input:
             return
         self.value = None
         self._connected_output = None
+        self._wire_positions = None
         output.disconnect(self)
 
     def __str__(self):
@@ -377,11 +390,11 @@ class _Output:
             ('value', self.value)
         ))
 
-    def connect(self, input):
+    def connect(self, input, wire_positions=None):
         if input in self._connected_inputs:
             return
         self._connected_inputs.add(input)
-        input.connect(self)
+        input.connect(self, wire_positions)
 
     def disconnect(self, input):
         if input not in self._connected_inputs:

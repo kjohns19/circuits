@@ -6,6 +6,7 @@ import cairo
 import enum
 from gi.repository import Gtk
 import inspect
+import itertools
 import os
 
 
@@ -77,6 +78,15 @@ def draw_line(cr, pos1, pos2, color):
     cr.line_to(*pos2)
     cr.set_line_width(2)
     cr.stroke()
+
+
+def draw_lines(cr, positions, color):
+    def _pairwise(iterable):
+        it1, it2 = itertools.tee(iterable)
+        next(it2, None)
+        return zip(it1, it2)
+    for pos1, pos2 in _pairwise(positions):
+        draw_line(cr, pos1, pos2, color)
 
 
 def show_popup(title, options, event, callback):

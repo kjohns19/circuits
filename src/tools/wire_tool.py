@@ -6,6 +6,7 @@ class WireTool(Tool):
     def __init__(self):
         super().__init__()
         self._input = None
+        self._wire_positions = []
 
     def on_right_click(self, app, event, position, component):
         if self._input is None and component is not None:
@@ -17,11 +18,17 @@ class WireTool(Tool):
             options = [input.label for input in component.inputs]
             utils.show_popup(title, options, event, callback)
         else:
-            self._input = None
+            if self._wire_positions:
+                self._wire_positions.pop()
+            else:
+                self._input = None
             app.repaint()
 
     def on_left_click(self, app, event, position, component):
         if component is None:
+            position = app.snap_position(position)
+            self._wire_positions.append(position)
+            app.repaint()
             return
 
         def input_callback(idx, selection):
@@ -29,8 +36,9 @@ class WireTool(Tool):
 
         def output_callback(idx, selection):
             output = component.outputs[idx]
-            self._input.connect(output)
+            self._input.connect(output, self._wire_positions)
             self._input = None
+            self._wire_positions = []
             app.repaint()
 
         if self._input is None:
@@ -55,7 +63,9 @@ class WireTool(Tool):
             return
 
         display = self._input.component.display
-
         node_pos = display.node_pos(input=True, idx=self._input.index)
+        end_pos = app.snap_position(mouse_pos)
+
+        positions = [node_pos] + self._wire_positions + [end_pos]
         color = (0, 0, 0)
-        utils.draw_line(cr, mouse_pos, node_pos, color)
+        utils.draw_lines(cr, positions, color)

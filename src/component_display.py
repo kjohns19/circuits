@@ -144,9 +144,10 @@ class ComponentDisplay:
 
             input_pos = self.node_pos(True, input_idx)
             output_pos = component.display.node_pos(False, output_idx)
+            positions = [input_pos] + input.wire_positions + [output_pos]
 
             color = _wire_color(input.new_value)
-            utils.draw_line(cr, input_pos, output_pos, color)
+            utils.draw_lines(cr, positions, color)
 
 
 def _wire_color(value):
