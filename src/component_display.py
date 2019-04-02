@@ -117,9 +117,9 @@ class ComponentDisplay:
         node_data = [
             # Nodes, input, offset, text align
             (self._component.inputs, True,
-             (NODE_RADIUS+1, 0), utils.TextHAlign.LEFT),
+             (NODE_RADIUS+2, 0), utils.TextHAlign.LEFT),
             (self._component.outputs, False,
-             (-NODE_RADIUS-1, 0), utils.TextHAlign.RIGHT),
+             (-NODE_RADIUS-2, 0), utils.TextHAlign.RIGHT),
         ]
 
         for nodes, is_input, offset, text_align in node_data:
@@ -130,7 +130,7 @@ class ComponentDisplay:
                 utils.draw_circle(cr, position, NODE_RADIUS, fill_color, BLACK)
                 utils.draw_text(
                     cr, node.label, position + offset, size=10,
-                    h_align=text_align)
+                    bold=True, h_align=text_align)
 
         name = self._component.name
         if name:
@@ -169,13 +169,15 @@ class ComponentDisplay:
             position = self.node_pos(True, i)
             utils.draw_text(
                 cr, str(node.value), position - (NODE_RADIUS+1, 0), size=10,
-                h_align=utils.TextHAlign.RIGHT, background_color=color)
+                h_align=utils.TextHAlign.RIGHT,
+                bold=True, background_color=color)
 
         for i, node in enumerate(self._component.outputs):
             position = self.node_pos(False, i)
             utils.draw_text(
                 cr, str(node.value), position + (NODE_RADIUS+1, 0), size=10,
-                h_align=utils.TextHAlign.LEFT, background_color=color)
+                h_align=utils.TextHAlign.LEFT,
+                bold=True, background_color=color)
 
 
 def _wire_color(value):

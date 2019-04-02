@@ -51,7 +51,7 @@ def draw_text(cr, text, position, size=12, bold=False,
               background_color=None):
     weight = cairo.FONT_WEIGHT_BOLD if bold else cairo.FONT_WEIGHT_NORMAL
     cr.select_font_face(
-        'FreeSans',
+        'FreeMono',
         cairo.FONT_SLANT_NORMAL,
         weight)
     cr.set_font_size(size)
