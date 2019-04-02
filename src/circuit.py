@@ -30,8 +30,7 @@ class Circuit:
             ))
             return collections.OrderedDict((
                 ('components', component_data),
-                ('updates', update_data),
-                ('time', self.time)
+                ('updates', update_data)
             ))
 
     def load(self, data):
@@ -57,7 +56,7 @@ class Circuit:
                 component.load_inputs(component_data, components_by_id)
 
             self._updates = collections.defaultdict(set, (
-                (delay, set(components_by_id[id] for id in ids))
+                (int(delay), set(components_by_id[id] for id in ids))
                 for delay, ids in data['updates'].items()
             ))
 
