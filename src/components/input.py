@@ -12,6 +12,11 @@ CATEGORY = 'Input'
 def constant(circuit):
     component = component_module.Component(
         circuit, num_inputs=0, num_outputs=2)
+
+    def output_label(idx):
+        return str(component.outputs[idx].value)
+    component.output_label = output_label
+
     component.outputs[0].value = 0
     component.outputs[1].value = 1
     return component
