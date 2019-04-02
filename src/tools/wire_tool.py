@@ -70,3 +70,5 @@ class WireTool(Tool):
         positions = [node_pos] + self._wire_positions + [end_pos]
         color = (0, 0, 0)
         utils.draw_lines(cr, positions, color)
+        for pos in self._wire_positions:
+            utils.draw_circle(cr, pos, 2, color, color)

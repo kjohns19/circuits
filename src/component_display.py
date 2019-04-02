@@ -147,6 +147,8 @@ class ComponentDisplay:
 
             color = _wire_color(input.new_value)
             utils.draw_lines(cr, positions, color)
+            for pos in input.wire_positions:
+                utils.draw_circle(cr, pos, 2, color, color)
 
 
 def _wire_color(value):
