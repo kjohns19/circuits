@@ -26,6 +26,7 @@ class ComponentDisplay:
         self.recalculate_size()
         self._outline_color = BLACK
         self._fill_color = WHITE
+        self._debug = False
 
     @property
     def position(self):
@@ -62,6 +63,14 @@ class ComponentDisplay:
     @fill_color.setter
     def fill_color(self, color):
         self._fill_color = color
+
+    @property
+    def debug(self):
+        return self._debug
+
+    @debug.setter
+    def debug(self, value):
+        self._debug = value
 
     def get_save_data(self):
         return collections.OrderedDict((
@@ -149,6 +158,24 @@ class ComponentDisplay:
             utils.draw_lines(cr, positions, color)
             for pos in input.wire_positions:
                 utils.draw_circle(cr, pos, 2, color, color)
+
+    def draw_debug_values(self, app, cr):
+        if not self._debug:
+            return
+
+        color = GRAY
+
+        for i, node in enumerate(self._component.inputs):
+            position = self.node_pos(True, i)
+            utils.draw_text(
+                cr, str(node.value), position - (NODE_RADIUS+1, 0), size=10,
+                h_align=utils.TextHAlign.RIGHT, background_color=color)
+
+        for i, node in enumerate(self._component.outputs):
+            position = self.node_pos(False, i)
+            utils.draw_text(
+                cr, str(node.value), position + (NODE_RADIUS+1, 0), size=10,
+                h_align=utils.TextHAlign.LEFT, background_color=color)
 
 
 def _wire_color(value):

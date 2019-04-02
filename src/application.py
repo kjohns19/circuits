@@ -18,7 +18,8 @@ class Application:
             'Create': tools.CreateTool(),
             'Edit': tools.EditTool(),
             'Interact': tools.InteractTool(),
-            'Wire': tools.WireTool()
+            'Wire': tools.WireTool(),
+            'Debug': tools.DebugTool()
         }
 
         self._create_tool = self._tools['Create']
@@ -209,6 +210,8 @@ class Application:
             component.display.draw(self, cr)
         for component in self._circuit.components:
             component.display.draw_input_wires(self, cr)
+        for component in self._circuit.components:
+            component.display.draw_debug_values(self, cr)
         if self._tool:
             self._tool.draw(self, cr, self._mouse_pos)
 

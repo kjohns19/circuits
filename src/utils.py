@@ -47,9 +47,9 @@ def data_file(name):
 
 
 def draw_text(cr, text, position, size=12, bold=False,
-              h_align=TextHAlign.CENTER, v_align=TextVAlign.MIDDLE):
+              h_align=TextHAlign.CENTER, v_align=TextVAlign.MIDDLE,
+              background_color=None):
     weight = cairo.FONT_WEIGHT_BOLD if bold else cairo.FONT_WEIGHT_NORMAL
-    cr.set_source_rgb(0, 0, 0)
     cr.select_font_face(
         'FreeSans',
         cairo.FONT_SLANT_NORMAL,
@@ -69,7 +69,15 @@ def draw_text(cr, text, position, size=12, bold=False,
     elif v_align == TextVAlign.BOTTOM:
         offset[1] = h
 
-    cr.move_to(*(shapes.Vector2(position) + offset))
+    corner = shapes.Vector2(position) + offset
+
+    if background_color is not None:
+        cr.set_source_rgb(*background_color)
+        cr.rectangle(*(corner - (2, h/2+6)), w+4, h+4)
+        cr.fill()
+
+    cr.move_to(*corner)
+    cr.set_source_rgb(0, 0, 0)
     cr.show_text(text)
 
 

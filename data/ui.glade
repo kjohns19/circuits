@@ -168,6 +168,22 @@
               </packing>
             </child>
             <child>
+              <object class="GtkRadioToolButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Debug Mode</property>
+                <property name="label" translatable="yes">Debug</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-info</property>
+                <property name="group">tool_button_mode_create</property>
+                <signal name="toggled" handler="handler_toggle_mode" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkSeparatorToolItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
