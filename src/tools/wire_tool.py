@@ -26,9 +26,10 @@ class WireTool(Tool):
 
     def on_left_click(self, app, event, position, component):
         if component is None:
-            position = app.snap_position(position)
-            self._wire_positions.append(position)
-            app.repaint()
+            if self._input is not None:
+                position = app.snap_position(position)
+                self._wire_positions.append(position)
+                app.repaint()
             return
 
         def input_callback(idx, selection):
