@@ -2,7 +2,6 @@ import shapes
 import utils
 
 import collections
-import math
 
 
 WIDTH = 80
@@ -106,23 +105,23 @@ class ComponentDisplay:
         cr.set_line_width(2)
         cr.stroke()
 
-        for i, node in enumerate(self._component.inputs):
-            position = self.node_pos(True, i)
-            connected = node.is_connected()
-            fill_color = _node_color(node.new_value, connected)
-            _draw_node(cr, position, fill_color)
-            utils.draw_text(
-                cr, node.label, position + (NODE_RADIUS+1, 0), size=10,
-                h_align=utils.TextHAlign.LEFT)
+        node_data = [
+            # Nodes, input, offset, text align
+            (self._component.inputs, True,
+             (NODE_RADIUS+1, 0), utils.TextHAlign.LEFT),
+            (self._component.outputs, False,
+             (-NODE_RADIUS-1, 0), utils.TextHAlign.RIGHT),
+        ]
 
-        for i, node in enumerate(self._component.outputs):
-            position = self.node_pos(False, i)
-            connected = node.is_connected()
-            fill_color = _node_color(node.value, connected)
-            _draw_node(cr, position, fill_color)
-            utils.draw_text(
-                cr, node.label, position - (NODE_RADIUS+1, 0), size=10,
-                h_align=utils.TextHAlign.RIGHT)
+        for nodes, is_input, offset, text_align in node_data:
+            for i, node in enumerate(nodes):
+                position = self.node_pos(is_input, i)
+                connected = node.is_connected()
+                fill_color = _node_color(node.value, connected)
+                utils.draw_circle(cr, position, NODE_RADIUS, fill_color, BLACK)
+                utils.draw_text(
+                    cr, node.label, position + offset, size=10,
+                    h_align=text_align)
 
         name = self._component.name
         if name:
@@ -162,15 +161,3 @@ def _node_color(value, connected):
         return GREEN if value else RED
     else:
         return BLACK if connected else WHITE
-
-
-def _draw_node(cr, position, fill_color):
-    cr.new_path()
-    cr.arc(*position, NODE_RADIUS, 0, math.pi*2)
-
-    cr.set_source_rgb(*fill_color)
-    cr.fill_preserve()
-
-    cr.set_source_rgb(*BLACK)
-    cr.set_line_width(2)
-    cr.stroke()

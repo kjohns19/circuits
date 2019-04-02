@@ -7,6 +7,7 @@ import enum
 from gi.repository import Gtk
 import inspect
 import itertools
+import math
 import os
 
 
@@ -87,6 +88,18 @@ def draw_lines(cr, positions, color):
         return zip(it1, it2)
     for pos1, pos2 in _pairwise(positions):
         draw_line(cr, pos1, pos2, color)
+
+
+def draw_circle(cr, position, radius, fill_color, outline_color):
+    cr.new_path()
+    cr.arc(*position, radius, 0, math.pi*2)
+
+    cr.set_source_rgb(*fill_color)
+    cr.fill_preserve()
+
+    cr.set_source_rgb(*outline_color)
+    cr.set_line_width(2)
+    cr.stroke()
 
 
 def show_popup(title, options, event, callback):
