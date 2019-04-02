@@ -40,9 +40,9 @@ memory.add_property(properties.BoolProperty(
 def _ram_address(component):
     address = component.inputs[1].value
     if not isinstance(address, int):
-        return None
+        return 0
     if address < 0 or address >= len(component.data['memory']):
-        return None
+        return 0
     return address
 
 
