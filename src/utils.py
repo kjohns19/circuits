@@ -1,5 +1,6 @@
 import component as component_module
 import component_registry
+import properties
 import shapes
 
 import cairo
@@ -129,9 +130,13 @@ def show_popup(title, options, event, callback):
     menu.popup(None, None, None, None, event.button, event.time)
 
 
-def create_nary_component(name, category, function, default_value=None):
-    signature = inspect.signature(function)
-    num_inputs = len(signature.parameters)
+def create_nary_component(name, category, function,
+                          min_inputs=None, max_inputs=None,
+                          default_value=None):
+    if min_inputs is None:
+        signature = inspect.signature(function)
+        min_inputs = len(signature.parameters)
+    max_inputs = max_inputs or min_inputs
 
     @component_registry.registry.register(name, category)
     def creator(circuit):
@@ -143,9 +148,13 @@ def create_nary_component(name, category, function, default_value=None):
                 result = default_value
             component.outputs[0].value = result
         component = component_module.Component(
-            circuit, num_inputs=num_inputs, num_outputs=1, on_update=on_update)
+            circuit, num_inputs=min_inputs, num_outputs=1, on_update=on_update)
         on_update(component)
         return component
+
+    if min_inputs != max_inputs:
+        creator.add_property(properties.NumInputsProperty(
+            min_value=min_inputs, max_value=max_inputs))
 
 
 def data_getter(name):

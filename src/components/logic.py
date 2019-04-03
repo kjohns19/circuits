@@ -7,17 +7,18 @@ import utils
 CATEGORY = 'Logic'
 
 _operators = [
-    ('And',  lambda a, b: bool(a and b)),
-    ('Or',   lambda a, b: bool(a or b)),
-    ('Nand', lambda a, b: not (a and b)),
-    ('Nor',  lambda a, b: not (a or b)),
-    ('Xor',  lambda a, b: bool(a) != bool(b)),
-    ('Xnor', lambda a, b: bool(a) == bool(b)),
-    ('Not',  lambda a: not a)
+    ('And',  (lambda *args: all(args)),         2, 10),
+    ('Or',   (lambda *args: any(args)),         2, 10),
+    ('Nand', (lambda *args: not all(args)),     2, 10),
+    ('Nor',  (lambda *args: not any(args)),     2, 10),
+    ('Xor',  (lambda a, b: bool(a) != bool(b)), 2,  2),
+    ('Xnor', (lambda a, b: bool(a) == bool(b)), 2,  2),
+    ('Not',  (lambda a: not a),                 1,  1)
 ]
 
-for name, op in _operators:
-    utils.create_nary_component(name, CATEGORY, op)
+for name, op, min_inputs, max_inputs in _operators:
+    utils.create_nary_component(
+        name, CATEGORY, op, min_inputs=min_inputs, max_inputs=max_inputs)
 
 
 @registry.register('Mux', CATEGORY)
