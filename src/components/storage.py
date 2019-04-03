@@ -37,6 +37,17 @@ memory.add_property(properties.BoolProperty(
     label='Edge Triggered'))
 
 
+def _memory_value_setter(component, values):
+    component.outputs[0].value = values[0]
+
+
+memory.add_property(properties.MultiValueProperty(
+    getter=lambda component: [component.outputs[0].value],
+    setter=_memory_value_setter,
+    labels=['Value'],
+    title='Value'))
+
+
 def _ram_address(component):
     address = component.inputs[1].value
     if not isinstance(address, int):
