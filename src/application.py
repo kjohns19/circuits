@@ -141,6 +141,7 @@ class Application:
 
     def handler_new(self, widget):
         self._circuit.clear()
+        self._position = (0, 0)
         self.repaint()
 
     def handler_save(self, widget):
@@ -148,12 +149,13 @@ class Application:
         if filename is None:
             return
 
-        data = json.dumps(
-            self._circuit.get_save_data(),
-            indent=4)
+        data = {
+            'position': self._position,
+            'circuit': self._circuit.get_save_data()
+        }
 
         with open(filename, 'w') as f:
-            print(data, file=f)
+            json.dump(data, f, indent=4)
 
     def handler_load(self, widget):
         filename = save_load.show_load_dialog(self._window)
@@ -163,7 +165,9 @@ class Application:
         with open(filename, 'r') as f:
             data = json.load(f)
 
-        self._circuit.load(data)
+        self._position = tuple(data['position'])
+
+        self._circuit.load(data['circuit'])
 
     def handler_play(self, widget):
         active = widget.get_active()
