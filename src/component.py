@@ -291,6 +291,13 @@ class _Input:
     def wire_positions(self):
         return self._wire_positions or []
 
+    def move(self, amount):
+        if self._wire_positions:
+            self._wire_positions = [
+                pos + amount
+                for pos in self._wire_positions
+            ]
+
     def is_connected(self):
         return self._connected_output is not None
 
