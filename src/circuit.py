@@ -62,6 +62,9 @@ class Circuit:
 
     def remove_component(self, component):
         self._components.remove(component)
+        with self._update_lock:
+            for updates in self._updates.values():
+                updates.remove(component)
 
     def clear(self):
         self._components = set()
