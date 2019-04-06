@@ -70,7 +70,7 @@ def draw_text(cr, text, position, size=12, bold=False,
 
     if v_align == TextVAlign.MIDDLE:
         offset[1] = h/2
-    elif v_align == TextVAlign.BOTTOM:
+    elif v_align == TextVAlign.TOP:
         offset[1] = h
 
     corner = shapes.Vector2(position) + offset
@@ -112,6 +112,20 @@ def draw_circle(cr, position, radius, fill_color, outline_color):
     cr.set_source_rgb(*outline_color)
     cr.set_line_width(2)
     cr.stroke()
+
+
+def draw_rectangle(cr, rect, fill_color, outline_color=None):
+    cr.rectangle(*rect.top_left, *rect.size)
+
+    cr.set_source_rgb(*fill_color)
+
+    if outline_color:
+        cr.fill_preserve()
+        cr.set_source_rgb(*outline_color)
+        cr.set_line_width(2)
+        cr.stroke()
+    else:
+        cr.fill()
 
 
 def show_popup(title, options, event, callback):

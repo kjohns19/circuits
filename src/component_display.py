@@ -23,6 +23,8 @@ class ComponentDisplay:
     def __init__(self, component):
         self._component = component
         self._rect = None
+        self._custom_width = None
+        self._custom_height = None
         self.recalculate_size()
         self._outline_color = BLACK
         self._fill_color = WHITE
@@ -46,6 +48,28 @@ class ComponentDisplay:
     @center.setter
     def center(self, value):
         self._rect.center = value
+
+    @property
+    def rect(self):
+        return self._rect
+
+    @property
+    def width(self):
+        return self._rect.width
+
+    @width.setter
+    def width(self, value):
+        self._rect.width = value
+        self._custom_width = value
+
+    @property
+    def height(self):
+        return self._rect.height
+
+    @height.setter
+    def height(self, value):
+        self._rect.height = value
+        self._custom_height = value
 
     @property
     def bounds(self):
@@ -94,28 +118,18 @@ class ComponentDisplay:
         max_nodes = max(
             self._component.num_inputs,
             self._component.num_outputs)
-        height = NODE_SEPARATION * max_nodes  # + NODE_SEPARATION//2
+        width = self._custom_width or WIDTH
+        height = self._custom_height or (NODE_SEPARATION * max_nodes)
         pos = (0, 0) if self._rect is None else self._rect.position
-        self._rect = shapes.Rectangle(size=(WIDTH, height), position=pos)
+        self._rect = shapes.Rectangle(size=(width, height), position=pos)
 
     def node_pos(self, input, idx):
-        offset = WIDTH/2 * (-1 if input else 1)
-        center = self._rect.center + (offset, 0)
-        max_nodes = max(
-            self._component.num_inputs,
-            self._component.num_outputs)
-        start_y = center.y - (max_nodes-1)*NODE_SEPARATION//2
-        return shapes.Vector2((center.x, start_y + NODE_SEPARATION*idx))
+        start = self._rect.top_left if input else self._rect.top_right
+        return start + (0, NODE_SEPARATION//2) + (0, NODE_SEPARATION*idx)
 
     def draw(self, app, cr):
-        cr.rectangle(*self._rect.top_left, *self._rect.size)
-
-        cr.set_source_rgb(*self._fill_color)
-        cr.fill_preserve()
-
-        cr.set_source_rgb(*self._outline_color)
-        cr.set_line_width(2)
-        cr.stroke()
+        utils.draw_rectangle(
+            cr, self._rect, self._fill_color, self._outline_color)
 
         node_data = [
             # Nodes, input, offset, text align
