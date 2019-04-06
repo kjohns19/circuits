@@ -57,6 +57,9 @@ def draw_text(cr, text, position, size=12, bold=False,
         weight)
     cr.set_font_size(size)
 
+    # Can't display null bytes
+    text = text.replace('\x00', '')
+
     x, y, w, h, dx, dy = cr.text_extents(text)
 
     offset = [0, 0]

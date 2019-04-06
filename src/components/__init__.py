@@ -2,6 +2,7 @@
 from . import arithmetic
 from . import bitwise
 from . import compare
+from . import convert
 from . import input
 from . import logic
 from . import output
