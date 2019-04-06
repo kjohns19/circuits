@@ -32,6 +32,7 @@ def console(circuit):
 
     component = component_module.Component(
         circuit, num_inputs=3, num_outputs=0,
-        on_draw=on_draw, on_update=on_update)
+        on_draw=on_draw, on_update=on_update,
+        input_labels=['clk', 'value', 'clear'])
     component.data['text'] = ''
     return component
