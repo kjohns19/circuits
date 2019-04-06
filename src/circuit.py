@@ -46,6 +46,9 @@ class Circuit:
                     self, component_data)
                 component_data_by_id[component.id] = component_data
                 components_by_id[component.id] = component
+                self._current_id = max(self._current_id, component.id)
+
+            self._current_id += 1
 
             # Load input connections
             # This must be done after component creation
@@ -64,7 +67,8 @@ class Circuit:
         self._components.remove(component)
         with self._update_lock:
             for updates in self._updates.values():
-                updates.remove(component)
+                if component in updates:
+                    updates.remove(component)
 
     def clear(self):
         self._components = set()
