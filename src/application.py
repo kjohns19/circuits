@@ -45,7 +45,9 @@ class Application:
 
         self._property_box = builder.get_object('property_box')
 
+        self._step_button = builder.get_object('tool_button_step')
         self._playing = threading.Event()
+        self._stepping = threading.Event()
         self._update_time = 0.5
         speed_button = builder.get_object('play_speed_button')
         speed_button.set_value(self._update_time*1000)
@@ -79,10 +81,17 @@ class Application:
         exit_event = threading.Event()
 
         def update_thread():
-            while not exit_event.wait(self._update_time):
+            while True:
                 self._playing.wait()
+                if exit_event.is_set():
+                    break
                 self._circuit.update()
                 self.repaint()
+                if self._stepping.is_set():
+                    self._playing.clear()
+                    self._stepping.clear()
+                elif exit_event.wait(self._update_time):
+                        break
 
         update_thread = threading.Thread(target=update_thread)
         update_thread.start()
@@ -171,12 +180,17 @@ class Application:
 
     def handler_play(self, widget):
         active = widget.get_active()
+        self._step_button.set_sensitive(not active)
         if active:
             widget.set_stock_id('gtk-media-pause')
             self._playing.set()
         else:
             widget.set_stock_id('gtk-media-play')
             self._playing.clear()
+
+    def handler_step(self, widget):
+        self._stepping.set()
+        self._playing.set()
 
     def handler_speed_set(self, widget):
         self._update_time = widget.get_value_as_int() / 1000.0

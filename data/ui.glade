@@ -208,6 +208,20 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="tool_button_step">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Step</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-media-forward</property>
+                <signal name="clicked" handler="handler_step" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
