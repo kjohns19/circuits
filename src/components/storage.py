@@ -103,4 +103,4 @@ ram.add_property(properties.RangedMultiValueProperty(
     getter=ram_getter,
     setter=ram_setter,
     min_values=1, max_values=1000,
-    title='Values'))
+    title='Values', start_index=0))

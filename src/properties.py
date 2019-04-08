@@ -119,11 +119,13 @@ class MultiValueProperty(Property):
 class RangedMultiValueProperty(Property):
     def __init__(self, getter, setter,
                  min_values=1, max_values=10,
-                 title='Values'):
+                 title='Values',
+                 start_index=1):
         super().__init__(getter, setter)
         self._min_values = min_values
         self._max_values = max_values
         self._title = title
+        self._start_index = start_index
 
     def real_create_widget(self, component, callback):
         return property_widgets.create_ranged_multi_value_widget(
@@ -131,4 +133,5 @@ class RangedMultiValueProperty(Property):
             callback=callback,
             min_values=self._min_values,
             max_values=self._max_values,
-            initial_values=self.getter(component))
+            initial_values=self.getter(component),
+            start_index=self._start_index)

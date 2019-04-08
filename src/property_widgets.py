@@ -67,10 +67,10 @@ def create_multi_value_widget(title, callback, labels, initial_values):
 
 def create_ranged_multi_value_widget(title, callback,
                                      min_values=1, max_values=10,
-                                     initial_values=None):
+                                     initial_values=None, start_index=1):
     ''' Return a widget for setting a variable number of values '''
     def label_func(idx):
-        return str(idx+1)
+        return str(idx+start_index)
 
     return _create_generic_multi_value_widget(
         title, callback, label_func, min_values, max_values, initial_values)
