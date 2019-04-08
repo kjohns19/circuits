@@ -53,6 +53,7 @@ class Application:
         speed_button.set_value(self._update_time*1000)
 
         self._circuit = circuit
+        save_load.register_window(self._window)
 
     @property
     def circuit(self):
@@ -154,7 +155,8 @@ class Application:
         self.repaint()
 
     def handler_save(self, widget):
-        filename = save_load.show_save_dialog(self._window, self._circuit)
+        filename = save_load.show_save_dialog(
+            'Save Circuit', 'Circuit files', '*.circuit')
         if filename is None:
             return
 
@@ -167,7 +169,8 @@ class Application:
             json.dump(data, f, indent=4)
 
     def handler_load(self, widget):
-        filename = save_load.show_load_dialog(self._window)
+        filename = save_load.show_load_dialog(
+            'Load Circuit', 'Circuit files', '*.circuit')
         if filename is None:
             return
 

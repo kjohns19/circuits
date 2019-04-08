@@ -1,6 +1,8 @@
+import save_load
 import utils
 
 from gi.repository import Gtk
+import json
 
 
 def create_value_bool_widget(label, callback, initial_value=False):
@@ -135,7 +137,7 @@ def _create_generic_multi_value_widget(title, callback,
         'Boolean': False,
         'None': None
     }
-    default_type = 'Number'
+    default_type = 'None'
     default_row = [None, default_type, str(defaults[default_type])]
 
     class RowValue:
@@ -161,8 +163,22 @@ def _create_generic_multi_value_widget(title, callback,
     def set_values():
         callback([value.value for value in row_values])
 
-    if initial_values is not None:
-        for i, value in enumerate(initial_values):
+    def add_row():
+        # Copy the last row into new rows (if it's there)
+        if len(values_store) == 0:
+            row = list(default_row)
+        else:
+            row = list(values_store[-1])
+        row[0] = label_func(len(values_store))
+        values_store.append(row)
+        row_values.append(RowValue(values_store[-1]))
+
+    def delete_row():
+        del values_store[-1]
+        del row_values[-1]
+
+    def initialize(values):
+        for i, value in enumerate(values):
             if value is None:
                 typestr = 'None'
             elif isinstance(value, str):
@@ -177,7 +193,17 @@ def _create_generic_multi_value_widget(title, callback,
             new_row = [label_func(i), typestr, str(value)]
             values_store.append(new_row)
             row_values.append(RowValue(values_store[-1]))
-        count.set_value(i+1)
+
+        # Make sure it's within the limits
+        while len(row_values) < min_values:
+            add_row()
+        while len(row_values) > max_values:
+            delete_row()
+
+        count.set_value(len(row_values))
+
+    if initial_values is not None:
+        initialize(initial_values)
 
     class Handler:
         def handler_count_set(self, widget):
@@ -185,20 +211,11 @@ def _create_generic_multi_value_widget(title, callback,
             new_count = widget.get_value_as_int()
             diff = new_count - current_count
             if diff > 0:
-                # Copy the last row into new rows
-                if current_count == 0:
-                    row = list(default_row)
-                else:
-                    row = list(values_store[-1])
                 for _ in range(diff):
-                    row[0] = label_func(len(values_store))
-                    values_store.append(row)
-                    row_values.append(RowValue(values_store[-1]))
+                    add_row()
             elif diff < 0:
-                # Delete rows
                 for _ in range(-diff):
-                    del values_store[-1]
-                    del row_values[-1]
+                    delete_row()
             set_values()
 
         def handler_type_set(self, widget, path, value):
@@ -208,6 +225,30 @@ def _create_generic_multi_value_widget(title, callback,
         def handler_value_set(self, widget, path, value):
             row_values[int(path)].set_value(value)
             set_values()
+
+        def handler_import(self, widget):
+            filename = save_load.show_load_dialog(
+                'Import values', 'JSON Files', '*.json')
+            if filename is None:
+                return
+
+            with open(filename, 'r') as f:
+                values = json.load(f)
+
+            row_values.clear()
+            values_store.clear()
+            initialize(values)
+
+        def handler_export(self, widget):
+            filename = save_load.show_save_dialog(
+                'Export values', 'JSON Files', '*.json')
+            if filename is None:
+                return
+
+            values = [row.value for row in row_values]
+
+            with open(filename, 'w') as f:
+                json.dump(values, f)
 
     builder.connect_signals(Handler())
     return widget
