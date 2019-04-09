@@ -197,6 +197,7 @@
               <object class="GtkToggleToolButton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Play/Pause Simulation</property>
                 <property name="label" translatable="yes">Play/Pause</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-media-play</property>
@@ -211,6 +212,7 @@
               <object class="GtkToolButton" id="tool_button_step">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Single Step</property>
                 <property name="label" translatable="yes">Step</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-media-forward</property>
@@ -235,6 +237,21 @@
                     <signal name="value-changed" handler="handler_speed_set" swapped="no"/>
                   </object>
                 </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToggleToolButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Color updating components</property>
+                <property name="label" translatable="yes">Color Updates</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-select-color</property>
+                <signal name="toggled" handler="handler_toggle_color_updates" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

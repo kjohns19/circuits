@@ -55,6 +55,7 @@ class Application:
 
         self._circuit = circuit
         save_load.register_window(self._window)
+        self._color_updates = False
 
     @property
     def circuit(self):
@@ -199,6 +200,9 @@ class Application:
     def handler_speed_set(self, widget):
         self._update_time = widget.get_value_as_int() / 1000.0
 
+    def handler_toggle_color_updates(self, widget):
+        self._color_updates = widget.get_active()
+
     def handler_toggle_mode(self, widget):
         if widget.get_active():
             label = widget.get_label()
@@ -230,17 +234,18 @@ class Application:
         cr.paint()
 
         # Color components that are updating in the next step
-        next_updates, later_updates = self._circuit.components_to_update()
-        save_colors = {
-            component: component.display.fill_color
-            for component in itertools.chain(next_updates, later_updates)
-        }
-        # Components updating next are slightly blue
-        for component in next_updates:
-            component.display.fill_color = (0.9, 0.9, 1.0)
-        # Components updating later are light gray
-        for component in later_updates:
-            component.display.fill_color = (0.9, 0.9, 0.9)
+        if self._color_updates:
+            next_updates, later_updates = self._circuit.components_to_update()
+            save_colors = {
+                component: component.display.fill_color
+                for component in itertools.chain(next_updates, later_updates)
+            }
+            # Components updating next are slightly blue
+            for component in next_updates:
+                component.display.fill_color = (0.9, 0.9, 1.0)
+            # Components updating later are light gray
+            for component in later_updates:
+                component.display.fill_color = (0.9, 0.9, 0.9)
 
         for component in self._circuit.components:
             component.display.draw(self, cr)
@@ -252,10 +257,11 @@ class Application:
             self._tool.draw(self, cr, self._mouse_pos)
 
         # Reset the color of the components that will update
-        for component in next_updates:
-            component.display.fill_color = save_colors[component]
-        for component in later_updates:
-            component.display.fill_color = save_colors[component]
+        if self._color_updates:
+            for component in next_updates:
+                component.display.fill_color = save_colors[component]
+            for component in later_updates:
+                component.display.fill_color = save_colors[component]
 
     def handler_draw_area_mouse_button(self, widget, event):
         position = (event.x + self._position[0], event.y + self._position[1])
