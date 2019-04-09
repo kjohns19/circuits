@@ -8,6 +8,7 @@ import utils
 
 import cairo
 import collections
+import itertools
 import json
 import threading
 
@@ -227,6 +228,20 @@ class Application:
         cr.set_source_surface(self._grid_surfaces[self._grid_size], 0, 0)
         cr.get_source().set_extend(cairo.EXTEND_REPEAT)
         cr.paint()
+
+        # Color components that are updating in the next step
+        next_updates, later_updates = self._circuit.components_to_update()
+        save_colors = {
+            component: component.display.fill_color
+            for component in itertools.chain(next_updates, later_updates)
+        }
+        # Components updating next are slightly blue
+        for component in next_updates:
+            component.display.fill_color = (0.9, 0.9, 1.0)
+        # Components updating later are light gray
+        for component in later_updates:
+            component.display.fill_color = (0.9, 0.9, 0.9)
+
         for component in self._circuit.components:
             component.display.draw(self, cr)
         for component in self._circuit.components:
@@ -235,6 +250,12 @@ class Application:
             component.display.draw_debug_values(self, cr)
         if self._tool:
             self._tool.draw(self, cr, self._mouse_pos)
+
+        # Reset the color of the components that will update
+        for component in next_updates:
+            component.display.fill_color = save_colors[component]
+        for component in later_updates:
+            component.display.fill_color = save_colors[component]
 
     def handler_draw_area_mouse_button(self, widget, event):
         position = (event.x + self._position[0], event.y + self._position[1])

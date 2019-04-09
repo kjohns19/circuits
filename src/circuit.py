@@ -91,6 +91,17 @@ class Circuit:
             delay = 1
         self._updates[self._time+delay].add(component)
 
+    def components_to_update(self):
+        with self._update_lock:
+            next_updates = set()
+            later_updates = set()
+            for time, components in self._updates.items():
+                if time == self._time+1:
+                    next_updates.update(components)
+                else:
+                    later_updates.update(components)
+        return next_updates, later_updates
+
     def update(self):
         with self._update_lock:
             self._time += 1
