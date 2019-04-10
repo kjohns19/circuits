@@ -17,6 +17,7 @@ class Application:
     def __init__(self, circuit):
         self._tools = {
             'Create': tools.CreateTool(),
+            'Move': tools.MoveTool(),
             'Edit': tools.EditTool(),
             'Interact': tools.InteractTool(),
             'Wire': tools.WireTool(),
