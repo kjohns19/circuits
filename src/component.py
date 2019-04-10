@@ -388,6 +388,10 @@ class _Output:
         for input in self._connected_inputs:
             input.value = value
 
+    @property
+    def connected_inputs(self):
+        return iter(self._connected_inputs)
+
     def is_connected(self):
         return bool(self._connected_inputs)
 
