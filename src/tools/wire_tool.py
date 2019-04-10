@@ -72,3 +72,8 @@ class WireTool(Tool):
         utils.draw_lines(cr, positions, color)
         for pos in self._wire_positions:
             utils.draw_circle(cr, pos, 2, color, color)
+
+    def reset(self, app):
+        self._input = None
+        self._wire_positions = []
+        app.repaint()
