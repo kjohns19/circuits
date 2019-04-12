@@ -17,7 +17,6 @@ class Application:
     def __init__(self, circuit):
         self._tools = {
             'Create': tools.CreateTool(),
-            'Move': tools.MoveTool(),
             'Edit': tools.EditTool(),
             'Interact': tools.InteractTool(),
             'Wire': tools.WireTool(),
@@ -57,6 +56,7 @@ class Application:
         self._circuit = circuit
         save_load.register_window(self._window)
         self._color_updates = False
+        self._keys = set()
 
     @property
     def circuit(self):
@@ -74,6 +74,9 @@ class Application:
     def position(self, value):
         self._position = (value[0], value[1])
         self.repaint()
+
+    def is_key_pressed(self, keyname):
+        return keyname in self._keys
 
     def screen_position(self, position):
         return (
@@ -281,3 +284,11 @@ class Application:
             event.y + self._position[1]
         )
         self._tool.on_move(self, event, self._mouse_pos)
+
+    def handler_key_press(self, window, event):
+        keyname = Gdk.keyval_name(event.keyval)
+        self._keys.add(keyname)
+
+    def handler_key_release(self, window, event):
+        keyname = Gdk.keyval_name(event.keyval)
+        self._keys.remove(keyname)
