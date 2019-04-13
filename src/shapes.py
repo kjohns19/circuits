@@ -70,6 +70,22 @@ class Rectangle:
         self._size.y = value
 
     @property
+    def left(self):
+        return self._position.x
+
+    @property
+    def right(self):
+        return self._position.x + self._size.x
+
+    @property
+    def top(self):
+        return self._position.y
+
+    @property
+    def bottom(self):
+        return self._position.y + self._size.y
+
+    @property
     def position(self):
         return self._position
 
@@ -101,7 +117,7 @@ class Rectangle:
     def bottom_right(self):
         return self._position + self._size
 
-    def contains(self, point):
+    def contains_point(self, point):
         point = Vector2(point)
         xmin = self._position.x
         xmax = self._position.x + self._size.x
@@ -109,3 +125,11 @@ class Rectangle:
         ymin = self._position.y
         ymax = self._position.y + self._size.y
         return xmin < point.x < xmax and ymin < point.y < ymax
+
+    def contains_rectangle(self, rectangle):
+        return all((
+            self.left < rectangle.left,
+            self.right > rectangle.right,
+            self.top < rectangle.top,
+            self.bottom > rectangle.bottom
+        ))

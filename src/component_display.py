@@ -111,8 +111,8 @@ class ComponentDisplay:
         self.outline_color = data['outline_color']
         self.fill_color = data['fill_color']
 
-    def contains(self, point):
-        return self._rect.contains(point)
+    def contains_point(self, point):
+        return self._rect.contains_point(point)
 
     def recalculate_size(self):
         max_nodes = max(

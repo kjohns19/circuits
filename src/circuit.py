@@ -82,9 +82,15 @@ class Circuit:
 
     def component_at_position(self, position):
         for component in self._components:
-            if component.display.bounds.contains(position):
+            if component.display.bounds.contains_point(position):
                 return component
         return None
+
+    def components_in_rectangle(self, rectangle):
+        return [
+            component for component in self._components
+            if rectangle.contains_rectangle(component.display.rect)
+        ]
 
     def schedule_update(self, component, delay):
         if delay < 1:
