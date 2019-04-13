@@ -1,4 +1,6 @@
 from .tool import Tool
+import shapes
+import utils
 
 
 class EditTool(Tool):
@@ -14,15 +16,30 @@ class EditTool(Tool):
         ]
 
     def on_left_click(self, app, event, position, component):
-        keys = ['Control_R', 'Control_L']
-        if not any(app.is_key_pressed(key) for key in keys):
-            self._components.clear()
+        ctrl = any(
+            app.is_key_pressed(key)
+            for key in ['Control_R', 'Control_L']
+        )
+        shift = any(
+            app.is_key_pressed(key)
+            for key in ['Shift_R', 'Shift_L']
+        )
+
+        app.repaint()
+
         if component is not None:
             if component in self._components:
-                self._components.remove(component)
-                return
+                if shift:
+                    self._components.remove(component)
+                    return
             else:
+                if shift:
+                    return
+                if not ctrl:
+                    self._components.clear()
                 self._components.add(component)
+        else:
+            return
 
         self._move_data = [
             (component, component.display.position - position)
@@ -44,3 +61,15 @@ class EditTool(Tool):
                     app.snap_position(offset + position) - (0, app.grid_size/2)
                 )
             app.repaint()
+
+    def draw(self, app, cr, mouse_pos):
+        for component in self._components:
+            rect = component.display.rect
+            rect = shapes.Rectangle(
+                size=rect.size+(20, 20),
+                position=rect.position-(10, 10))
+            utils.draw_rectangle(
+                cr, rect, fill_color=None, outline_color=(0, 0, 1))
+
+    def reset(self, app):
+        self._components.clear()

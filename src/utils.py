@@ -117,15 +117,17 @@ def draw_circle(cr, position, radius, fill_color, outline_color):
 def draw_rectangle(cr, rect, fill_color, outline_color=None):
     cr.rectangle(*rect.top_left, *rect.size)
 
-    cr.set_source_rgb(*fill_color)
+    if fill_color:
+        cr.set_source_rgb(*fill_color)
+        if outline_color:
+            cr.fill_preserve()
+        else:
+            cr.fill()
 
     if outline_color:
-        cr.fill_preserve()
         cr.set_source_rgb(*outline_color)
         cr.set_line_width(2)
         cr.stroke()
-    else:
-        cr.fill()
 
 
 def show_popup(title, options, event, callback):
