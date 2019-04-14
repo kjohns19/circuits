@@ -24,6 +24,13 @@ class EditTool(Tool):
             for component in components
         ]
 
+    def selected_components(self):
+        return list(self._components)
+
+    def select(self, components):
+        self._components.clear()
+        self._components.update(components)
+
     def on_left_click(self, app, event, position, component):
         app.repaint()
         mode = _get_mode(app)

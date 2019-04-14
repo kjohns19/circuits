@@ -81,6 +81,30 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Export module</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="handler_export_module" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Import module</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="handler_import_module" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
@@ -122,7 +146,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkRadioToolButton">
+              <object class="GtkRadioToolButton" id="tool_button_mode_edit">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Edit mode</property>

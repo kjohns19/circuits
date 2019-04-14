@@ -24,6 +24,7 @@ class Application:
         }
 
         self._create_tool = self._tools['Create']
+        self._edit_tool = self._tools['Edit']
         self._tool = self._create_tool
 
         self._position = (0, 0)
@@ -45,6 +46,8 @@ class Application:
             selector_store, component_registry.registry)
 
         self._property_box = builder.get_object('property_box')
+
+        self._edit_tool_button = builder.get_object('tool_button_mode_edit')
 
         self._step_button = builder.get_object('tool_button_step')
         self._playing = threading.Event()
@@ -157,6 +160,8 @@ class Application:
 
     def handler_new(self, widget):
         self._circuit.clear()
+        for tool in self._tools.values():
+            tool.reset()
         self._position = (0, 0)
         self.repaint()
 
@@ -186,6 +191,36 @@ class Application:
         self._position = tuple(data['position'])
 
         self._circuit.load(data['circuit'])
+
+    def handler_export_module(self, widget):
+        filename = save_load.show_save_dialog(
+            'Export Module', 'Circuit files', '*.circuit')
+        if filename is None:
+            return
+
+        selected = self._edit_tool.selected_components()
+        components = utils.get_connected_components(selected)
+
+        data = {
+            'position': self._position,
+            'circuit': self._circuit.get_save_data(components)
+        }
+
+        with open(filename, 'w') as f:
+            json.dump(data, f, indent=4)
+
+    def handler_import_module(self, widget):
+        filename = save_load.show_load_dialog(
+            'Import Module', 'Circuit files', '*.circuit')
+        if filename is None:
+            return
+
+        with open(filename, 'r') as f:
+            data = json.load(f)
+
+        new_components = self._circuit.load_module(data['circuit'])
+        self._edit_tool_button.set_active(True)
+        self._edit_tool.select(new_components)
 
     def handler_play(self, widget):
         active = widget.get_active()

@@ -130,6 +130,24 @@ def draw_rectangle(cr, rect, fill_color, outline_color=None):
         cr.stroke()
 
 
+def get_connected_components(components):
+    def build(component, components):
+        if component in components:
+            return
+        components.add(component)
+        for input in component.inputs:
+            if input.is_connected():
+                output = input.connected_output.component
+                build(output, components)
+        for output in component.outputs:
+            for connected_input in output.connected_inputs:
+                build(connected_input.component, components)
+    all_components = set()
+    for component in components:
+        build(component, all_components)
+    return all_components
+
+
 def show_popup(title, options, event, callback):
     menu = Gtk.Menu()
 

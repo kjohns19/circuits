@@ -199,7 +199,6 @@ class Component:
         creator = component_registry.registry.get_creator(
             creator_data['category'], creator_data['name'])
         component = creator(circuit)
-        component.id = data['id']
         component.name = data['name']
 
         component.num_inputs = len(data['inputs'])

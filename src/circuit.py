@@ -17,15 +17,20 @@ class Circuit:
         component.id = self._current_id
         self._current_id += 1
 
-    def get_save_data(self):
+    def get_save_data(self, components=None):
+        save_components = components or self._components
         with self._update_lock:
-            components_by_id = sorted(self._components, key=lambda c: c.id)
+            components_by_id = sorted(save_components, key=lambda c: c.id)
             component_data = [
                 component.get_save_data()
                 for component in components_by_id
             ]
             update_data = collections.OrderedDict((
-                (time - self._time, list(sorted(c.id for c in components)))
+                (
+                    time - self._time,
+                    list(sorted(
+                        c.id for c in components if c in save_components))
+                )
                 for time, components in self._updates.items()
             ))
             return collections.OrderedDict((
@@ -36,32 +41,40 @@ class Circuit:
     def load(self, data):
         with self._update_lock:
             self.clear()
+            return self._load_data_lk(data)
 
-            component_data_by_id = {}
-            components_by_id = {}
+    def load_module(self, data):
+        with self._update_lock:
+            return self._load_data_lk(data)
 
-            # Create components
-            for component_data in data['components']:
-                component = component_module.Component.load(
-                    self, component_data)
-                component_data_by_id[component.id] = component_data
-                components_by_id[component.id] = component
-                self._current_id = max(self._current_id, component.id)
+    def _load_data_lk(self, data):
+        component_data_by_id = {}
+        components_by_id = {}
 
-            self._current_id += 1
+        save_updates = self._updates.copy()
 
-            # Load input connections
-            # This must be done after component creation
-            # so all components exist
-            self._components = set(components_by_id.values())
-            for component in self._components:
-                component_data = component_data_by_id[component.id]
-                component.load_inputs(component_data, components_by_id)
+        # Create components
+        for component_data in data['components']:
+            component = component_module.Component.load(self, component_data)
+            component_data_by_id[component.id] = component_data
+            components_by_id[component_data['id']] = component
 
-            self._updates = collections.defaultdict(set, (
-                (int(delay), set(components_by_id[id] for id in ids))
-                for delay, ids in data['updates'].items()
-            ))
+        # Load input connections
+        # This must be done after component creation
+        # so all components exist
+        new_components = set(components_by_id.values())
+        for component in new_components:
+            component_data = component_data_by_id[component.id]
+            component.load_inputs(component_data, components_by_id)
+
+        self._components.update(new_components)
+
+        self._updates = save_updates
+        for delay, ids in data['updates'].items():
+            time = self._time + int(delay)
+            self._updates[time].update(components_by_id[id] for id in ids)
+
+        return new_components
 
     def remove_component(self, component):
         self._components.remove(component)
