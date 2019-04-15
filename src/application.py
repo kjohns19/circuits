@@ -326,4 +326,5 @@ class Application:
 
     def handler_key_release(self, window, event):
         keyname = Gdk.keyval_name(event.keyval)
-        self._keys.remove(keyname)
+        if keyname in self._keys:
+            self._keys.remove(keyname)
