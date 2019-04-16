@@ -87,6 +87,7 @@ class EditTool(Tool):
 
     def reset(self, app):
         self._components.clear()
+        app.repaint()
 
     def _modify_selection(self, mode, components):
         if mode == _Mode.SET:
