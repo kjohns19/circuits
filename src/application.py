@@ -161,7 +161,7 @@ class Application:
     def handler_new(self, widget):
         self._circuit.clear()
         for tool in self._tools.values():
-            tool.reset()
+            tool.reset(self)
         self._position = (0, 0)
         self.repaint()
 
