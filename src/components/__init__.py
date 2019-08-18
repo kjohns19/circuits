@@ -7,4 +7,5 @@ from . import input
 from . import logic
 from . import output
 from . import storage
+from . import string
 from . import time

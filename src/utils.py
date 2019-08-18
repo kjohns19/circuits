@@ -169,6 +169,7 @@ def show_popup(title, options, event, callback):
 
 def create_nary_component(name, category, function,
                           min_inputs=None, max_inputs=None,
+                          input_labels=None, output_labels=None,
                           default_value=None):
     if min_inputs is None:
         signature = inspect.signature(function)
@@ -185,7 +186,8 @@ def create_nary_component(name, category, function,
                 result = default_value
             component.outputs[0].value = result
         component = component_module.Component(
-            circuit, num_inputs=min_inputs, num_outputs=1, on_update=on_update)
+            circuit, num_inputs=min_inputs, num_outputs=1, on_update=on_update,
+            input_labels=input_labels, output_labels=output_labels)
         on_update(component)
         return component
 
