@@ -19,8 +19,7 @@ if [[ -z "$VIRTUAL_ENV" ]]; then
 fi
 
 # Run
-dir=$(dirname "$0")
-cd "$dir/src"
+cd "$script_dir/circuits"
 python main.py "$@"
 rc=$?
 
