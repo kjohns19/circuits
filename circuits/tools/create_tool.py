@@ -1,8 +1,9 @@
-from .tool import Tool
-import utils
+from .. import utils
+
+from . import tool
 
 
-class CreateTool(Tool):
+class CreateTool(tool.Tool):
     def __init__(self, creator=None):
         super().__init__()
         self._creator = creator

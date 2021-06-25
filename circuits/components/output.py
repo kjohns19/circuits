@@ -1,10 +1,10 @@
-import component as component_module
-from component_registry import registry
-import shapes
-import utils
-
 import itertools
 import textwrap
+
+from .. import component as component_module
+from ..component_registry import registry
+from .. import shapes
+from .. import utils
 
 
 CATEGORY = 'Output'

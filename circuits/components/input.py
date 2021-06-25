@@ -1,8 +1,8 @@
-import component as component_module
-import component_display
-from component_registry import registry
-import properties
-import utils
+from .. import component as component_module
+from .. import component_display
+from ..component_registry import registry
+from .. import properties
+from .. import utils
 
 
 CATEGORY = 'Input'

@@ -1,16 +1,16 @@
 from gi.repository import Gtk, Gdk
 
-import component_registry
-import save_load
-import shapes
-import tools
-import utils
-
 import cairo
 import collections
 import itertools
 import json
 import threading
+
+from . import component_registry
+from . import save_load
+from . import shapes
+from . import tools
+from . import utils
 
 
 class Application:

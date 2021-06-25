@@ -1,8 +1,9 @@
-from .tool import Tool
-import utils
+from .. import utils
+
+from . import tool
 
 
-class InteractTool(Tool):
+class InteractTool(tool.Tool):
     def __init__(self):
         super().__init__()
         self._component = None

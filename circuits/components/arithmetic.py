@@ -1,7 +1,7 @@
-import utils
-
 import functools
 import operator
+
+from .. import utils
 
 
 CATEGORY = 'Arithmetic'

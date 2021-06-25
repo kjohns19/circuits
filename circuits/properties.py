@@ -1,5 +1,5 @@
-import property_widgets
-import utils
+from . import property_widgets
+from . import utils
 
 
 class Property:

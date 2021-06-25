@@ -1,8 +1,9 @@
-from .tool import Tool
-import utils
+from .. import utils
+
+from . import tool
 
 
-class WireTool(Tool):
+class WireTool(tool.Tool):
     def __init__(self):
         super().__init__()
         self._input = None

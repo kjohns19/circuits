@@ -1,8 +1,8 @@
-import save_load
-import utils
-
 from gi.repository import Gtk
 import json
+
+from . import save_load
+from . import utils
 
 
 def create_value_bool_widget(label, callback, initial_value=False):

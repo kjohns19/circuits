@@ -1,9 +1,9 @@
-import component_display
-import component_registry
-import shapes
-
 import collections
 import functools
+
+from . import component_display
+from . import component_registry
+from . import shapes
 
 
 class ComponentException(Exception):

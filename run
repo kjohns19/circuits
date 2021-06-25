@@ -19,8 +19,7 @@ if [[ -z "$VIRTUAL_ENV" ]]; then
 fi
 
 # Run
-cd "$script_dir/circuits"
-python main.py "$@"
+python -m circuits "$@"
 rc=$?
 
 # Deactivate virtual environment

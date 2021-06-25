@@ -1,6 +1,6 @@
-import circuit
-
 import collections
+
+from . import circuit
 
 
 _CIRCUIT = circuit.Circuit()

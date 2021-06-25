@@ -1,9 +1,9 @@
-import creator as creator_module
-import properties
-import utils
-
 import collections
 import functools
+
+from . import creator as creator_module
+from . import properties
+from . import utils
 
 
 ComponentData = collections.namedtuple(

@@ -1,6 +1,7 @@
-import component as component_module
 import collections
 import threading
+
+from . import component as component_module
 
 
 class Circuit:

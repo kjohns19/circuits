@@ -1,8 +1,3 @@
-import component as component_module
-import component_registry
-import properties
-import shapes
-
 import cairo
 import enum
 from gi.repository import Gtk
@@ -10,6 +5,11 @@ import inspect
 import itertools
 import math
 import os
+
+from . import component as component_module
+from . import component_registry
+from . import properties
+from . import shapes
 
 
 class MouseButton(enum.IntEnum):

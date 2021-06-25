@@ -1,8 +1,9 @@
-from .tool import Tool
-import shapes
-import utils
-
 import enum
+
+from .. import shapes
+from .. import utils
+
+from . import tool
 
 
 class _Mode(enum.Enum):
@@ -11,7 +12,7 @@ class _Mode(enum.Enum):
     SUBTRACT = 2
 
 
-class EditTool(Tool):
+class EditTool(tool.Tool):
     def __init__(self):
         super().__init__()
         self._components = set()

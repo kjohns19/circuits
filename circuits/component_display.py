@@ -1,7 +1,7 @@
-import shapes
-import utils
-
 import collections
+
+from . import shapes
+from . import utils
 
 
 WIDTH = 80
