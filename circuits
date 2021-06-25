@@ -1,5 +1,30 @@
 #!/usr/bin/env bash
 
+script_dir=$(dirname "$0")
+venv_dir="$script_dir/env"
+
+#Activate virtual environment
+do_deactivate=
+if [[ -z "$VIRTUAL_ENV" ]]; then
+    do_deactivate=yes
+    if ! [[ -d "$venv_dir" ]]; then
+        echo "Initializing virtual env in $venv_dir"
+        python3.9 -m venv "$venv_dir"
+        source "$venv_dir/bin/activate"
+        echo "Loading requirements"
+        pip install -r "$script_dir/requirements.txt"
+    else
+        source "$venv_dir/bin/activate"
+    fi
+fi
+
+# Run
 dir=$(dirname "$0")
 cd "$dir/src"
-python3.6 main.py "$@"
+python main.py "$@"
+rc=$?
+
+# Deactivate virtual environment
+[[ -n "$do_deactivate" ]] && deactivate
+
+exit $rc
