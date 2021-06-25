@@ -101,7 +101,7 @@ class Application:
                     self._playing.clear()
                     self._stepping.clear()
                 elif exit_event.wait(self._update_time):
-                        break
+                    break
 
         update_thread = threading.Thread(target=update_thread)
         update_thread.start()

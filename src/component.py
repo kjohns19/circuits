@@ -28,7 +28,7 @@ class Component:
         self.num_outputs = num_outputs
 
         self.on_update = on_update or _default_on_update
-        self.on_draw   = on_draw or _default_on_draw
+        self.on_draw = on_draw or _default_on_draw
         self.on_click = on_click or _default_on_click
 
         self._circuit.add_component(self)

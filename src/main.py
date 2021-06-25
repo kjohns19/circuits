@@ -1,6 +1,4 @@
-# Must be first
-import gi
-gi.require_version('Gtk', '3.0')
+import setup_gi  # noqa: F401 - must be first to initialize GTK requirements
 
 from application import Application
 from circuit import Circuit

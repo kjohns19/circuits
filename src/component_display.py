@@ -12,11 +12,11 @@ NODE_SEPARATION = 20
 NODE_RADIUS = 4
 
 BLACK = (0, 0, 0)
-GRAY  = (0.8, 0.8, 0.8)
+GRAY = (0.8, 0.8, 0.8)
 WHITE = (1, 1, 1)
-RED   = (1, 0, 0)
+RED = (1, 0, 0)
 GREEN = (0, 1, 0)
-BLUE  = (0, 0, 1)
+BLUE = (0, 0, 1)
 
 
 class ComponentDisplay:
