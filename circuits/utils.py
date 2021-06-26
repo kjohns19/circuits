@@ -1,6 +1,6 @@
 import cairo
 import enum
-from gi.repository import Gtk
+from gi.repository import Gtk  # type: ignore
 import inspect
 import itertools
 import math

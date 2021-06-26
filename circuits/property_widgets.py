@@ -1,4 +1,4 @@
-from gi.repository import Gtk
+from gi.repository import Gtk  # type: ignore
 import json
 
 from . import save_load

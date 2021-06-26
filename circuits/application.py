@@ -1,4 +1,4 @@
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk  # type: ignore
 
 import cairo
 import collections
@@ -90,7 +90,7 @@ class Application:
     def loop(self):
         exit_event = threading.Event()
 
-        def update_thread():
+        def update_thread_func() -> None:
             while True:
                 self._playing.wait()
                 if exit_event.is_set():
@@ -103,7 +103,7 @@ class Application:
                 elif exit_event.wait(self._update_time):
                     break
 
-        update_thread = threading.Thread(target=update_thread)
+        update_thread = threading.Thread(target=update_thread_func)
         update_thread.start()
 
         self._window.show_all()

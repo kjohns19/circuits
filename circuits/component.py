@@ -377,15 +377,15 @@ class _Output:
     def value(self):
         return self._value
 
-    @property
-    def label(self):
-        return self._component.output_label(self._index)
-
     @value.setter
     def value(self, value):
         self._value = value
         for input in self._connected_inputs:
             input.value = value
+
+    @property
+    def label(self):
+        return self._component.output_label(self._index)
 
     @property
     def connected_inputs(self):
