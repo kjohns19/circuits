@@ -1,10 +1,12 @@
 import cairo
+import collections.abc as abc
 import enum
 from gi.repository import Gtk  # type: ignore
 import inspect
 import itertools
 import math
-import os
+import pathlib
+import typing as t
 
 from . import component as component_module
 from . import component_registry
@@ -21,11 +23,11 @@ class MouseButton(enum.IntEnum):
     RELEASE_RIGHT = -3
 
     @classmethod
-    def is_press(cls, button):
+    def is_press(cls, button: 'MouseButton') -> bool:
         return button > 0
 
     @classmethod
-    def is_release(cls, button):
+    def is_release(cls, button: 'MouseButton') -> bool:
         return button < 0
 
 
@@ -41,15 +43,18 @@ class TextVAlign(enum.Enum):
     BOTTOM = 2
 
 
-def data_file(name):
-    data_dir = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', 'data'))
-    return os.path.join(data_dir, name)
+Color = tuple[int, int, int]
 
 
-def draw_text(cr, text, position, size=12, bold=False,
-              h_align=TextHAlign.CENTER, v_align=TextVAlign.MIDDLE,
-              background_color=None):
+def data_file(name: str) -> str:
+    data_dir = pathlib.Path(__file__).resolve().parent.parent / 'data'
+    return str(data_dir / name)
+
+
+def draw_text(cr: cairo.Context, text: str, position: shapes.Vector2, size: int = 12,
+              bold: bool = False, h_align: TextHAlign = TextHAlign.CENTER,
+              v_align: TextVAlign = TextVAlign.MIDDLE,
+              background_color: t.Optional[Color] = None) -> None:
     weight = cairo.FONT_WEIGHT_BOLD if bold else cairo.FONT_WEIGHT_NORMAL
     cr.select_font_face(
         'FreeMono',
@@ -62,7 +67,7 @@ def draw_text(cr, text, position, size=12, bold=False,
 
     x, y, w, h, dx, dy = cr.text_extents(text)
 
-    offset = [0, 0]
+    offset = [0.0, 0.0]
     if h_align == TextHAlign.CENTER:
         offset[0] = -w/2
     elif h_align == TextHAlign.RIGHT:
@@ -73,11 +78,12 @@ def draw_text(cr, text, position, size=12, bold=False,
     elif v_align == TextVAlign.TOP:
         offset[1] = h
 
-    corner = shapes.Vector2(position) + offset
+    corner = position + offset
 
     if background_color is not None:
         cr.set_source_rgb(*background_color)
-        cr.rectangle(*(corner - (2, h/2+6)), w+4, h+4)
+        rect_corner = corner - (2, h/2 + 6)
+        cr.rectangle(rect_corner.x, rect_corner.y, w+4, h+4)
         cr.fill()
 
     cr.move_to(*corner)
@@ -85,7 +91,8 @@ def draw_text(cr, text, position, size=12, bold=False,
     cr.show_text(text)
 
 
-def draw_line(cr, pos1, pos2, color):
+def draw_line(cr: cairo.Context, pos1: shapes.Vector2, pos2: shapes.Vector2,
+              color: Color) -> None:
     cr.set_source_rgb(*color)
     cr.move_to(*pos1)
     cr.line_to(*pos2)
@@ -93,18 +100,18 @@ def draw_line(cr, pos1, pos2, color):
     cr.stroke()
 
 
-def draw_lines(cr, positions, color):
-    def _pairwise(iterable):
-        it1, it2 = itertools.tee(iterable)
-        next(it2, None)
-        return zip(it1, it2)
-    for pos1, pos2 in _pairwise(positions):
+def draw_lines(cr: cairo.Context, positions: abc.Iterable[shapes.Vector2],
+               color: Color) -> None:
+    it1, it2 = itertools.tee(positions)
+    next(it2, None)
+    for pos1, pos2 in zip(it1, it2):
         draw_line(cr, pos1, pos2, color)
 
 
-def draw_circle(cr, position, radius, fill_color, outline_color):
+def draw_circle(cr: cairo.Context, position: shapes.Vector2, radius: float,
+                fill_color: Color, outline_color: Color) -> None:
     cr.new_path()
-    cr.arc(*position, radius, 0, math.pi*2)
+    cr.arc(position.x, position.y, radius, 0, math.pi*2)
 
     cr.set_source_rgb(*fill_color)
     cr.fill_preserve()
@@ -114,7 +121,8 @@ def draw_circle(cr, position, radius, fill_color, outline_color):
     cr.stroke()
 
 
-def draw_rectangle(cr, rect, fill_color, outline_color=None):
+def draw_rectangle(cr: cairo.Context, rect: shapes.Rectangle,
+                   fill_color: Color, outline_color: t.Optional[Color] = None) -> None:
     cr.rectangle(*rect.top_left, *rect.size)
 
     if fill_color:

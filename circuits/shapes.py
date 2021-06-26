@@ -1,123 +1,130 @@
+import collections.abc as abc
+import typing as t
+
+VecOrTup = t.Union['Vector2', tuple[float, float], list[float]]
+
+
 class Vector2:
-    def __init__(self, xy):
+    def __init__(self, xy: VecOrTup) -> None:
         self._x, self._y = xy
 
     @property
-    def x(self):
+    def x(self) -> float:
         return self._x
 
     @x.setter
-    def x(self, value):
+    def x(self, value: float) -> None:
         self._x = value
 
     @property
-    def y(self):
+    def y(self) -> float:
         return self._y
 
     @y.setter
-    def y(self, value):
+    def y(self, value: float) -> None:
         self._y = value
 
-    def set(self, xy):
+    def set(self, xy: VecOrTup) -> None:
         self._x, self._y = xy
 
-    def __iter__(self):
+    def __iter__(self) -> abc.Generator[float, None, None]:
         yield self._x
         yield self._y
 
-    def __add__(self, vec):
+    def __add__(self, vec: VecOrTup) -> 'Vector2':
         x, y = vec
         return Vector2((self._x+x, self._y+y))
 
-    def __sub__(self, vec):
+    def __sub__(self, vec: VecOrTup) -> 'Vector2':
         x, y = vec
         return Vector2((self._x-x, self._y-y))
 
-    def __mul__(self, scalar):
+    def __mul__(self, scalar: float) -> 'Vector2':
         return Vector2((self._x*scalar, self._y*scalar))
 
-    def __truediv__(self, scalar):
+    def __truediv__(self, scalar: float) -> 'Vector2':
         return Vector2((self._x/scalar, self._y/scalar))
 
 
 class Rectangle:
-    def __init__(self, size=None, position=None):
+    def __init__(self, size: t.Optional[VecOrTup] = None,
+                 position: t.Optional[VecOrTup] = None):
         self._size = Vector2(size or (0, 0))
         self._position = Vector2(position or (0, 0))
 
     @property
-    def size(self):
+    def size(self) -> Vector2:
         return self._size
 
     @size.setter
-    def size(self, value):
+    def size(self, value: VecOrTup) -> None:
         self._size = Vector2(value)
 
     @property
-    def width(self):
+    def width(self) -> float:
         return self._size.x
 
     @width.setter
-    def width(self, value):
+    def width(self, value: float) -> None:
         self._size.x = value
 
     @property
-    def height(self):
+    def height(self) -> float:
         return self._size.y
 
     @height.setter
-    def height(self, value):
+    def height(self, value: float) -> None:
         self._size.y = value
 
     @property
-    def left(self):
+    def left(self) -> float:
         return self._position.x
 
     @property
-    def right(self):
+    def right(self) -> float:
         return self._position.x + self._size.x
 
     @property
-    def top(self):
+    def top(self) -> float:
         return self._position.y
 
     @property
-    def bottom(self):
+    def bottom(self) -> float:
         return self._position.y + self._size.y
 
     @property
-    def position(self):
+    def position(self) -> Vector2:
         return self._position
 
     @position.setter
-    def position(self, value):
+    def position(self, value: VecOrTup) -> None:
         self._position = Vector2(value)
 
     @property
-    def center(self):
+    def center(self) -> Vector2:
         return self._position + self._size/2
 
     @center.setter
-    def center(self, value):
-        self._position = value - self._size/2
+    def center(self, value: VecOrTup) -> None:
+        self._position = Vector2(value) - self._size/2
 
     @property
-    def top_left(self):
+    def top_left(self) -> Vector2:
         return self._position
 
     @property
-    def top_right(self):
+    def top_right(self) -> Vector2:
         return self._position + (self._size.x, 0)
 
     @property
-    def bottom_left(self):
+    def bottom_left(self) -> Vector2:
         return self._position + (0, self._size.y)
 
     @property
-    def bottom_right(self):
+    def bottom_right(self) -> Vector2:
         return self._position + self._size
 
-    def contains_point(self, point):
+    def contains_point(self, point: VecOrTup) -> bool:
         point = Vector2(point)
         xmin = self._position.x
         xmax = self._position.x + self._size.x
@@ -126,7 +133,7 @@ class Rectangle:
         ymax = self._position.y + self._size.y
         return xmin < point.x < xmax and ymin < point.y < ymax
 
-    def contains_rectangle(self, rectangle):
+    def contains_rectangle(self, rectangle: 'Rectangle') -> bool:
         return all((
             self.left < rectangle.left,
             self.right > rectangle.right,
