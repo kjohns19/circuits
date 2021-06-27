@@ -1,4 +1,3 @@
-import collections
 import collections.abc as abc
 import typing as t
 
@@ -33,10 +32,10 @@ class Creator:
         return self._name
 
     def get_save_data(self) -> dict[str, str]:
-        return collections.OrderedDict((
-            ('category', self._category),
-            ('name', self._name)
-        ))
+        return {
+            'category': self._category,
+            'name': self._name
+        }
 
     def add_property(self, property: 'properties.Property[t.Any]') -> None:
         self._properties.append(property)

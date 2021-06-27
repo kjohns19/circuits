@@ -1,4 +1,3 @@
-import collections
 import typing as t
 
 import cairo
@@ -107,11 +106,11 @@ class ComponentDisplay:
         self._debug = value
 
     def get_save_data(self) -> dict[str, t.Any]:
-        return collections.OrderedDict((
-            ('position', list(self.position)),
-            ('outline_color', self.outline_color),
-            ('fill_color', self.fill_color)
-        ))
+        return {
+            'position': list(self.position),
+            'outline_color': self.outline_color,
+            'fill_color': self.fill_color
+        }
 
     def load(self, data: dict[str, t.Any]) -> None:
         self.position = data['position']

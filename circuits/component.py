@@ -1,4 +1,3 @@
-import collections
 import collections.abc as abc
 import functools
 import typing as t
@@ -42,7 +41,7 @@ class Component:
         self._circuit = circuit
         self._id = -1
 
-        self._data: dict[str, t.Any] = collections.OrderedDict()
+        self._data: dict[str, t.Any] = {}
 
         self._inputs: list['_Input'] = []
         self._outputs: list['_Output'] = []
@@ -208,15 +207,15 @@ class Component:
                 self._inputs, self._outputs))
 
     def get_save_data(self) -> dict[str, t.Any]:
-        return collections.OrderedDict((
-            ('id', self.id),
-            ('name', self.name),
-            ('creator', self.creator.get_save_data() if self.creator else None),
-            ('inputs', [input.get_save_data() for input in self.inputs]),
-            ('outputs', [output.get_save_data() for output in self.outputs]),
-            ('display', self.display.get_save_data()),
-            ('data', self._data)
-        ))
+        return {
+            'id': self.id,
+            'name': self.name,
+            'creator': self.creator.get_save_data() if self.creator else None,
+            'inputs': [input.get_save_data() for input in self.inputs],
+            'outputs': [output.get_save_data() for output in self.outputs],
+            'display': self.display.get_save_data(),
+            'data': self._data
+        }
 
     @staticmethod
     def load(circuit: 'circuit_mod.Circuit', data: dict[str, t.Any]) -> 'Component':
@@ -333,18 +332,18 @@ class _Input:
         if connected is None:
             connected_data = None
         else:
-            connected_data = collections.OrderedDict((
-                ('component_id', connected.component.id),
-                ('index', connected.index)
-            ))
-        return collections.OrderedDict((
-            ('index', self.index),
-            ('value', self.value),
-            ('new_value', self.new_value),
-            ('old_value', self.old_value),
-            ('connection', connected_data),
-            ('wire_positions', [tuple(pos) for pos in self.wire_positions])
-        ))
+            connected_data = {
+                'component_id': connected.component.id,
+                'index': connected.index
+            }
+        return {
+            'index': self.index,
+            'value': self.value,
+            'new_value': self.new_value,
+            'old_value': self.old_value,
+            'connection': connected_data,
+            'wire_positions': [tuple(pos) for pos in self.wire_positions]
+        }
 
     def load(self, data: dict[str, t.Any],
              components_by_id: dict[int, Component]) -> None:
@@ -425,10 +424,10 @@ class _Output:
         return bool(self._connected_inputs)
 
     def get_save_data(self) -> dict[str, t.Any]:
-        return collections.OrderedDict((
-            ('index', self.index),
-            ('value', self.value)
-        ))
+        return {
+            'index': self.index,
+            'value': self.value
+        }
 
     def connect(self, input: _Input,
                 wire_positions: t.Optional[list[shapes.Vector2]] = None) -> None:

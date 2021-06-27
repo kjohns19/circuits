@@ -34,18 +34,15 @@ class Circuit:
                 component.get_save_data()
                 for component in components_by_id
             ]
-            update_data = collections.OrderedDict((
-                (
-                    time - self._time,
-                    list(sorted(
-                        c.id for c in components if c in save_components))
-                )
+            update_data = {
+                time - self._time: list(sorted(
+                    c.id for c in components if c in save_components))
                 for time, components in self._updates.items()
-            ))
-            return collections.OrderedDict((
-                ('components', component_data),
-                ('updates', update_data)
-            ))
+            }
+            return {
+                'components': component_data,
+                'updates': update_data
+            }
 
     def load(self, data: dict[str, t.Any]) -> set[component_mod.Component]:
         with self._update_lock:
