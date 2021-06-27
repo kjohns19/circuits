@@ -21,8 +21,11 @@ BLACK = (0.0, 0.0, 0.0)
 GRAY = (0.8, 0.8, 0.8)
 WHITE = (1.0, 1.0, 1.0)
 RED = (1.0, 0.0, 0.0)
+YELLOW = (1.0, 1.0, 0.0)
 GREEN = (0.0, 1.0, 0.0)
+CYAN = (0.0, 1.0, 1.0)
 BLUE = (0.0, 0.0, 1.0)
+MAGENTA = (1.0, 0.0, 1.0)
 
 
 class ComponentDisplay:
@@ -169,7 +172,7 @@ class ComponentDisplay:
         self._component.on_draw(app, cr)
 
     def draw_input_wires(self, app: 'application.Application',
-                         cr: cairo.Context) -> None:
+                         cr: cairo.Context, debugging: bool = False) -> None:
         inputs = self._component.inputs
 
         for input_idx, input in enumerate(inputs):
@@ -180,12 +183,15 @@ class ComponentDisplay:
             component = output.component
             output_idx = output.index
 
+            if debugging and not self._debug and not component.display.debug:
+                continue
+
             input_pos = self.node_pos(True, input_idx)
             output_pos = component.display.node_pos(False, output_idx)
             positions = [input_pos] + input.wire_positions + [output_pos]
 
-            color = _wire_color(input.new_value)
-            utils.draw_lines(cr, positions, color)
+            color = _wire_color(input.new_value, debugging)
+            utils.draw_lines(cr, positions, color, thickness=4 if debugging else 2)
             for pos in input.wire_positions:
                 utils.draw_circle(cr, pos, 2, color, color)
 
@@ -211,11 +217,17 @@ class ComponentDisplay:
                 bold=True, background_color=color)
 
 
-def _wire_color(value: t.Any) -> utils.Color:
-    if isinstance(value, bool):
-        return GREEN if value else RED
+def _wire_color(value: t.Any, debug: bool = False) -> utils.Color:
+    if debug:
+        if isinstance(value, bool):
+            return MAGENTA if value else CYAN
+        else:
+            return BLUE
     else:
-        return BLACK
+        if isinstance(value, bool):
+            return GREEN if value else RED
+        else:
+            return BLACK
 
 
 def _node_color(value: t.Any, connected: bool) -> utils.Color:

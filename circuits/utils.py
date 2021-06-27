@@ -94,20 +94,20 @@ def draw_text(cr: cairo.Context, text: str, position: shapes.Vector2, size: int 
 
 
 def draw_line(cr: cairo.Context, pos1: shapes.Vector2, pos2: shapes.Vector2,
-              color: Color) -> None:
+              color: Color, thickness: float = 2.0) -> None:
     cr.set_source_rgb(*color)
     cr.move_to(*pos1)
     cr.line_to(*pos2)
-    cr.set_line_width(2)
+    cr.set_line_width(thickness)
     cr.stroke()
 
 
 def draw_lines(cr: cairo.Context, positions: abc.Iterable[shapes.Vector2],
-               color: Color) -> None:
+               color: Color, thickness: float = 2.0) -> None:
     it1, it2 = itertools.tee(positions)
     next(it2, None)
     for pos1, pos2 in zip(it1, it2):
-        draw_line(cr, pos1, pos2, color)
+        draw_line(cr, pos1, pos2, color, thickness)
 
 
 def draw_circle(cr: cairo.Context, position: shapes.Vector2, radius: float,

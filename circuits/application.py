@@ -308,7 +308,9 @@ class Application:
         for component in self._circuit.components:
             component.display.draw(self, cr)
         for component in self._circuit.components:
-            component.display.draw_input_wires(self, cr)
+            component.display.draw_input_wires(self, cr, debugging=False)
+        for component in self._circuit.components:
+            component.display.draw_input_wires(self, cr, debugging=True)
         for component in self._circuit.components:
             component.display.draw_debug_values(self, cr)
         self._tool.draw(self, cr, self._mouse_pos)
