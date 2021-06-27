@@ -249,6 +249,7 @@ def _create_generic_multi_value_widget(title: str,
             row_values.clear()
             values_store.clear()
             initialize(values)
+            set_values()
 
         def handler_export(self, widget: Gtk.Widget) -> None:
             filename = save_load.show_save_dialog(
