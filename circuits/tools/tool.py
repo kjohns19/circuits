@@ -1,6 +1,7 @@
+import typing as t
+
 from gi.repository import Gdk  # type: ignore
 import cairo
-import typing as t
 
 from .. import utils
 

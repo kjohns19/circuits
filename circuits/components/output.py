@@ -1,7 +1,8 @@
-import cairo
 import itertools
 import textwrap
 import typing as t
+
+import cairo
 
 from .. import circuit as circuit_mod
 from .. import component as component_mod

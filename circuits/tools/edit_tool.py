@@ -1,8 +1,9 @@
-from gi.repository import Gdk  # type: ignore
-import cairo
 import collections.abc as abc
 import enum
 import typing as t
+
+from gi.repository import Gdk  # type: ignore
+import cairo
 
 from .. import shapes
 from .. import utils

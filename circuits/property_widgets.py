@@ -1,7 +1,8 @@
-from gi.repository import Gtk  # type: ignore
 import collections.abc as abc
 import json
 import typing as t
+
+from gi.repository import Gtk  # type: ignore
 
 from . import save_load
 from . import utils

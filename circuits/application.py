@@ -1,11 +1,11 @@
-from gi.repository import Gtk, Gdk  # type: ignore
-
-import cairo
 import collections
 import itertools
 import json
 import threading
 import typing as t
+
+from gi.repository import Gtk, Gdk  # type: ignore
+import cairo
 
 from . import component_registry
 from . import save_load

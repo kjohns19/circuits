@@ -1,12 +1,13 @@
-import cairo
 import collections.abc as abc
 import enum
-from gi.repository import Gtk, Gdk  # type: ignore
 import inspect
 import itertools
 import math
 import pathlib
 import typing as t
+
+from gi.repository import Gtk, Gdk  # type: ignore
+import cairo
 
 from . import circuit as circuit_mod
 from . import component as component_mod

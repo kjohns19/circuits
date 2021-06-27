@@ -1,8 +1,9 @@
-import cairo
 import collections
 import collections.abc as abc
 import functools
 import typing as t
+
+import cairo
 
 from . import component_display
 from . import component_registry

@@ -1,5 +1,6 @@
-from gi.repository import Gtk  # type: ignore
 import typing as t
+
+from gi.repository import Gtk  # type: ignore
 
 _WINDOW: t.Optional[Gtk.Window] = None
 

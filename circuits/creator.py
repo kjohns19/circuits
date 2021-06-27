@@ -1,7 +1,8 @@
-from gi.repository import Gtk  # type: ignore
 import collections
 import collections.abc as abc
 import typing as t
+
+from gi.repository import Gtk  # type: ignore
 
 from . import circuit as circuit_mod
 

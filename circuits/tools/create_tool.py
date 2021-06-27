@@ -1,5 +1,6 @@
-from gi.repository import Gdk  # type: ignore
 import typing as t
+
+from gi.repository import Gdk  # type: ignore
 
 from .. import utils
 

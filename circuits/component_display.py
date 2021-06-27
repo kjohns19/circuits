@@ -1,6 +1,7 @@
-import cairo
 import collections
 import typing as t
+
+import cairo
 
 from . import shapes
 from . import utils
