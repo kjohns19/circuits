@@ -5,7 +5,7 @@ from . import circuit
 from . import components  # noqa: F401 - import all components
 
 
-def main():
+def main() -> None:
     app = application.Application(circuit.Circuit())
     app.loop()
 

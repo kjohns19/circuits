@@ -1,32 +1,40 @@
+import cairo
 import itertools
 import textwrap
+import typing as t
 
-from .. import component as component_module
+from .. import circuit as circuit_mod
+from .. import component as component_mod
 from ..component_registry import registry
 from .. import shapes
 from .. import utils
+
+if t.TYPE_CHECKING:
+    from .. import application
 
 
 CATEGORY = 'Output'
 
 
 @registry.register('Display', CATEGORY)
-def display(circuit):
-    def on_draw(component, app, cr):
+def display(circuit: circuit_mod.Circuit) -> component_mod.Component:
+    def on_draw(component: component_mod.Component, app: 'application.Application',
+                cr: cairo.Context) -> None:
         text = str(component.inputs[0].value)
         position = component.display.center
         utils.draw_text(cr, text, position)
 
-    return component_module.Component(
+    return component_mod.Component(
         circuit, num_inputs=1, num_outputs=0, on_draw=on_draw)
 
 
 @registry.register('Console', CATEGORY)
-def console(circuit):
+def console(circuit: circuit_mod.Circuit) -> component_mod.Component:
     max_width = 20
     max_height = 7
 
-    def on_draw(component, app, cr):
+    def on_draw(component: component_mod.Component, app: 'application.Application',
+                cr: cairo.Context) -> None:
         lines = list(itertools.chain.from_iterable(
             textwrap.wrap(line, width=max_width, tabsize=4)
             for line in component.data['text'].split('\n')
@@ -50,13 +58,13 @@ def console(circuit):
                 h_align=utils.TextHAlign.LEFT,
                 v_align=utils.TextVAlign.BOTTOM)
 
-    def on_update(component):
+    def on_update(component: component_mod.Component) -> None:
         if component.inputs[2].value:
             component.data['text'] = ''
         elif component.inputs[0].value and not component.inputs[0].old_value:
             component.data['text'] += str(component.inputs[1].value)
 
-    component = component_module.Component(
+    component = component_mod.Component(
         circuit, num_inputs=3, num_outputs=0,
         on_draw=on_draw, on_update=on_update,
         input_labels=['clk', 'value', 'clear'])

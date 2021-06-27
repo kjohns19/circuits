@@ -1,10 +1,13 @@
+import collections.abc as abc
+import typing as t
+
 from .. import utils
 
 
 CATEGORY = 'Convert'
 
 
-_functions = [
+_functions: list[tuple[str, abc.Callable[..., t.Any]]] = [
     ('int', lambda x: int(x)),
     ('str', lambda x: str(x)),
     ('chr', chr),

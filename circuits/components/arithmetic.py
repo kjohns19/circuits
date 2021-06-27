@@ -1,12 +1,14 @@
+import collections.abc as abc
 import functools
 import operator
+import typing as t
 
 from .. import utils
 
 
 CATEGORY = 'Arithmetic'
 
-_operators = [
+_operators: list[tuple[str, abc.Callable[..., t.Any], int, int]] = [
     ('Add', (lambda *args: sum(args)), 2, 10),
     ('Sub', (lambda a, b: a-b), 2, 2),
     ('Mul', (lambda *args: functools.reduce(operator.mul, args)), 2, 10),

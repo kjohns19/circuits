@@ -1,4 +1,5 @@
-from .. import component as component_module
+from .. import component as component_mod
+from .. import circuit as circuit_mod
 from ..component_registry import registry
 from .. import properties
 from .. import utils
@@ -8,17 +9,14 @@ CATEGORY = 'Time'
 
 
 @registry.register('Clock', CATEGORY)
-def clock(circuit):
-    def on_update(component):
+def clock(circuit: circuit_mod.Circuit) -> component_mod.Component:
+    def on_update(component: component_mod.Component) -> None:
         value = not component.outputs[0].value
         component.outputs[0].value = value
-        delay = (
-            component.data['off_delay'],
-            component.data['on_delay']
-        )[int(value)]
+        delay = component.data['on_delay' if value else 'off_delay']
         component.schedule_update(delay)
 
-    component = component_module.Component(
+    component = component_mod.Component(
         circuit, num_inputs=0, num_outputs=1,
         output_labels=['clk'],
         on_update=on_update)
@@ -43,8 +41,8 @@ clock.add_property(properties.NumberProperty(
 
 
 @registry.register('Delay', CATEGORY)
-def delay(circuit):
-    def on_update(component):
+def delay(circuit: circuit_mod.Circuit) -> component_mod.Component:
+    def on_update(component: component_mod.Component) -> None:
         now = component.circuit.time
         old_value = component.inputs[0].old_value
         new_value = component.inputs[0].value
@@ -65,7 +63,7 @@ def delay(circuit):
                 # Not very efficient
                 del updates[0]
 
-    component = component_module.Component(
+    component = component_mod.Component(
         circuit, num_inputs=1, num_outputs=1,
         on_update=on_update)
     component.data['delay'] = 1

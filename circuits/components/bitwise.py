@@ -1,9 +1,12 @@
+import collections.abc as abc
+import typing as t
+
 from .. import utils
 
 
 CATEGORY = 'Bitwise'
 
-_operators = [
+_operators: list[tuple[str, abc.Callable[..., t.Any]]] = [
     ('And', lambda a, b: a & b),
     ('Or', lambda a, b: a | b),
     ('Nand', lambda a, b: ~(a & b)),

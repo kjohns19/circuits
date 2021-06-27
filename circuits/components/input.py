@@ -1,4 +1,7 @@
-from .. import component as component_module
+import typing as t
+
+from .. import circuit as circuit_mod
+from .. import component as component_mod
 from .. import component_display
 from ..component_registry import registry
 from .. import properties
@@ -9,24 +12,24 @@ CATEGORY = 'Input'
 
 
 @registry.register('Constant', CATEGORY)
-def constant(circuit):
-    component = component_module.Component(
+def constant(circuit: circuit_mod.Circuit) -> component_mod.Component:
+    component = component_mod.Component(
         circuit, num_inputs=0, num_outputs=2)
 
-    def output_label(idx):
+    def output_label(idx: int) -> str:
         return str(component.outputs[idx].value)
-    component.output_label = output_label
+    component.output_label = output_label  # type: ignore
 
     component.outputs[0].value = 0
     component.outputs[1].value = 1
     return component
 
 
-def constant_getter(component):
+def constant_getter(component: component_mod.Component) -> list[t.Any]:
     return [output.value for output in component.outputs]
 
 
-def constant_setter(component, values):
+def constant_setter(component: component_mod.Component, values: list[t.Any]) -> None:
     component.num_outputs = len(values)
     for i, value in enumerate(values):
         component.outputs[i].value = value
@@ -39,8 +42,8 @@ constant.add_property(properties.RangedMultiValueProperty(
 
 
 @registry.register('Button', CATEGORY)
-def button(circuit):
-    def on_click(component, button):
+def button(circuit: circuit_mod.Circuit) -> component_mod.Component:
+    def on_click(component: component_mod.Component, button: utils.MouseButton) -> None:
         if button == utils.MouseButton.LEFT:
             if component.data['click_state'] != 0:
                 return
@@ -56,7 +59,7 @@ def button(circuit):
             component.outputs[0].value = component.data['off_on'][int(on)]
             component.schedule_update()
 
-    def on_update(component):
+    def on_update(component: component_mod.Component) -> None:
         component.data['click_state'] = max(
             0, component.data['click_state'] - 1)
         if component.data['click_state'] > 0:
@@ -65,7 +68,7 @@ def button(circuit):
             component.outputs[0].value = component.data['off_on'][0]
             component.display.fill_color = component_display.WHITE
 
-    component = component_module.Component(
+    component = component_mod.Component(
         circuit,
         num_inputs=0, num_outputs=1,
         on_click=on_click,
@@ -84,7 +87,8 @@ button.add_property(properties.BoolProperty(
     label='Toggle'))
 
 
-def button_on_off_setter(component, values):
+def button_on_off_setter(component: component_mod.Component,
+                         values: list[t.Any]) -> None:
     component.data['off_on'] = values
     on = component.data['on']
     component.outputs[0].value = component.data['off_on'][int(on)]

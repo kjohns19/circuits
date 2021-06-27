@@ -1,11 +1,19 @@
 from gi.repository import Gtk  # type: ignore
 import typing as t
 
+_WINDOW: t.Optional[Gtk.Window] = None
 
-def show_save_dialog(window: Gtk.Window, title: str, filter_name: str,
+
+def register_window(window: Gtk.Window) -> None:
+    global _WINDOW
+    _WINDOW = window
+
+
+def show_save_dialog(title: str, filter_name: str,
                      filter_pattern: str) -> t.Optional[str]:
+    assert _WINDOW is not None
     dialog = Gtk.FileChooserDialog(
-        title, window,
+        title, _WINDOW,
         Gtk.FileChooserAction.SAVE,
         (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
          Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
@@ -13,10 +21,11 @@ def show_save_dialog(window: Gtk.Window, title: str, filter_name: str,
     return _show_dialog(dialog, filter_name, filter_pattern)
 
 
-def show_load_dialog(window: Gtk.Window, title: str, filter_name: str,
+def show_load_dialog(title: str, filter_name: str,
                      filter_pattern: str) -> t.Optional[str]:
+    assert _WINDOW is not None
     dialog = Gtk.FileChooserDialog(
-        title, window,
+        title, _WINDOW,
         Gtk.FileChooserAction.SAVE,
         (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
          Gtk.STOCK_OPEN, Gtk.ResponseType.OK))

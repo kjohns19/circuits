@@ -41,6 +41,8 @@ class WireTool(tool.Tool):
             self._wire_positions = []
             app.repaint()
 
+        nodes: t.Union[component_mod._ReadOnlyList[component_mod._Input],
+                       component_mod._ReadOnlyList[component_mod._Output]]
         if self._input is None:
             nodes = component.inputs
             title = 'Inputs'
