@@ -16,7 +16,7 @@ if t.TYPE_CHECKING:
 class WireTool(tool.Tool):
     def __init__(self) -> None:
         super().__init__()
-        self._input: t.Optional['component_mod._Input'] = None
+        self._input: t.Optional['component_mod.Input'] = None
         self._wire_positions: list[shapes.Vector2] = []
 
     def on_left_click(self, app: 'application.Application', event: Gdk.EventButton,
@@ -42,8 +42,7 @@ class WireTool(tool.Tool):
             self._wire_positions = []
             app.repaint()
 
-        nodes: t.Union[component_mod._ReadOnlyList[component_mod._Input],
-                       component_mod._ReadOnlyList[component_mod._Output]]
+        nodes: t.Union[list[component_mod.Input], list[component_mod.Output]]
         if self._input is None:
             nodes = component.inputs
             title = 'Inputs'

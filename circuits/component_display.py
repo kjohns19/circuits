@@ -140,11 +140,9 @@ class ComponentDisplay:
         utils.draw_rectangle(
             cr, self._rect, self._fill_color, self._outline_color)
 
-        InputsOrOutputs = t.Union[
-            'component_mod._ReadOnlyList[component_mod._Input]',
-            'component_mod._ReadOnlyList[component_mod._Output]']
-        node_data: list[tuple[InputsOrOutputs, bool,
-                              tuple[float, float], utils.TextHAlign]] = [
+        node_data: list[
+            tuple[t.Union[list['component_mod.Input'], list['component_mod.Output']],
+                  bool, tuple[float, float], utils.TextHAlign]] = [
             # Nodes, input, offset, text align
             (self._component.inputs, True,
              (NODE_RADIUS+2.0, 0.0), utils.TextHAlign.LEFT),
@@ -154,7 +152,7 @@ class ComponentDisplay:
 
         for nodes, is_input, offset, text_align in node_data:
             for i, node in enumerate(nodes):
-                node = t.cast(t.Union['component_mod._Input', 'component_mod._Output'],
+                node = t.cast(t.Union['component_mod.Input', 'component_mod.Output'],
                               node)
                 position = self.node_pos(is_input, i)
                 connected = node.is_connected()

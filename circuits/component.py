@@ -43,8 +43,8 @@ class Component:
 
         self._data: dict[str, t.Any] = {}
 
-        self._inputs: list['_Input'] = []
-        self._outputs: list['_Output'] = []
+        self._inputs: list['Input'] = []
+        self._outputs: list['Output'] = []
 
         self._display = component_display.ComponentDisplay(self)
 
@@ -85,7 +85,7 @@ class Component:
             lst=self._inputs,
             size=value,
             old_elem_func=lambda input, i: input.disconnect(),
-            new_elem_func=lambda i: _Input(self, i))
+            new_elem_func=lambda i: Input(self, i))
         self._display.recalculate_size()
 
     @property
@@ -98,16 +98,16 @@ class Component:
             lst=self._outputs,
             size=value,
             old_elem_func=lambda output, i: output.disconnect_all(),
-            new_elem_func=lambda i: _Output(self, i))
+            new_elem_func=lambda i: Output(self, i))
         self._display.recalculate_size()
 
     @property
-    def inputs(self) -> '_ReadOnlyList[_Input]':
-        return _ReadOnlyList(self._inputs)
+    def inputs(self) -> list['Input']:
+        return self._inputs
 
     @property
-    def outputs(self) -> '_ReadOnlyList[_Output]':
-        return _ReadOnlyList(self._outputs)
+    def outputs(self) -> list['Output']:
+        return self._outputs
 
     @property
     def display(self) -> component_display.ComponentDisplay:
@@ -270,14 +270,14 @@ def _resize_list(lst: list[_T], size: int,
     return lst
 
 
-class _Input:
+class Input:
     def __init__(self, component: Component, index: int) -> None:
         self._component = component
         self._index = index
         self._value: t.Any = None
         self._new_value: t.Any = None
         self._old_value: t.Any = None
-        self._connected_output: t.Optional['_Output'] = None
+        self._connected_output: t.Optional['Output'] = None
         self._wire_positions: list[shapes.Vector2] = []
 
     @property
@@ -307,7 +307,7 @@ class _Input:
         return self._old_value
 
     @property
-    def connected_output(self) -> t.Optional['_Output']:
+    def connected_output(self) -> t.Optional['Output']:
         return self._connected_output
 
     @property
@@ -363,7 +363,7 @@ class _Input:
     def update(self) -> None:
         self._old_value, self._value = self._value, self._new_value
 
-    def connect(self, output: '_Output',
+    def connect(self, output: 'Output',
                 wire_positions: t.Optional[list[shapes.Vector2]] = None) -> None:
         if self._connected_output is output:
             self._wire_positions = wire_positions or []
@@ -387,12 +387,12 @@ class _Input:
         return 'Input[comp={} idx={}]'.format(self.component, self.index)
 
 
-class _Output:
+class Output:
     def __init__(self, component: Component, index: int) -> None:
         self._component = component
         self._index = index
         self._value: t.Any = None
-        self._connected_inputs: set[_Input] = set()
+        self._connected_inputs: set[Input] = set()
 
     @property
     def component(self) -> Component:
@@ -417,7 +417,7 @@ class _Output:
         return self._component.output_label(self._index)
 
     @property
-    def connected_inputs(self) -> abc.Iterator[_Input]:
+    def connected_inputs(self) -> abc.Iterator[Input]:
         return iter(self._connected_inputs)
 
     def is_connected(self) -> bool:
@@ -429,14 +429,14 @@ class _Output:
             'value': self.value
         }
 
-    def connect(self, input: _Input,
+    def connect(self, input: Input,
                 wire_positions: t.Optional[list[shapes.Vector2]] = None) -> None:
         if input in self._connected_inputs:
             return
         self._connected_inputs.add(input)
         input.connect(self, wire_positions)
 
-    def disconnect(self, input: _Input) -> None:
+    def disconnect(self, input: Input) -> None:
         if input not in self._connected_inputs:
             return
         self._connected_inputs.remove(input)
@@ -450,23 +450,3 @@ class _Output:
 
     def __str__(self) -> str:
         return 'Output[comp={} idx={}]'.format(self.component, self.index)
-
-
-class _ReadOnlyList(t.Generic[_T]):
-    def __init__(self, lst: list[_T]) -> None:
-        self._lst = lst
-
-    def __getitem__(self, idx: int) -> _T:
-        return self._lst[idx]
-
-    def __str__(self) -> str:
-        return str(self._lst)
-
-    def __repr__(self) -> str:
-        return repr(self._lst)
-
-    def __iter__(self) -> abc.Iterator[_T]:
-        return iter(self._lst)
-
-    def __len__(self) -> int:
-        return len(self._lst)
