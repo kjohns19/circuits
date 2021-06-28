@@ -94,11 +94,19 @@ class Application:
         self._position = value
         self.repaint()
 
+    @property
+    def size(self) -> shapes.Vector2:
+        draw_size = self._draw_area.get_allocated_size().allocation
+        return shapes.Vector2((draw_size.width, draw_size.height))
+
     def is_key_pressed(self, keyname: str) -> bool:
         return keyname in self._keys
 
     def screen_position(self, position: shapes.Vector2) -> shapes.Vector2:
-        return position - self._position
+        return position - (self._position - self.size / 2)
+
+    def position_from_screen(self, position: shapes.Vector2) -> shapes.Vector2:
+        return position + (self._position - self.size / 2)
 
     def loop(self) -> None:
         exit_event = threading.Event()
@@ -283,7 +291,7 @@ class Application:
                 self._property_box.add(widget)
 
     def handler_draw_area_draw(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
-        cr.translate(*-self._position)
+        cr.translate(*-(self._position - self.size / 2))
         cr.set_source_surface(self._grid_surfaces[self._grid_size], 0, 0)
         cr.get_source().set_extend(cairo.EXTEND_REPEAT)
         cr.paint()
@@ -321,7 +329,7 @@ class Application:
 
     def handler_draw_area_mouse_button(self, widget: Gtk.Widget,
                                        event: Gdk.EventButton) -> bool:
-        position = self._position + (event.x, event.y)
+        position = self.position_from_screen(shapes.Vector2((event.x, event.y)))
         component = self._circuit.component_at_position(position)
 
         button = event.button
@@ -333,7 +341,7 @@ class Application:
 
     def handler_draw_area_mouse_move(self, widget: Gtk.Widget,
                                      event: Gdk.EventMotion) -> None:
-        self._mouse_pos = self._position + (event.x, event.y)
+        self._mouse_pos = self.position_from_screen(shapes.Vector2((event.x, event.y)))
         self._tool.on_move(self, event, self._mouse_pos)
 
     def handler_key_press(self, window: Gtk.Window, event: Gdk.EventKey) -> None:
