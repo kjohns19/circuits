@@ -278,7 +278,7 @@ class Input:
         self._new_value: t.Any = None
         self._old_value: t.Any = None
         self._connected_output: t.Optional['Output'] = None
-        self._wire_positions: list[shapes.Vector2] = []
+        self._wire_nodes: list['WireNode'] = []
 
     @property
     def component(self) -> Component:
@@ -315,14 +315,16 @@ class Input:
         return self._component.input_label(self._index)
 
     @property
+    def wire_nodes(self) -> list['WireNode']:
+        return self._wire_nodes
+
+    @property
     def wire_positions(self) -> list[shapes.Vector2]:
-        return self._wire_positions
+        return [node.position for node in self._wire_nodes]
 
     def move(self, amount: shapes.VecOrTup) -> None:
-        self._wire_positions = [
-            pos + amount
-            for pos in self._wire_positions
-        ]
+        for node in self._wire_nodes:
+            node.position += amount
 
     def is_connected(self) -> bool:
         return self._connected_output is not None
@@ -342,7 +344,7 @@ class Input:
             'new_value': self.new_value,
             'old_value': self.old_value,
             'connection': connected_data,
-            'wire_positions': [tuple(pos) for pos in self.wire_positions]
+            'wire_positions': [tuple(node.position) for node in self._wire_nodes]
         }
 
     def load(self, data: dict[str, t.Any],
@@ -356,8 +358,8 @@ class Input:
         self._value = data['value']
         self._new_value = data['new_value']
         self._old_value = data['old_value']
-        self._wire_positions = [
-            shapes.Vector2(pos) for pos in data['wire_positions']
+        self._wire_nodes = [
+            WireNode(shapes.Vector2(pos)) for pos in data['wire_positions']
         ]
 
     def update(self) -> None:
@@ -366,11 +368,11 @@ class Input:
     def connect(self, output: 'Output',
                 wire_positions: t.Optional[list[shapes.Vector2]] = None) -> None:
         if self._connected_output is output:
-            self._wire_positions = wire_positions or []
+            self._wire_nodes = [WireNode(pos) for pos in (wire_positions or [])]
             return
         self.disconnect()
         self._connected_output = output
-        self._wire_positions = wire_positions or []
+        self._wire_nodes = [WireNode(pos) for pos in (wire_positions or [])]
         self.value = output.value
         output.connect(self, wire_positions)
 
@@ -380,7 +382,7 @@ class Input:
             return
         self.value = None
         self._connected_output = None
-        self._wire_positions = []
+        self._wire_nodes = []
         output.disconnect(self)
 
     def __str__(self) -> str:
@@ -450,3 +452,16 @@ class Output:
 
     def __str__(self) -> str:
         return 'Output[comp={} idx={}]'.format(self.component, self.index)
+
+
+class WireNode:
+    def __init__(self, position: shapes.Vector2) -> None:
+        self._position = position
+
+    @property
+    def position(self) -> shapes.Vector2:
+        return self._position
+
+    @position.setter
+    def position(self, value: shapes.Vector2) -> None:
+        self._position = value
