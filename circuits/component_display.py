@@ -45,7 +45,7 @@ class ComponentDisplay:
 
     @position.setter
     def position(self, value: shapes.Vector2) -> None:
-        amount = shapes.Vector2(value) - self._rect.position
+        amount = value - self._rect.position
         self._rect.position = value
         for input in self._component.inputs:
             input.move(amount)
@@ -116,9 +116,11 @@ class ComponentDisplay:
         }
 
     def load(self, data: dict[str, t.Any]) -> None:
-        self.position = data['position']
-        self.outline_color = data['outline_color']
-        self.fill_color = data['fill_color']
+        def get_color(field: list[float]) -> utils.Color:
+            return (field[0], field[1], field[2])
+        self.position = shapes.Vector2(data['position'])
+        self.outline_color = get_color(data['outline_color'])
+        self.fill_color = get_color(data['fill_color'])
 
     def contains_point(self, point: shapes.VecOrTup) -> bool:
         return self._rect.contains_point(point)
