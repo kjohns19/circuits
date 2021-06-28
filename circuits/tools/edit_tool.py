@@ -26,7 +26,7 @@ class EditTool(tool.Tool):
         super().__init__()
         self._components: set['component_mod.Component'] = set()
         self._move_data: list[tuple['component_mod.Component', shapes.Vector2]] = []
-        self._select_pos: t.Optional[tuple[float, float]] = None
+        self._select_pos: t.Optional[shapes.Vector2] = None
 
     def _set(self, components: abc.Iterable['component_mod.Component'],
              position: shapes.VecOrTup) -> None:
@@ -43,7 +43,7 @@ class EditTool(tool.Tool):
         self._components.update(components)
 
     def on_left_click(self, app: 'application.Application', event: Gdk.EventButton,
-                      position: tuple[float, float],
+                      position: shapes.Vector2,
                       component: t.Optional['component_mod.Component']) -> None:
         app.repaint()
         mode = _get_mode(app)
@@ -59,7 +59,7 @@ class EditTool(tool.Tool):
             self._select_pos = position
 
     def on_left_release(self, app: 'application.Application', event: Gdk.EventButton,
-                        position: tuple[float, float],
+                        position: shapes.Vector2,
                         component: t.Optional['component_mod.Component']) -> None:
         if self._select_pos:
             mode = _get_mode(app)
@@ -72,13 +72,13 @@ class EditTool(tool.Tool):
             self._move_data = []
 
     def on_right_click(self, app: 'application.Application', event: Gdk.EventButton,
-                       position: tuple[float, float],
+                       position: shapes.Vector2,
                        component: t.Optional['component_mod.Component']) -> None:
         if component is not None:
             app.show_component_properties(component)
 
     def on_move(self, app: 'application.Application', event: Gdk.EventButton,
-                position: tuple[float, float]) -> None:
+                position: shapes.Vector2) -> None:
         super().on_move(app, event, position)
         if self._move_data:
             for component, offset in self._move_data:
@@ -89,7 +89,7 @@ class EditTool(tool.Tool):
             app.repaint()
 
     def draw(self, app: 'application.Application', cr: cairo.Context,
-             mouse_pos: tuple[float, float]) -> None:
+             mouse_pos: shapes.Vector2) -> None:
         color = (0, 0, 1)
         for component in self._components:
             rect = component.display.rect
@@ -121,12 +121,10 @@ class EditTool(tool.Tool):
                 self._components.add(component)
 
 
-def _get_rectangle(corner1: tuple[float, float],
-                   corner2: tuple[float, float]) -> shapes.Rectangle:
-    corner1vec = shapes.Vector2(corner1)
-    corner2vec = shapes.Vector2(corner2)
-    position = (min(corner1vec.x, corner2vec.x), min(corner1vec.y, corner2vec.y))
-    size = (abs(corner1vec.x - corner2vec.x), abs(corner1vec.y - corner2vec.y))
+def _get_rectangle(corner1: shapes.Vector2,
+                   corner2: shapes.Vector2) -> shapes.Rectangle:
+    position = (min(corner1.x, corner2.x), min(corner1.y, corner2.y))
+    size = (abs(corner1.x - corner2.x), abs(corner1.y - corner2.y))
     return shapes.Rectangle(size, position)
 
 

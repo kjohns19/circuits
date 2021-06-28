@@ -34,8 +34,8 @@ class Application:
             'Debug': tools.DebugTool()
         }
 
-        self._position = (0.0, 0.0)
-        self._mouse_pos = (0.0, 0.0)
+        self._position = shapes.Vector2((0.0, 0.0))
+        self._mouse_pos = shapes.Vector2((0.0, 0.0))
         self._grid_size = 20
         self._grid_surfaces = {
             20: cairo.ImageSurface.create_from_png(
@@ -86,22 +86,19 @@ class Application:
         return self._grid_size
 
     @property
-    def position(self) -> tuple[float, float]:
+    def position(self) -> shapes.Vector2:
         return self._position
 
     @position.setter
-    def position(self, value: tuple[float, float]) -> None:
-        self._position = (value[0], value[1])
+    def position(self, value: shapes.Vector2) -> None:
+        self._position = value
         self.repaint()
 
     def is_key_pressed(self, keyname: str) -> bool:
         return keyname in self._keys
 
-    def screen_position(self, position: tuple[float, float]) -> tuple[float, float]:
-        return (
-            position[0] - self._position[0],
-            position[1] - self._position[1]
-        )
+    def screen_position(self, position: shapes.Vector2) -> shapes.Vector2:
+        return position - self._position
 
     def loop(self) -> None:
         exit_event = threading.Event()
@@ -180,7 +177,7 @@ class Application:
         self._circuit.clear()
         for tool in self._tools.values():
             tool.reset(self)
-        self._position = (0.0, 0.0)
+        self._position = shapes.Vector2((0.0, 0.0))
         self.repaint()
 
     def handler_save(self, widget: Gtk.Widget) -> None:
@@ -190,7 +187,7 @@ class Application:
             return
 
         data = {
-            'position': self._position,
+            'position': tuple(self._position),
             'circuit': self._circuit.get_save_data()
         }
 
@@ -207,7 +204,7 @@ class Application:
             data = json.load(f)
 
         pos: list[float] = data['position']
-        self._position = (pos[0], pos[1])
+        self._position = shapes.Vector2((pos[0], pos[1]))
 
         self._circuit.load(data['circuit'])
 
@@ -221,7 +218,7 @@ class Application:
         components = utils.get_connected_components(selected)
 
         data = {
-            'position': self._position,
+            'position': tuple(self._position),
             'circuit': self._circuit.get_save_data(components)
         }
 
@@ -286,7 +283,7 @@ class Application:
                 self._property_box.add(widget)
 
     def handler_draw_area_draw(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
-        cr.translate(-self._position[0], -self._position[1])
+        cr.translate(*-self._position)
         cr.set_source_surface(self._grid_surfaces[self._grid_size], 0, 0)
         cr.get_source().set_extend(cairo.EXTEND_REPEAT)
         cr.paint()
@@ -324,7 +321,7 @@ class Application:
 
     def handler_draw_area_mouse_button(self, widget: Gtk.Widget,
                                        event: Gdk.EventButton) -> bool:
-        position = (event.x + self._position[0], event.y + self._position[1])
+        position = self._position + (event.x, event.y)
         component = self._circuit.component_at_position(position)
 
         button = event.button
@@ -336,10 +333,7 @@ class Application:
 
     def handler_draw_area_mouse_move(self, widget: Gtk.Widget,
                                      event: Gdk.EventMotion) -> None:
-        self._mouse_pos = (
-            event.x + self._position[0],
-            event.y + self._position[1]
-        )
+        self._mouse_pos = self._position + (event.x, event.y)
         self._tool.on_move(self, event, self._mouse_pos)
 
     def handler_key_press(self, window: Gtk.Window, event: Gdk.EventKey) -> None:

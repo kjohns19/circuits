@@ -3,8 +3,8 @@ import typing as t
 from gi.repository import Gdk  # type: ignore
 import cairo
 
-from .. import utils
 from .. import shapes
+from .. import utils
 
 from . import tool
 
@@ -20,7 +20,7 @@ class WireTool(tool.Tool):
         self._wire_positions: list[shapes.Vector2] = []
 
     def on_left_click(self, app: 'application.Application', event: Gdk.EventButton,
-                      position: tuple[float, float],
+                      position: shapes.Vector2,
                       component: t.Optional['component_mod.Component']) -> None:
         if component is None:
             if self._input is not None:
@@ -56,7 +56,7 @@ class WireTool(tool.Tool):
         utils.show_popup(title, options, event, callback)
 
     def on_right_click(self, app: 'application.Application', event: Gdk.EventButton,
-                       position: tuple[float, float],
+                       position: shapes.Vector2,
                        component: t.Optional['component_mod.Component']) -> None:
         if self._input is None and component is not None:
             def callback(idx: int, selection: str) -> None:
@@ -75,13 +75,13 @@ class WireTool(tool.Tool):
             app.repaint()
 
     def on_move(self, app: 'application.Application', event: Gdk.EventButton,
-                position: tuple[float, float]) -> None:
+                position: shapes.Vector2) -> None:
         super().on_move(app, event, position)
         if self._input is not None:
             app.repaint()
 
     def draw(self, app: 'application.Application', cr: cairo.Context,
-             mouse_pos: tuple[float, float]) -> None:
+             mouse_pos: shapes.Vector2) -> None:
         if self._input is None:
             return
 

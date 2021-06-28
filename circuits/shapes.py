@@ -31,6 +31,9 @@ class Vector2:
         yield self._x
         yield self._y
 
+    def __neg__(self) -> 'Vector2':
+        return Vector2((-self._x, -self._y))
+
     def __add__(self, vec: VecOrTup) -> 'Vector2':
         x, y = vec
         return Vector2((self._x+x, self._y+y))

@@ -2,6 +2,8 @@ import typing as t
 
 from gi.repository import Gdk  # type: ignore
 
+from .. import shapes
+
 from . import tool
 
 if t.TYPE_CHECKING:
@@ -11,7 +13,7 @@ if t.TYPE_CHECKING:
 
 class DebugTool(tool.Tool):
     def on_left_click(self, app: 'application.Application', event: Gdk.EventButton,
-                      position: tuple[float, float],
+                      position: shapes.Vector2,
                       component: t.Optional['component_mod.Component']) -> None:
         if component is not None:
             component.display.debug = not component.display.debug

@@ -2,6 +2,7 @@ import typing as t
 
 from gi.repository import Gdk  # type: ignore
 
+from .. import shapes
 from .. import utils
 
 from . import tool
@@ -27,7 +28,7 @@ class CreateTool(tool.Tool):
         self._creator = value
 
     def on_left_click(self, app: 'application.Application', event: Gdk.EventButton,
-                      position: tuple[float, float],
+                      position: shapes.Vector2,
                       component: t.Optional['component_mod.Component']) -> None:
         if self._creator is not None:
             self._component = self._creator(app.circuit)
@@ -36,12 +37,12 @@ class CreateTool(tool.Tool):
             app.repaint()
 
     def on_left_release(self, app: 'application.Application', event: Gdk.EventButton,
-                        position: tuple[float, float],
+                        position: shapes.Vector2,
                         component: t.Optional['component_mod.Component']) -> None:
         self._component = None
 
     def on_right_click(self, app: 'application.Application', event: Gdk.EventButton,
-                       position: tuple[float, float],
+                       position: shapes.Vector2,
                        component: t.Optional['component_mod.Component']) -> None:
         if not component:
             return
@@ -61,7 +62,7 @@ class CreateTool(tool.Tool):
         utils.show_popup('Delete?', ['Yes', 'No'], event, callback)
 
     def on_move(self, app: 'application.Application', event: Gdk.EventButton,
-                position: tuple[float, float]) -> None:
+                position: shapes.Vector2) -> None:
         super().on_move(app, event, position)
         if self._component:
             self._component.display.position = (
