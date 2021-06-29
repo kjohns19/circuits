@@ -1,4 +1,5 @@
 import collections.abc as abc
+import contextlib
 import enum
 import itertools
 import math
@@ -32,6 +33,15 @@ class TextVAlign(enum.Enum):
     TOP = 0
     MIDDLE = 1
     BOTTOM = 2
+
+
+@contextlib.contextmanager
+def save_state(cr: cairo.Context) -> abc.Generator[None, None, None]:
+    cr.save()
+    try:
+        yield
+    finally:
+        cr.restore()
 
 
 def text(cr: cairo.Context, text: str, position: shapes.Vector2, size: int = 12,

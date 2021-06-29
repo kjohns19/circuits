@@ -8,6 +8,7 @@ from gi.repository import Gtk, Gdk  # type: ignore
 import cairo
 
 from . import component_registry
+from . import draw
 from . import save_load
 from . import shapes
 from . import tools
@@ -291,34 +292,35 @@ class Application:
                 self._property_box.add(widget)
 
     def handler_draw_area_draw(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
-        cr.translate(*-(self._position - self.size / 2))
-        cr.set_source_surface(self._grid_surfaces[self._grid_size], 0, 0)
-        cr.get_source().set_extend(cairo.EXTEND_REPEAT)
-        cr.paint()
+        with draw.save_state(cr):
+            cr.translate(*-(self._position - self.size / 2))
+            cr.set_source_surface(self._grid_surfaces[self._grid_size], 0, 0)
+            cr.get_source().set_extend(cairo.EXTEND_REPEAT)
+            cr.paint()
 
-        # Color components that are updating in the next step
-        if self._color_updates:
-            next_updates, later_updates = self._circuit.components_to_update()
-            save_colors = {
-                component: component.display.fill_color
-                for component in itertools.chain(next_updates, later_updates)
-            }
-            # Components updating next are slightly blue
-            for component in next_updates:
-                component.display.fill_color = (0.9, 0.9, 1.0)
-            # Components updating later are light gray
-            for component in later_updates:
-                component.display.fill_color = (0.9, 0.9, 0.9)
+            # Color components that are updating in the next step
+            if self._color_updates:
+                next_updates, later_updates = self._circuit.components_to_update()
+                save_colors = {
+                    component: component.display.fill_color
+                    for component in itertools.chain(next_updates, later_updates)
+                }
+                # Components updating next are slightly blue
+                for component in next_updates:
+                    component.display.fill_color = (0.9, 0.9, 1.0)
+                # Components updating later are light gray
+                for component in later_updates:
+                    component.display.fill_color = (0.9, 0.9, 0.9)
 
-        for component in self._circuit.components:
-            component.display.draw(self, cr)
-        for component in self._circuit.components:
-            component.display.draw_input_wires(self, cr, debugging=False)
-        for component in self._circuit.components:
-            component.display.draw_input_wires(self, cr, debugging=True)
-        for component in self._circuit.components:
-            component.display.draw_debug_values(self, cr)
-        self._tool.draw(self, cr, self._mouse_pos)
+            for component in self._circuit.components:
+                component.display.draw(self, cr)
+            for component in self._circuit.components:
+                component.display.draw_input_wires(self, cr, debugging=False)
+            for component in self._circuit.components:
+                component.display.draw_input_wires(self, cr, debugging=True)
+            for component in self._circuit.components:
+                component.display.draw_debug_values(self, cr)
+            self._tool.draw(self, cr, self._mouse_pos)
 
         # Reset the color of the components that will update
         if self._color_updates:
@@ -326,6 +328,12 @@ class Application:
                 component.display.fill_color = save_colors[component]
             for component in later_updates:
                 component.display.fill_color = save_colors[component]
+
+        with draw.save_state(cr):
+            mouse_pos = self._mouse_pos / self._grid_size
+            draw_pos = shapes.Vector2((10, self.size.y - 10))
+            draw.text(cr, f'{mouse_pos:.0f}', draw_pos, size=12,
+                      h_align=draw.TextHAlign.LEFT, v_align=draw.TextVAlign.BOTTOM)
 
     def handler_draw_area_mouse_button(self, widget: Gtk.Widget,
                                        event: Gdk.EventButton) -> bool:
@@ -343,6 +351,7 @@ class Application:
                                      event: Gdk.EventMotion) -> None:
         self._mouse_pos = self.position_from_screen(shapes.Vector2((event.x, event.y)))
         self._tool.on_move(self, event, self._mouse_pos)
+        self.repaint()
 
     def handler_key_press(self, window: Gtk.Window, event: Gdk.EventKey) -> None:
         keyname = Gdk.keyval_name(event.keyval)

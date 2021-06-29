@@ -27,6 +27,12 @@ class Vector2:
     def set(self, xy: VecOrTup) -> None:
         self._x, self._y = xy
 
+    def __str__(self) -> str:
+        return format(self)
+
+    def __format__(self, fmt: str) -> str:
+        return f'({self._x:{fmt}}, {self._y:{fmt}})'
+
     def __iter__(self) -> abc.Generator[float, None, None]:
         yield self._x
         yield self._y
