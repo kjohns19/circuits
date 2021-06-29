@@ -38,10 +38,14 @@ class Application:
         self._position = shapes.Vector2((0.0, 0.0))
         self._mouse_pos = shapes.Vector2((0.0, 0.0))
         self._grid_size = 20
-        self._grid_surfaces = {
-            20: cairo.ImageSurface.create_from_png(
-                utils.data_file('grid20.png'))
-        }
+
+        self._zoom_levels = [0.25, 0.5, 1.0, 2.0]
+        self._grid_surfaces = [
+            cairo.ImageSurface.create_from_png(utils.data_file(f'grid{size:02}.png'))
+            for size in [5, 10, 20, 40]
+        ]
+
+        self._zoom_idx = 2
 
         builder = Gtk.Builder.new_from_file(utils.data_file('ui.glade'))
         builder.connect_signals(self)
@@ -100,14 +104,18 @@ class Application:
         draw_size = self._draw_area.get_allocated_size().allocation
         return shapes.Vector2((draw_size.width, draw_size.height))
 
+    @property
+    def scale(self) -> float:
+        return self._zoom_levels[self._zoom_idx]
+
     def is_key_pressed(self, keyname: str) -> bool:
         return keyname in self._keys
 
     def screen_position(self, position: shapes.Vector2) -> shapes.Vector2:
-        return position - (self._position - self.size / 2)
+        return (position - self._position) * self.scale + self.size / 2
 
     def position_from_screen(self, position: shapes.Vector2) -> shapes.Vector2:
-        return position + (self._position - self.size / 2)
+        return (position - self.size / 2) / self.scale + self._position
 
     def loop(self) -> None:
         exit_event = threading.Event()
@@ -293,10 +301,17 @@ class Application:
 
     def handler_draw_area_draw(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
         with draw.save_state(cr):
-            cr.translate(*-(self._position - self.size / 2))
-            cr.set_source_surface(self._grid_surfaces[self._grid_size], 0, 0)
+            # Round to prevent issues drawing images at fractional positions
+            cr.translate(*-round(self._position * self.scale - self.size / 2))
+            grid = self._grid_surfaces[self._zoom_idx]
+            cr.set_source_surface(grid, 0, 0)
             cr.get_source().set_extend(cairo.EXTEND_REPEAT)
             cr.paint()
+
+        with draw.save_state(cr):
+            cr.translate(*self.size/2)
+            cr.scale(self.scale, self.scale)
+            cr.translate(*-self._position)
 
             # Color components that are updating in the next step
             if self._color_updates:
@@ -361,3 +376,14 @@ class Application:
         keyname = Gdk.keyval_name(event.keyval)
         if keyname in self._keys:
             self._keys.remove(keyname)
+
+    def handler_zoom_in(self, widget: Gtk.Widget) -> None:
+        if self._zoom_idx < len(self._zoom_levels) - 1:
+            self._zoom_idx += 1
+            self.repaint()
+
+    def handler_zoom_out(self, widget: Gtk.Widget) -> None:
+        self.repaint()
+        if self._zoom_idx > 0:
+            self._zoom_idx -= 1
+            self.repaint()

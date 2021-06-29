@@ -33,6 +33,9 @@ class Vector2:
     def __format__(self, fmt: str) -> str:
         return f'({self._x:{fmt}}, {self._y:{fmt}})'
 
+    def __round__(self) -> 'Vector2':
+        return Vector2((round(self._x), round(self._y)))
+
     def __iter__(self) -> abc.Generator[float, None, None]:
         yield self._x
         yield self._y
