@@ -2,7 +2,7 @@ import typing as t
 
 from .. import circuit as circuit_mod
 from .. import component as component_mod
-from .. import component_display
+from .. import draw
 from ..component_registry import registry
 from .. import properties
 from .. import utils
@@ -54,7 +54,7 @@ def button(circuit: circuit_mod.Circuit) -> component_mod.Component:
                 on = True
                 component.data['click_state'] = 2
             component.data['on'] = on
-            color = (component_display.WHITE, component_display.GRAY)[int(on)]
+            color = (draw.COLOR_WHITE, draw.COLOR_GRAY)[int(on)]
             component.display.fill_color = color
             component.outputs[0].value = component.data['off_on'][int(on)]
             component.schedule_update()
@@ -66,7 +66,7 @@ def button(circuit: circuit_mod.Circuit) -> component_mod.Component:
             component.schedule_update()
         if not component.data['toggle']:
             component.outputs[0].value = component.data['off_on'][0]
-            component.display.fill_color = component_display.WHITE
+            component.display.fill_color = draw.COLOR_WHITE
 
     component = component_mod.Component(
         circuit,

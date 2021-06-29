@@ -6,9 +6,9 @@ import cairo
 
 from .. import circuit as circuit_mod
 from .. import component as component_mod
+from .. import draw
 from ..component_registry import registry
 from .. import shapes
-from .. import utils
 
 if t.TYPE_CHECKING:
     from .. import application
@@ -23,7 +23,7 @@ def display(circuit: circuit_mod.Circuit) -> component_mod.Component:
                 cr: cairo.Context) -> None:
         text = str(component.inputs[0].value)
         position = component.display.center
-        utils.draw_text(cr, text, position)
+        draw.text(cr, text, position)
 
     return component_mod.Component(
         circuit, num_inputs=1, num_outputs=0, on_draw=on_draw)
@@ -51,13 +51,13 @@ def console(circuit: circuit_mod.Circuit) -> component_mod.Component:
         rect = shapes.Rectangle(
             position=position-(4, 12*max_height),
             size=(max_width*7+8, max_height*12+4))
-        utils.draw_rectangle(cr, rect, (0.9, 0.9, 0.9), (0, 0, 0))
+        draw.rectangle(cr, rect, (0.9, 0.9, 0.9), (0, 0, 0))
         for i, line in enumerate(reversed(lines)):
             pos = position - (0, i*12)
-            utils.draw_text(
+            draw.text(
                 cr, line, pos,
-                h_align=utils.TextHAlign.LEFT,
-                v_align=utils.TextVAlign.BOTTOM)
+                h_align=draw.TextHAlign.LEFT,
+                v_align=draw.TextVAlign.BOTTOM)
 
     def on_update(component: component_mod.Component) -> None:
         if component.inputs[2].value:

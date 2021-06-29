@@ -3,7 +3,7 @@ import typing as t
 import cairo
 
 from . import shapes
-from . import utils
+from . import draw
 
 if t.TYPE_CHECKING:
     from . import application
@@ -17,16 +17,6 @@ OUTLINE_WIDTH = 1
 NODE_SEPARATION = 20
 NODE_RADIUS = 4
 
-BLACK = (0.0, 0.0, 0.0)
-GRAY = (0.8, 0.8, 0.8)
-WHITE = (1.0, 1.0, 1.0)
-RED = (1.0, 0.0, 0.0)
-YELLOW = (1.0, 1.0, 0.0)
-GREEN = (0.0, 1.0, 0.0)
-CYAN = (0.0, 1.0, 1.0)
-BLUE = (0.0, 0.0, 1.0)
-MAGENTA = (1.0, 0.0, 1.0)
-
 
 class ComponentDisplay:
     def __init__(self, component: 'component_mod.Component') -> None:
@@ -35,8 +25,8 @@ class ComponentDisplay:
         self._custom_width: t.Optional[float] = None
         self._custom_height: t.Optional[float] = None
         self.recalculate_size()
-        self._outline_color = BLACK
-        self._fill_color = WHITE
+        self._outline_color = draw.COLOR_BLACK
+        self._fill_color = draw.COLOR_WHITE
         self._debug = False
 
     @property
@@ -85,19 +75,19 @@ class ComponentDisplay:
         return self._rect
 
     @property
-    def outline_color(self) -> utils.Color:
+    def outline_color(self) -> draw.Color:
         return self._outline_color
 
     @outline_color.setter
-    def outline_color(self, color: utils.Color) -> None:
+    def outline_color(self, color: draw.Color) -> None:
         self._outline_color = color
 
     @property
-    def fill_color(self) -> utils.Color:
+    def fill_color(self) -> draw.Color:
         return self._fill_color
 
     @fill_color.setter
-    def fill_color(self, color: utils.Color) -> None:
+    def fill_color(self, color: draw.Color) -> None:
         self._fill_color = color
 
     @property
@@ -116,7 +106,7 @@ class ComponentDisplay:
         }
 
     def load(self, data: dict[str, t.Any]) -> None:
-        def get_color(field: list[float]) -> utils.Color:
+        def get_color(field: list[float]) -> draw.Color:
             return (field[0], field[1], field[2])
         self.position = shapes.Vector2(data['position'])
         self.outline_color = get_color(data['outline_color'])
@@ -139,17 +129,17 @@ class ComponentDisplay:
         return start + (0, NODE_SEPARATION//2) + (0, NODE_SEPARATION*idx)
 
     def draw(self, app: 'application.Application', cr: cairo.Context) -> None:
-        utils.draw_rectangle(
+        draw.rectangle(
             cr, self._rect, self._fill_color, self._outline_color)
 
         node_data: list[
             tuple[t.Union[list['component_mod.Input'], list['component_mod.Output']],
-                  bool, tuple[float, float], utils.TextHAlign]] = [
+                  bool, tuple[float, float], draw.TextHAlign]] = [
             # Nodes, input, offset, text align
             (self._component.inputs, True,
-             (NODE_RADIUS+2.0, 0.0), utils.TextHAlign.LEFT),
+             (NODE_RADIUS+2.0, 0.0), draw.TextHAlign.LEFT),
             (self._component.outputs, False,
-             (-NODE_RADIUS-2.0, 0.0), utils.TextHAlign.RIGHT),
+             (-NODE_RADIUS-2.0, 0.0), draw.TextHAlign.RIGHT),
         ]
 
         for nodes, is_input, offset, text_align in node_data:
@@ -159,15 +149,15 @@ class ComponentDisplay:
                 position = self.node_pos(is_input, i)
                 connected = node.is_connected()
                 fill_color = _node_color(node.value, connected)
-                utils.draw_circle(cr, position, NODE_RADIUS, fill_color, BLACK)
-                utils.draw_text(
+                draw.circle(cr, position, NODE_RADIUS, fill_color, draw.COLOR_BLACK)
+                draw.text(
                     cr, node.label, position + offset, size=10,
                     bold=True, h_align=text_align)
 
         name = self._component.name
         if name:
             position = self.center - (0, self._rect.height/2+8)
-            utils.draw_text(cr, name, position, bold=True)
+            draw.text(cr, name, position, bold=True)
 
         self._component.on_draw(app, cr)
 
@@ -191,47 +181,47 @@ class ComponentDisplay:
             positions = [input_pos] + input.wire_positions + [output_pos]
 
             color = _wire_color(input.new_value, debugging)
-            utils.draw_lines(cr, positions, color, thickness=4 if debugging else 2)
+            draw.lines(cr, positions, color, thickness=4 if debugging else 2)
             for pos in input.wire_positions:
-                utils.draw_circle(cr, pos, 2, color, color)
+                draw.circle(cr, pos, 2, color, color)
 
     def draw_debug_values(self, app: 'application.Application',
                           cr: cairo.Context) -> None:
         if not self._debug:
             return
 
-        color = GRAY
+        color = draw.COLOR_GRAY
 
         for i, in_node in enumerate(self._component.inputs):
             position = self.node_pos(True, i)
-            utils.draw_text(
+            draw.text(
                 cr, str(in_node.value), position - (NODE_RADIUS+1, 0), size=10,
-                h_align=utils.TextHAlign.RIGHT,
+                h_align=draw.TextHAlign.RIGHT,
                 bold=True, background_color=color)
 
         for i, out_node in enumerate(self._component.outputs):
             position = self.node_pos(False, i)
-            utils.draw_text(
+            draw.text(
                 cr, str(out_node.value), position + (NODE_RADIUS+1, 0), size=10,
-                h_align=utils.TextHAlign.LEFT,
+                h_align=draw.TextHAlign.LEFT,
                 bold=True, background_color=color)
 
 
-def _wire_color(value: t.Any, debug: bool = False) -> utils.Color:
+def _wire_color(value: t.Any, debug: bool = False) -> draw.Color:
     if debug:
         if isinstance(value, bool):
-            return MAGENTA if value else CYAN
+            return draw.COLOR_MAGENTA if value else draw.COLOR_CYAN
         else:
-            return BLUE
+            return draw.COLOR_BLUE
     else:
         if isinstance(value, bool):
-            return GREEN if value else RED
+            return draw.COLOR_GREEN if value else draw.COLOR_RED
         else:
-            return BLACK
+            return draw.COLOR_BLACK
 
 
-def _node_color(value: t.Any, connected: bool) -> utils.Color:
+def _node_color(value: t.Any, connected: bool) -> draw.Color:
     if isinstance(value, bool):
-        return GREEN if value else RED
+        return draw.COLOR_GREEN if value else draw.COLOR_RED
     else:
-        return BLACK if connected else WHITE
+        return draw.COLOR_BLACK if connected else draw.COLOR_WHITE

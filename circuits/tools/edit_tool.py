@@ -5,8 +5,8 @@ import typing as t
 from gi.repository import Gdk  # type: ignore
 import cairo
 
+from .. import draw
 from .. import shapes
-from .. import utils
 
 from . import tool
 
@@ -96,12 +96,12 @@ class EditTool(tool.Tool):
             rect = shapes.Rectangle(
                 size=rect.size+(20, 20),
                 position=rect.position-(10, 10))
-            utils.draw_rectangle(
+            draw.rectangle(
                 cr, rect, fill_color=None, outline_color=color)
 
         if self._select_pos:
             rect = _get_rectangle(self._select_pos, mouse_pos)
-            utils.draw_rectangle(
+            draw.rectangle(
                 cr, rect, fill_color=None, outline_color=color)
 
     def reset(self, app: 'application.Application') -> None:

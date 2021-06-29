@@ -3,6 +3,7 @@ import typing as t
 from gi.repository import Gdk  # type: ignore
 import cairo
 
+from .. import draw
 from .. import shapes
 from .. import utils
 
@@ -91,9 +92,9 @@ class WireTool(tool.Tool):
 
         positions = [node_pos] + self._wire_positions + [end_pos]
         color = (0, 0, 0)
-        utils.draw_lines(cr, positions, color)
+        draw.lines(cr, positions, color)
         for pos in self._wire_positions:
-            utils.draw_circle(cr, pos, 2, color, color)
+            draw.circle(cr, pos, 2, color, color)
 
     def reset(self, app: 'application.Application') -> None:
         self._input = None
