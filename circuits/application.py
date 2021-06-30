@@ -99,6 +99,24 @@ class Application:
         self._position = value
         self.repaint()
 
+    def center_position(self) -> None:
+        def min_bounds(r1: shapes.Rectangle, r2: shapes.Rectangle) -> shapes.Rectangle:
+            left = min(r1.left, r2.left)
+            right = max(r1.right, r2.right)
+            top = min(r1.top, r2.top)
+            bottom = max(r1.bottom, r2.bottom)
+            return shapes.Rectangle((right - left, bottom - top), (left, top))
+
+        rect: t.Optional[shapes.Rectangle] = None
+        for component in self._circuit.components:
+            if rect is None:
+                rect = component.display.bounds
+            else:
+                rect = min_bounds(rect, component.display.bounds)
+
+        if rect is not None:
+            self.position = rect.center
+
     @property
     def size(self) -> shapes.Vector2:
         draw_size = self._draw_area.get_allocated_size().allocation
@@ -224,6 +242,7 @@ class Application:
         self._position = shapes.Vector2((pos[0], pos[1]))
 
         self._circuit.load(data['circuit'])
+        self.center_position()
 
     def handler_export_module(self, widget: Gtk.Widget) -> None:
         filename = save_load.show_save_dialog(
