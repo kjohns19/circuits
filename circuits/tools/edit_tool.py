@@ -28,13 +28,6 @@ class EditTool(tool.Tool):
         self._move_data: list[tuple['component_mod.Component', shapes.Vector2]] = []
         self._select_pos: t.Optional[shapes.Vector2] = None
 
-    def _set(self, components: abc.Iterable['component_mod.Component'],
-             position: shapes.VecOrTup) -> None:
-        self._move_data = [
-            (component, component.display.position - position)
-            for component in components
-        ]
-
     def selected_components(self) -> list['component_mod.Component']:
         return list(self._components)
 
