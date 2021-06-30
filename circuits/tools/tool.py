@@ -65,8 +65,8 @@ class Tool:
                 position: shapes.Vector2) -> None:
         if self._app_pos is not None:
             assert self._mouse_screen_pos is not None
-            screen_pos = app.screen_position(position)
-            app.position = self._app_pos + (self._mouse_screen_pos - screen_pos) / app.scale
+            diff = self._mouse_screen_pos - app.screen_position(position)
+            app.position = self._app_pos + diff / app.scale
 
     def draw(self, app: 'application.Application', cr: cairo.Context,
              mouse_pos: shapes.Vector2) -> None:

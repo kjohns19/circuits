@@ -302,7 +302,7 @@ class Application:
     def handler_draw_area_draw(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
         with draw.save_state(cr):
             # Round to prevent issues drawing images at fractional positions
-            cr.translate(*-round(self._position * self.scale - self.size / 2))
+            cr.translate(*-(self._position * self.scale - self.size / 2).round())
             grid = self._grid_surfaces[self._zoom_idx]
             cr.set_source_surface(grid, 0, 0)
             cr.get_source().set_extend(cairo.EXTEND_REPEAT)
@@ -345,7 +345,7 @@ class Application:
                 component.display.fill_color = save_colors[component]
 
         with draw.save_state(cr):
-            mouse_pos = round(self._mouse_pos / self._grid_size)
+            mouse_pos = (self._mouse_pos / self._grid_size).round()
             draw_pos = shapes.Vector2((10, self.size.y - 10))
             draw.text(cr, str(mouse_pos), draw_pos, size=12,
                       h_align=draw.TextHAlign.LEFT, v_align=draw.TextVAlign.BOTTOM)
