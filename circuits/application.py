@@ -345,9 +345,9 @@ class Application:
                 component.display.fill_color = save_colors[component]
 
         with draw.save_state(cr):
-            mouse_pos = self._mouse_pos / self._grid_size
+            mouse_pos = round(self._mouse_pos / self._grid_size)
             draw_pos = shapes.Vector2((10, self.size.y - 10))
-            draw.text(cr, f'{mouse_pos:.0f}', draw_pos, size=12,
+            draw.text(cr, str(mouse_pos), draw_pos, size=12,
                       h_align=draw.TextHAlign.LEFT, v_align=draw.TextVAlign.BOTTOM)
 
     def handler_draw_area_mouse_button(self, widget: Gtk.Widget,
