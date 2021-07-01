@@ -58,6 +58,14 @@ class Vector2:
     def __truediv__(self, scalar: float) -> 'Vector2':
         return Vector2((self._x/scalar, self._y/scalar))
 
+    def __eq__(self, vec: object) -> bool:
+        if not isinstance(vec, Vector2):
+            return False
+        return self._x == vec._x and self._y == vec._y
+
+    def __ne__(self, vec: object) -> bool:
+        return not (self == vec)
+
 
 class Rectangle:
     def __init__(self, size: t.Optional[VecOrTup] = None,

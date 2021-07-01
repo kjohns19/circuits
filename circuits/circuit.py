@@ -113,6 +113,25 @@ class Circuit:
             if rectangle.contains_rectangle(component.display.rect)
         ]
 
+    def wire_node_at_position(self, position: shapes.VecOrTup) \
+            -> t.Optional[component_mod.WireNode]:
+        for component in self._components:
+            for input in component.inputs:
+                for node in input.wire_nodes:
+                    if node.position == position:
+                        return node
+        return None
+
+    def wire_nodes_in_rectangle(self, rectangle: shapes.Rectangle) \
+            -> list[component_mod.WireNode]:
+        nodes: list[component_mod.WireNode] = []
+        for component in self._components:
+            for input in component.inputs:
+                for node in input.wire_nodes:
+                    if rectangle.contains_point(node.position):
+                        nodes.append(node)
+        return nodes
+
     def schedule_update(self, component: component_mod.Component, delay: int) -> None:
         if delay < 1:
             delay = 1

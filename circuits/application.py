@@ -198,12 +198,8 @@ class Application:
             for name in names:
                 selector_store.append(iter, [name, category])
 
-    def snap_position(self, position: shapes.VecOrTup) -> shapes.Vector2:
-        def round_to_grid(value: float) -> int:
-            return int(self._grid_size * round(value / self._grid_size))
-
-        x, y = position
-        return shapes.Vector2((round_to_grid(x), round_to_grid(y)))
+    def snap_position(self, position: shapes.Vector2) -> shapes.Vector2:
+        return (position / self._grid_size).round() * self._grid_size
 
     def handler_exit(self, widget: Gtk.Widget) -> None:
         Gtk.main_quit()

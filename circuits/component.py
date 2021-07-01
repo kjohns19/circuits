@@ -322,10 +322,6 @@ class Input:
     def wire_positions(self) -> list[shapes.Vector2]:
         return [node.position for node in self._wire_nodes]
 
-    def move(self, amount: shapes.VecOrTup) -> None:
-        for node in self._wire_nodes:
-            node.position += amount
-
     def is_connected(self) -> bool:
         return self._connected_output is not None
 

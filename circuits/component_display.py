@@ -35,10 +35,7 @@ class ComponentDisplay:
 
     @position.setter
     def position(self, value: shapes.Vector2) -> None:
-        amount = value - self._rect.position
         self._rect.position = value
-        for input in self._component.inputs:
-            input.move(amount)
 
     @property
     def center(self) -> shapes.Vector2:
