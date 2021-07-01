@@ -40,16 +40,9 @@ def mux(circuit: circuit_mod.Circuit) -> component_mod.Component:
 
     component = component_mod.Component(
         circuit, num_inputs=3, num_outputs=1,
-        input_labels=['sel', 'in1', 'in2'],
+        input_labels=['sel'] + [f'in{i+1}' for i in range(9)],
         on_update=on_update)
     return component
 
 
-def _mux_set_labels(component: component_mod.Component, value: t.Any) -> None:
-    component.input_labels = (
-        ['sel'] + ['in{}'.format(i+1) for i in range(value-1)]
-    )
-
-
-mux.add_property(properties.NumInputsProperty(
-    callback=_mux_set_labels, min_value=3))
+mux.add_property(properties.NumInputsProperty(min_value=3))
