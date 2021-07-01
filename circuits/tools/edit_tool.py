@@ -36,9 +36,12 @@ class EditTool(tool.Tool):
     def selected_components(self) -> list['component_mod.Component']:
         return list(self._components)
 
-    def select(self, components: abc.Iterable['component_mod.Component']) -> None:
+    def select(self, components: abc.Iterable['component_mod.Component'],
+               wire_nodes: abc.Iterable['component_mod.WireNode']) -> None:
         self._components.clear()
+        self._wire_nodes.clear()
         self._components.update(components)
+        self._wire_nodes.update(wire_nodes)
 
     def on_left_click(self, app: 'application.Application', event: Gdk.EventButton,
                       position: shapes.Vector2,
@@ -128,6 +131,7 @@ class EditTool(tool.Tool):
 
     def reset(self, app: 'application.Application') -> None:
         self._components.clear()
+        self._wire_nodes.clear()
         app.repaint()
 
     def _modify_selection(self, mode: _Mode,

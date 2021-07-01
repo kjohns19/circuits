@@ -267,8 +267,12 @@ class Application:
             data = json.load(f)
 
         new_components = self._circuit.load_module(data['circuit'])
+        wire_nodes: list['component_mod.WireNode'] = []
+        for component in new_components:
+            for input in component.inputs:
+                wire_nodes.extend(input.wire_nodes)
         self._edit_tool_button.set_active(True)
-        self._edit_tool.select(new_components)
+        self._edit_tool.select(new_components, wire_nodes)
 
     def handler_play(self, widget: Gtk.ToggleToolButton) -> None:
         active = widget.get_active()
