@@ -40,6 +40,20 @@ class Creator:
     def add_property(self, property: 'properties.Property[t.Any]') -> None:
         self._properties.append(property)
 
+    def get_property_data(self, component: 'component_mod.Component') -> list[t.Any]:
+        return [
+            property.getter(component)
+            for property in self._properties
+        ]
+
+    def apply_property_data(self, component: 'component_mod.Component',
+                            data: list[t.Any]) -> None:
+        if len(data) != len(self._properties):
+            raise RuntimeError('Invalid data length. Expected {len(self._properties)}, '
+                               'got {len(data)}')
+        for property, prop_data in zip(self._properties, data):
+            property.setter(component, prop_data)
+
     def get_property_widgets(self,
                              component: t.Optional['component_mod.Component'] = None,
                              callback: t.Optional[

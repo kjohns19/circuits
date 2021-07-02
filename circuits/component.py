@@ -214,7 +214,9 @@ class Component:
             'inputs': [input.get_save_data() for input in self.inputs],
             'outputs': [output.get_save_data() for output in self.outputs],
             'display': self.display.get_save_data(),
-            'data': self._data
+            'data': self._data,
+            'property_data': (
+                self.creator.get_property_data(self) if self.creator else None)
         }
 
     @staticmethod
@@ -234,6 +236,9 @@ class Component:
 
         component._data = data['data']
         component.display.load(data['display'])
+
+        creator.apply_property_data(component, data['property_data'])
+
         return component
 
     def load_inputs(self, data: dict[str, t.Any],

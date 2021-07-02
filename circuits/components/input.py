@@ -15,11 +15,6 @@ CATEGORY = 'Input'
 def constant(circuit: circuit_mod.Circuit) -> component_mod.Component:
     component = component_mod.Component(
         circuit, num_inputs=0, num_outputs=2)
-
-    def output_label(idx: int) -> str:
-        return str(component.outputs[idx].value)
-    component.output_label = output_label  # type: ignore
-
     component.outputs[0].value = 0
     component.outputs[1].value = 1
     return component
@@ -33,6 +28,7 @@ def constant_setter(component: component_mod.Component, values: list[t.Any]) -> 
     component.num_outputs = len(values)
     for i, value in enumerate(values):
         component.outputs[i].value = value
+    component.output_labels = [str(val) for val in values]
 
 
 constant.add_property(properties.RangedMultiValueProperty(
