@@ -209,7 +209,6 @@ class Component:
     def get_save_data(self) -> dict[str, t.Any]:
         return {
             'id': self.id,
-            'name': self.name,
             'creator': self.creator.get_save_data() if self.creator else None,
             'inputs': [input.get_save_data() for input in self.inputs],
             'outputs': [output.get_save_data() for output in self.outputs],
@@ -225,7 +224,6 @@ class Component:
         creator = component_registry.registry.get_creator(
             creator_data['category'], creator_data['name'])
         component = creator(circuit)
-        component.name = data['name']
 
         component.num_inputs = len(data['inputs'])
 
