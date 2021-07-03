@@ -63,6 +63,7 @@ def button(circuit: circuit_mod.Circuit) -> component_mod.Component:
         if not component.data['toggle']:
             component.outputs[0].value = component.data['off_on'][0]
             component.display.fill_color = draw.COLOR_WHITE
+            component.data['on'] = False
 
     component = component_mod.Component(
         circuit,
