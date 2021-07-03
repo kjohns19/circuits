@@ -1,13 +1,12 @@
 {
     "position": [
-        -326.82470703125,
-        -997.778564453125
+        516.9119873046875,
+        -310.1602783203125
     ],
     "circuit": {
         "components": [
             {
                 "id": 0,
-                "name": "Data Ptr",
                 "creator": {
                     "category": "Storage",
                     "name": "Memory"
@@ -66,23 +65,29 @@
                         450.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Data Ptr",
+                    true,
+                    [
+                        0
+                    ]
+                ]
             },
             {
                 "id": 1,
-                "name": "Inc/Dec",
                 "creator": {
                     "category": "Logic",
                     "name": "Mux"
@@ -112,11 +117,11 @@
                             ],
                             [
                                 1040,
-                                320
+                                300
                             ],
                             [
                                 1440,
-                                320
+                                300
                             ],
                             [
                                 1440,
@@ -209,21 +214,24 @@
                         490.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Inc/Dec",
+                    3
+                ]
             },
             {
                 "id": 2,
-                "name": "Add",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Add"
@@ -290,21 +298,24 @@
                         570.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Add",
+                    2
+                ]
             },
             {
                 "id": 3,
-                "name": "Sub",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Sub"
@@ -362,21 +373,23 @@
                         630.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Sub"
+                ]
             },
             {
                 "id": 4,
-                "name": "Constant",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -394,21 +407,26 @@
                         650.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Constant",
+                    [
+                        1
+                    ]
+                ]
             },
             {
                 "id": 5,
-                "name": "Constant",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -454,25 +472,38 @@
                 ],
                 "display": {
                     "position": [
-                        700,
+                        720,
                         -210.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Constant",
+                    [
+                        "+",
+                        "-",
+                        ">",
+                        "<",
+                        "[",
+                        "]",
+                        ".",
+                        ",",
+                        ";"
+                    ]
+                ]
             },
             {
                 "id": 6,
-                "name": "+ Inc Data",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -480,20 +511,20 @@
                 "inputs": [
                     {
                         "index": 0,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
                         },
                         "wire_positions": [
                             [
-                                900,
+                                920,
                                 -360
                             ],
                             [
-                                900,
+                                920,
                                 160
                             ]
                         ]
@@ -509,11 +540,11 @@
                         },
                         "wire_positions": [
                             [
-                                820,
+                                840,
                                 -340.0
                             ],
                             [
-                                820,
+                                840,
                                 -200.0
                             ]
                         ]
@@ -522,30 +553,32 @@
                 "outputs": [
                     {
                         "index": 0,
-                        "value": false
+                        "value": true
                     }
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         -370.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "+ Inc Data"
+                ]
             },
             {
                 "id": 7,
-                "name": "- Dec Data",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -553,20 +586,20 @@
                 "inputs": [
                     {
                         "index": 0,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
                         },
                         "wire_positions": [
                             [
-                                900,
+                                920,
                                 -300
                             ],
                             [
-                                900,
+                                920,
                                 160
                             ]
                         ]
@@ -582,11 +615,11 @@
                         },
                         "wire_positions": [
                             [
-                                840,
+                                860,
                                 -280.0
                             ],
                             [
-                                840,
+                                860,
                                 -180.0
                             ]
                         ]
@@ -600,25 +633,27 @@
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         -310.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "- Dec Data"
+                ]
             },
             {
                 "id": 8,
-                "name": "> Inc Ptr",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -626,20 +661,20 @@
                 "inputs": [
                     {
                         "index": 0,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
                         },
                         "wire_positions": [
                             [
-                                900,
+                                920,
                                 -240
                             ],
                             [
-                                900,
+                                920,
                                 160
                             ]
                         ]
@@ -655,11 +690,11 @@
                         },
                         "wire_positions": [
                             [
-                                860,
+                                880,
                                 -220.0
                             ],
                             [
-                                860,
+                                880,
                                 -160.0
                             ]
                         ]
@@ -673,25 +708,27 @@
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         -250.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "> Inc Ptr"
+                ]
             },
             {
                 "id": 9,
-                "name": "< Dec Ptr",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -699,20 +736,20 @@
                 "inputs": [
                     {
                         "index": 0,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
                         },
                         "wire_positions": [
                             [
-                                900,
+                                920,
                                 -180
                             ],
                             [
-                                900,
+                                920,
                                 160
                             ]
                         ]
@@ -728,11 +765,11 @@
                         },
                         "wire_positions": [
                             [
-                                880,
+                                900,
                                 -160.0
                             ],
                             [
-                                880,
+                                900,
                                 -140.0
                             ]
                         ]
@@ -746,25 +783,27 @@
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         -190.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "< Dec Ptr"
+                ]
             },
             {
                 "id": 10,
-                "name": "[ Loop Open",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -781,31 +820,31 @@
                         },
                         "wire_positions": [
                             [
-                                880,
+                                900,
                                 -100.0
                             ],
                             [
-                                880,
+                                900,
                                 -120.0
                             ]
                         ]
                     },
                     {
                         "index": 1,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
                         },
                         "wire_positions": [
                             [
-                                900,
+                                920,
                                 -80
                             ],
                             [
-                                900,
+                                920,
                                 160
                             ]
                         ]
@@ -819,25 +858,27 @@
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         -110.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "[ Loop Open"
+                ]
             },
             {
                 "id": 11,
-                "name": "] Loop Close",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -854,31 +895,31 @@
                         },
                         "wire_positions": [
                             [
-                                860,
+                                880,
                                 -40.0
                             ],
                             [
-                                860,
+                                880,
                                 -100.0
                             ]
                         ]
                     },
                     {
                         "index": 1,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
                         },
                         "wire_positions": [
                             [
-                                900,
+                                920,
                                 -20
                             ],
                             [
-                                900,
+                                920,
                                 160
                             ]
                         ]
@@ -892,25 +933,27 @@
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         -50.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "] Loop Close"
+                ]
             },
             {
                 "id": 12,
-                "name": ". Print",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -927,31 +970,31 @@
                         },
                         "wire_positions": [
                             [
-                                840,
+                                860,
                                 20.0
                             ],
                             [
-                                840,
+                                860,
                                 -80.0
                             ]
                         ]
                     },
                     {
                         "index": 1,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
                         },
                         "wire_positions": [
                             [
-                                900,
+                                920,
                                 40
                             ],
                             [
-                                900,
+                                920,
                                 160
                             ]
                         ]
@@ -965,25 +1008,27 @@
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         10.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    ". Print"
+                ]
             },
             {
                 "id": 13,
-                "name": ", Read",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -1000,31 +1045,31 @@
                         },
                         "wire_positions": [
                             [
-                                820,
+                                840,
                                 80.0
                             ],
                             [
-                                820,
+                                840,
                                 -60.0
                             ]
                         ]
                     },
                     {
                         "index": 1,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
                         },
                         "wire_positions": [
                             [
-                                900,
+                                920,
                                 100
                             ],
                             [
-                                900,
+                                920,
                                 160
                             ]
                         ]
@@ -1033,30 +1078,32 @@
                 "outputs": [
                     {
                         "index": 0,
-                        "value": true
+                        "value": false
                     }
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         70.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    ", Read"
+                ]
             },
             {
                 "id": 14,
-                "name": "; End",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -1073,20 +1120,20 @@
                         },
                         "wire_positions": [
                             [
-                                800,
+                                820,
                                 140.0
                             ],
                             [
-                                800,
+                                820,
                                 -40.0
                             ]
                         ]
                     },
                     {
                         "index": 1,
-                        "value": ",",
-                        "new_value": ",",
-                        "old_value": "+",
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": ",",
                         "connection": {
                             "component_id": 81,
                             "index": 0
@@ -1102,25 +1149,27 @@
                 ],
                 "display": {
                     "position": [
-                        920,
+                        940,
                         130.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "; End"
+                ]
             },
             {
                 "id": 15,
-                "name": "Data",
                 "creator": {
                     "category": "Storage",
                     "name": "RAM"
@@ -1137,12 +1186,12 @@
                         },
                         "wire_positions": [
                             [
-                                1780,
-                                440
+                                1800,
+                                440.0
                             ],
                             [
-                                1780,
-                                400
+                                1800,
+                                400.0
                             ]
                         ]
                     },
@@ -1159,9 +1208,9 @@
                     },
                     {
                         "index": 2,
-                        "value": 72,
-                        "new_value": 72,
-                        "old_value": 1,
+                        "value": 1,
+                        "new_value": 1,
+                        "old_value": 72,
                         "connection": {
                             "component_id": 16,
                             "index": 0
@@ -1169,11 +1218,11 @@
                         "wire_positions": [
                             [
                                 1760,
-                                480.0
+                                480
                             ],
                             [
                                 1760,
-                                500.0
+                                500
                             ]
                         ]
                     }
@@ -1186,18 +1235,18 @@
                 ],
                 "display": {
                     "position": [
-                        1800,
+                        1820,
                         430.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
@@ -1304,11 +1353,116 @@
                         0
                     ],
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Data",
+                    true,
+                    [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ]
             },
             {
                 "id": 16,
-                "name": "Inc/Dec/Read",
                 "creator": {
                     "category": "Logic",
                     "name": "Mux"
@@ -1316,9 +1470,9 @@
                 "inputs": [
                     {
                         "index": 0,
-                        "value": 2,
-                        "new_value": 2,
-                        "old_value": 0,
+                        "value": 0,
+                        "new_value": 0,
+                        "old_value": 2,
                         "connection": {
                             "component_id": 88,
                             "index": 0
@@ -1438,7 +1592,7 @@
                 "outputs": [
                     {
                         "index": 0,
-                        "value": 72
+                        "value": 1
                     }
                 ],
                 "display": {
@@ -1447,21 +1601,24 @@
                         490.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Inc/Dec/Read",
+                    4
+                ]
             },
             {
                 "id": 17,
-                "name": "Add",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Add"
@@ -1479,19 +1636,19 @@
                         "wire_positions": [
                             [
                                 1780,
-                                580.0
+                                580
                             ],
                             [
                                 1780,
-                                500.0
+                                500
                             ],
                             [
-                                1900,
-                                500.0
+                                1920,
+                                500
                             ],
                             [
-                                1900,
-                                440.0
+                                1920,
+                                440
                             ]
                         ]
                     },
@@ -1528,21 +1685,24 @@
                         570.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Add",
+                    2
+                ]
             },
             {
                 "id": 18,
-                "name": "Sub",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Sub"
@@ -1560,19 +1720,19 @@
                         "wire_positions": [
                             [
                                 1780,
-                                640.0
+                                640
                             ],
                             [
                                 1780,
-                                500.0
+                                500
                             ],
                             [
-                                1900,
-                                500.0
+                                1920,
+                                500
                             ],
                             [
-                                1900,
-                                440.0
+                                1920,
+                                440
                             ]
                         ]
                     },
@@ -1600,21 +1760,23 @@
                         630.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Sub"
+                ]
             },
             {
                 "id": 19,
-                "name": "Constant",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -1632,21 +1794,26 @@
                         650.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Constant",
+                    [
+                        1
+                    ]
+                ]
             },
             {
                 "id": 20,
-                "name": "Or",
                 "creator": {
                     "category": "Logic",
                     "name": "Or"
@@ -1654,9 +1821,9 @@
                 "inputs": [
                     {
                         "index": 0,
-                        "value": false,
-                        "new_value": false,
-                        "old_value": true,
+                        "value": true,
+                        "new_value": true,
+                        "old_value": false,
                         "connection": {
                             "component_id": 6,
                             "index": 0
@@ -1694,9 +1861,9 @@
                     },
                     {
                         "index": 2,
-                        "value": true,
-                        "new_value": true,
-                        "old_value": false,
+                        "value": false,
+                        "new_value": false,
+                        "old_value": true,
                         "connection": {
                             "component_id": 13,
                             "index": 0
@@ -1733,21 +1900,24 @@
                         390.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Or",
+                    3
+                ]
             },
             {
                 "id": 21,
-                "name": "Console",
                 "creator": {
                     "category": "Output",
                     "name": "Console"
@@ -1765,27 +1935,27 @@
                         "wire_positions": [
                             [
                                 440,
-                                -760
+                                -760.0
                             ],
                             [
                                 440,
-                                -560
+                                -560.0
                             ],
                             [
                                 1560,
-                                -560
+                                -560.0
                             ],
                             [
                                 1560,
-                                300
+                                300.0
                             ],
                             [
                                 2060,
-                                300
+                                300.0
                             ],
                             [
                                 2060,
-                                340
+                                340.0
                             ]
                         ]
                     },
@@ -1801,27 +1971,27 @@
                         "wire_positions": [
                             [
                                 460,
-                                -740
+                                -740.0
                             ],
                             [
                                 460,
-                                -580
+                                -580.0
                             ],
                             [
                                 1580,
-                                -580
+                                -580.0
                             ],
                             [
                                 1580,
-                                280
+                                280.0
                             ],
                             [
                                 2080,
-                                280
+                                280.0
                             ],
                             [
                                 2080,
-                                440
+                                440.0
                             ]
                         ]
                     },
@@ -1844,23 +2014,25 @@
                         -770.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "text": ""
-                }
+                },
+                "property_data": [
+                    "Console"
+                ]
             },
             {
                 "id": 22,
-                "name": "Clock",
                 "creator": {
                     "category": "Time",
                     "name": "Clock"
@@ -1878,24 +2050,28 @@
                         -430.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "off_delay": 6,
                     "on_delay": 1
-                }
+                },
+                "property_data": [
+                    "Clock",
+                    6,
+                    1
+                ]
             },
             {
                 "id": 23,
-                "name": "Step",
                 "creator": {
                     "category": "Input",
                     "name": "Button"
@@ -1913,29 +2089,36 @@
                         -470.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "click_state": 0,
-                    "on": true,
+                    "on": false,
                     "toggle": false,
                     "off_on": [
                         false,
                         true
                     ]
-                }
+                },
+                "property_data": [
+                    "Step",
+                    false,
+                    [
+                        false,
+                        true
+                    ]
+                ]
             },
             {
                 "id": 24,
-                "name": "Run",
                 "creator": {
                     "category": "Input",
                     "name": "Button"
@@ -1953,14 +2136,14 @@
                         -510.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
@@ -1971,11 +2154,18 @@
                         false,
                         true
                     ]
-                }
+                },
+                "property_data": [
+                    "Run",
+                    true,
+                    [
+                        false,
+                        true
+                    ]
+                ]
             },
             {
                 "id": 25,
-                "name": "Clk",
                 "creator": {
                     "category": "Logic",
                     "name": "Mux"
@@ -2045,21 +2235,24 @@
                         -510.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Clk",
+                    3
+                ]
             },
             {
                 "id": 26,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -2170,21 +2363,24 @@
                         390.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    3
+                ]
             },
             {
                 "id": 27,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -2278,21 +2474,24 @@
                         410.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    3
+                ]
             },
             {
                 "id": 28,
-                "name": "chr",
                 "creator": {
                     "category": "Convert",
                     "name": "chr"
@@ -2322,21 +2521,23 @@
                         430.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "chr"
+                ]
             },
             {
                 "id": 29,
-                "name": "Code Ptr",
                 "creator": {
                     "category": "Storage",
                     "name": "Memory"
@@ -2403,23 +2604,29 @@
                         170.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Code Ptr",
+                    true,
+                    [
+                        0
+                    ]
+                ]
             },
             {
                 "id": 30,
-                "name": "Inc/Set/Dec",
                 "creator": {
                     "category": "Logic",
                     "name": "Mux"
@@ -2434,16 +2641,7 @@
                             "component_id": 77,
                             "index": 0
                         },
-                        "wire_positions": [
-                            [
-                                160,
-                                220
-                            ],
-                            [
-                                160,
-                                40
-                            ]
-                        ]
+                        "wire_positions": []
                     },
                     {
                         "index": 1,
@@ -2566,21 +2764,24 @@
                         210.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Inc/Set/Dec",
+                    4
+                ]
             },
             {
                 "id": 31,
-                "name": "Add",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Add"
@@ -2647,21 +2848,24 @@
                         310.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Add",
+                    2
+                ]
             },
             {
                 "id": 32,
-                "name": "Sub",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Sub"
@@ -2719,21 +2923,23 @@
                         370.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Sub"
+                ]
             },
             {
                 "id": 33,
-                "name": "Constant",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -2751,21 +2957,26 @@
                         390.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Constant",
+                    [
+                        1
+                    ]
+                ]
             },
             {
                 "id": 34,
-                "name": "Loops",
                 "creator": {
                     "category": "Storage",
                     "name": "RAM"
@@ -2851,14 +3062,14 @@
                         230.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
@@ -2965,11 +3176,116 @@
                         null
                     ],
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Loops",
+                    true,
+                    [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ]
+                ]
             },
             {
                 "id": 35,
-                "name": "Clk",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -2994,11 +3310,11 @@
                                 600
                             ],
                             [
-                                -640,
+                                -480,
                                 600
                             ],
                             [
-                                -640,
+                                -480,
                                 -200
                             ],
                             [
@@ -3032,24 +3348,27 @@
                         910.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Clk",
+                    1
+                ]
             },
             {
                 "id": 36,
-                "name": "Push",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -3088,24 +3407,27 @@
                         950.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Push",
+                    1
+                ]
             },
             {
                 "id": 37,
-                "name": "Pop",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -3144,24 +3466,27 @@
                         990.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Pop",
+                    1
+                ]
             },
             {
                 "id": 38,
-                "name": "Value",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -3208,24 +3533,27 @@
                         1030.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Value",
+                    1
+                ]
             },
             {
                 "id": 39,
-                "name": "Loop Stack",
                 "creator": {
                     "category": "Storage",
                     "name": "RAM"
@@ -3295,14 +3623,14 @@
                         870.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
@@ -3409,11 +3737,116 @@
                         null
                     ],
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Loop Stack",
+                    true,
+                    [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ]
+                ]
             },
             {
                 "id": 40,
-                "name": "Size",
                 "creator": {
                     "category": "Storage",
                     "name": "Memory"
@@ -3463,23 +3896,29 @@
                         1070.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Size",
+                    true,
+                    [
+                        0
+                    ]
+                ]
             },
             {
                 "id": 41,
-                "name": "Add",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Add"
@@ -3546,21 +3985,24 @@
                         1210.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Add",
+                    2
+                ]
             },
             {
                 "id": 42,
-                "name": "Sub",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Sub"
@@ -3618,21 +4060,23 @@
                         1270.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Sub"
+                ]
             },
             {
                 "id": 43,
-                "name": "Mux",
                 "creator": {
                     "category": "Logic",
                     "name": "Mux"
@@ -3718,21 +4162,24 @@
                         1090.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Mux",
+                    3
+                ]
             },
             {
                 "id": 44,
-                "name": "Constant",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -3750,21 +4197,26 @@
                         1290.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Constant",
+                    [
+                        1
+                    ]
+                ]
             },
             {
                 "id": 45,
-                "name": "Or",
                 "creator": {
                     "category": "Logic",
                     "name": "Or"
@@ -3814,21 +4266,24 @@
                         950.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Or",
+                    2
+                ]
             },
             {
                 "id": 46,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -3878,21 +4333,24 @@
                         930.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    2
+                ]
             },
             {
                 "id": 47,
-                "name": "Delay (1)",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -3931,24 +4389,27 @@
                         1090.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Delay (1)",
+                    1
+                ]
             },
             {
                 "id": 48,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -3998,21 +4459,24 @@
                         870.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    2
+                ]
             },
             {
                 "id": 49,
-                "name": "Delay (1)",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -4042,24 +4506,27 @@
                         910.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Delay (1)",
+                    1
+                ]
             },
             {
                 "id": 50,
-                "name": "Delay (1)",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -4098,24 +4565,27 @@
                         870.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Delay (1)",
+                    1
+                ]
             },
             {
                 "id": 51,
-                "name": "Delay (1)",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -4145,24 +4615,27 @@
                         870.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Delay (1)",
+                    1
+                ]
             },
             {
                 "id": 52,
-                "name": "Delay (3)",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -4192,24 +4665,27 @@
                         1030.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 3,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Delay (3)",
+                    3
+                ]
             },
             {
                 "id": 53,
-                "name": "States",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -4239,21 +4715,29 @@
                         870.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "States",
+                    [
+                        0,
+                        1,
+                        2,
+                        3
+                    ]
+                ]
             },
             {
                 "id": 54,
-                "name": "Loop Forward",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -4303,21 +4787,23 @@
                         790.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Loop Forward"
+                ]
             },
             {
                 "id": 55,
-                "name": "Loop Backward",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -4376,21 +4862,23 @@
                         850.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Loop Backward"
+                ]
             },
             {
                 "id": 56,
-                "name": "Run",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -4449,21 +4937,23 @@
                         930.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Run"
+                ]
             },
             {
                 "id": 57,
-                "name": "End",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -4522,21 +5012,23 @@
                         990.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "End"
+                ]
             },
             {
                 "id": 58,
-                "name": "State",
                 "creator": {
                     "category": "Storage",
                     "name": "Memory"
@@ -4586,23 +5078,29 @@
                         790.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "State",
+                    true,
+                    [
+                        0
+                    ]
+                ]
             },
             {
                 "id": 59,
-                "name": "Mux",
                 "creator": {
                     "category": "Logic",
                     "name": "Mux"
@@ -4668,14 +5166,14 @@
                             ],
                             [
                                 980,
-                                260
+                                240
                             ],
                             [
-                                1020,
-                                260
+                                1040,
+                                240
                             ],
                             [
-                                1020,
+                                1040,
                                 140
                             ]
                         ]
@@ -4723,14 +5221,14 @@
                             ],
                             [
                                 980,
-                                260
+                                240
                             ],
                             [
-                                1020,
-                                260
+                                1040,
+                                240
                             ],
                             [
-                                1020,
+                                1040,
                                 140
                             ]
                         ]
@@ -4756,21 +5254,24 @@
                         690.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Mux",
+                    5
+                ]
             },
             {
                 "id": 60,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -4795,11 +5296,11 @@
                                 600
                             ],
                             [
-                                -640,
+                                -480,
                                 600
                             ],
                             [
-                                -640,
+                                -480,
                                 -200
                             ],
                             [
@@ -4844,21 +5345,24 @@
                         670.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    2
+                ]
             },
             {
                 "id": 61,
-                "name": "Add",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Add"
@@ -4924,21 +5428,24 @@
                         810.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Add",
+                    2
+                ]
             },
             {
                 "id": 62,
-                "name": "Constant",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -4952,25 +5459,30 @@
                 ],
                 "display": {
                     "position": [
-                        -560,
+                        -440,
                         810.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Constant",
+                    [
+                        1
+                    ]
+                ]
             },
             {
                 "id": 63,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -5065,21 +5577,24 @@
                         330.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    3
+                ]
             },
             {
                 "id": 64,
-                "name": "==",
                 "creator": {
                     "category": "Compare",
                     "name": "=="
@@ -5096,11 +5611,11 @@
                         },
                         "wire_positions": [
                             [
-                                -660,
+                                -500,
                                 740
                             ],
                             [
-                                -660,
+                                -500,
                                 -220
                             ],
                             [
@@ -5125,11 +5640,19 @@
                         "wire_positions": [
                             [
                                 -460,
-                                760.0
+                                760
                             ],
                             [
                                 -460,
-                                820.0
+                                780
+                            ],
+                            [
+                                -340,
+                                780
+                            ],
+                            [
+                                -340,
+                                820
                             ]
                         ]
                     }
@@ -5146,21 +5669,23 @@
                         730.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "=="
+                ]
             },
             {
                 "id": 65,
-                "name": "Or",
                 "creator": {
                     "category": "Logic",
                     "name": "Or"
@@ -5210,21 +5735,24 @@
                         930.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Or",
+                    2
+                ]
             },
             {
                 "id": 66,
-                "name": "Or",
                 "creator": {
                     "category": "Logic",
                     "name": "Or"
@@ -5274,21 +5802,24 @@
                         1010.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Or",
+                    2
+                ]
             },
             {
                 "id": 67,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -5379,21 +5910,24 @@
                         230.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    2
+                ]
             },
             {
                 "id": 68,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -5431,11 +5965,11 @@
                             ],
                             [
                                 1020,
-                                300
+                                280
                             ],
                             [
                                 1420,
-                                300
+                                280
                             ],
                             [
                                 1420,
@@ -5476,21 +6010,24 @@
                         890.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    2
+                ]
             },
             {
                 "id": 69,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -5528,11 +6065,11 @@
                             ],
                             [
                                 1000,
-                                280
+                                260
                             ],
                             [
                                 1400,
-                                280
+                                260
                             ],
                             [
                                 1400,
@@ -5573,21 +6110,24 @@
                         950.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    2
+                ]
             },
             {
                 "id": 70,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -5625,11 +6165,11 @@
                             ],
                             [
                                 1020,
-                                300
+                                280
                             ],
                             [
                                 1420,
-                                300
+                                280
                             ],
                             [
                                 1420,
@@ -5670,21 +6210,24 @@
                         1010.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    2
+                ]
             },
             {
                 "id": 71,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -5722,11 +6265,11 @@
                             ],
                             [
                                 1000,
-                                280
+                                260
                             ],
                             [
                                 1400,
-                                280
+                                260
                             ],
                             [
                                 1400,
@@ -5767,21 +6310,24 @@
                         1070.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    2
+                ]
             },
             {
                 "id": 72,
-                "name": "Data Zero",
                 "creator": {
                     "category": "Logic",
                     "name": "Not"
@@ -5798,11 +6344,11 @@
                         },
                         "wire_positions": [
                             [
-                                -680,
-                                120
+                                -520,
+                                300
                             ],
                             [
-                                -680,
+                                -520,
                                 1120
                             ],
                             [
@@ -5832,25 +6378,27 @@
                 ],
                 "display": {
                     "position": [
-                        -600,
-                        110.0
+                        -440,
+                        290.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Data Zero"
+                ]
             },
             {
                 "id": 73,
-                "name": "Data Non-Zero",
                 "creator": {
                     "category": "Logic",
                     "name": "Not"
@@ -5867,20 +6415,20 @@
                         },
                         "wire_positions": [
                             [
-                                -620,
-                                60.0
+                                -460,
+                                240.0
                             ],
                             [
-                                -620,
-                                80.0
+                                -460,
+                                260.0
                             ],
                             [
-                                -500,
-                                80.0
+                                -340,
+                                260.0
                             ],
                             [
-                                -500,
-                                120.0
+                                -340,
+                                300.0
                             ]
                         ]
                     }
@@ -5893,25 +6441,27 @@
                 ],
                 "display": {
                     "position": [
-                        -600,
-                        50.0
+                        -440,
+                        230.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Data Non-Zero"
+                ]
             },
             {
                 "id": 74,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -5928,11 +6478,11 @@
                         },
                         "wire_positions": [
                             [
-                                -440,
-                                40
+                                -280,
+                                220
                             ],
                             [
-                                -440,
+                                -280,
                                 540
                             ],
                             [
@@ -5949,11 +6499,11 @@
                             ],
                             [
                                 1000,
-                                280
+                                260
                             ],
                             [
                                 1400,
-                                280
+                                260
                             ],
                             [
                                 1400,
@@ -5983,11 +6533,11 @@
                         },
                         "wire_positions": [
                             [
-                                -480,
-                                80
+                                -320,
+                                260
                             ],
                             [
-                                -480,
+                                -320,
                                 580
                             ],
                             [
@@ -6009,25 +6559,28 @@
                 ],
                 "display": {
                     "position": [
-                        -420,
-                        30.0
+                        -260,
+                        210.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    3
+                ]
             },
             {
                 "id": 75,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -6055,11 +6608,11 @@
                         },
                         "wire_positions": [
                             [
-                                -460,
-                                140
+                                -300,
+                                320
                             ],
                             [
-                                -460,
+                                -300,
                                 560
                             ],
                             [
@@ -6076,11 +6629,11 @@
                             ],
                             [
                                 1020,
-                                300
+                                280
                             ],
                             [
                                 1420,
-                                300
+                                280
                             ],
                             [
                                 1420,
@@ -6099,11 +6652,11 @@
                         },
                         "wire_positions": [
                             [
-                                -480,
-                                160
+                                -320,
+                                340
                             ],
                             [
-                                -480,
+                                -320,
                                 580
                             ],
                             [
@@ -6125,25 +6678,28 @@
                 ],
                 "display": {
                     "position": [
-                        -420,
-                        110.0
+                        -260,
+                        290.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    3
+                ]
             },
             {
                 "id": 76,
-                "name": "Or",
                 "creator": {
                     "category": "Logic",
                     "name": "Or"
@@ -6171,12 +6727,12 @@
                         },
                         "wire_positions": [
                             [
-                                -320,
-                                60
+                                -160,
+                                240
                             ],
                             [
-                                -320,
-                                120
+                                -160,
+                                300
                             ]
                         ]
                     }
@@ -6189,25 +6745,28 @@
                 ],
                 "display": {
                     "position": [
-                        -260,
-                        30.0
+                        -100,
+                        210.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Or",
+                    2
+                ]
             },
             {
                 "id": 77,
-                "name": "Add",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Add"
@@ -6235,12 +6794,12 @@
                         },
                         "wire_positions": [
                             [
-                                -160,
-                                60
+                                0,
+                                240
                             ],
                             [
-                                -160,
-                                100
+                                0,
+                                280
                             ]
                         ]
                     }
@@ -6253,25 +6812,28 @@
                 ],
                 "display": {
                     "position": [
-                        -120,
-                        30.0
+                        40,
+                        210.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Add",
+                    2
+                ]
             },
             {
                 "id": 78,
-                "name": "Mul",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Mul"
@@ -6288,12 +6850,12 @@
                         },
                         "wire_positions": [
                             [
-                                -300,
-                                100
+                                -140,
+                                280
                             ],
                             [
-                                -300,
-                                200
+                                -140,
+                                380
                             ]
                         ]
                     },
@@ -6308,11 +6870,11 @@
                         },
                         "wire_positions": [
                             [
-                                -280,
-                                120
+                                -120,
+                                300
                             ],
                             [
-                                -280,
+                                -120,
                                 520
                             ],
                             [
@@ -6334,25 +6896,28 @@
                 ],
                 "display": {
                     "position": [
-                        -260,
-                        90.0
+                        -100,
+                        270.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Mul",
+                    2
+                ]
             },
             {
                 "id": 79,
-                "name": "Constant",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -6366,25 +6931,30 @@
                 ],
                 "display": {
                     "position": [
-                        -420,
-                        190.0
+                        -260,
+                        370.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Constant",
+                    [
+                        2
+                    ]
+                ]
             },
             {
                 "id": 80,
-                "name": "Delay (1)",
                 "creator": {
                     "category": "Time",
                     "name": "Delay"
@@ -6423,24 +6993,27 @@
                         290.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "delay": 1,
                     "updates": []
-                }
+                },
+                "property_data": [
+                    "Delay (1)",
+                    1
+                ]
             },
             {
                 "id": 81,
-                "name": "Index",
                 "creator": {
                     "category": "String",
                     "name": "Index"
@@ -6448,9 +7021,9 @@
                 "inputs": [
                     {
                         "index": 0,
-                        "value": ",[.,];",
-                        "new_value": ",[.,];",
-                        "old_value": "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.;",
+                        "value": "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.;",
+                        "new_value": "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.;",
+                        "old_value": ",[.,];",
                         "connection": {
                             "component_id": 82,
                             "index": 0
@@ -6489,7 +7062,7 @@
                 "outputs": [
                     {
                         "index": 0,
-                        "value": ","
+                        "value": "+"
                     }
                 ],
                 "display": {
@@ -6498,21 +7071,23 @@
                         150.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Index"
+                ]
             },
             {
                 "id": 82,
-                "name": "Code",
                 "creator": {
                     "category": "Storage",
                     "name": "Memory"
@@ -6538,7 +7113,7 @@
                 "outputs": [
                     {
                         "index": 0,
-                        "value": ",[.,];"
+                        "value": "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.;"
                     }
                 ],
                 "display": {
@@ -6547,23 +7122,29 @@
                         -670.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Code",
+                    true,
+                    [
+                        "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.;"
+                    ]
+                ]
             },
             {
                 "id": 83,
-                "name": "Input",
                 "creator": {
                     "category": "Storage",
                     "name": "Memory"
@@ -6598,23 +7179,29 @@
                         -610.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Input",
+                    true,
+                    [
+                        "Hello world!"
+                    ]
+                ]
             },
             {
                 "id": 84,
-                "name": "Add",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Add"
@@ -6672,21 +7259,24 @@
                         970.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Add",
+                    2
+                ]
             },
             {
                 "id": 85,
-                "name": "Constant",
                 "creator": {
                     "category": "Input",
                     "name": "Constant"
@@ -6704,21 +7294,26 @@
                         990.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Constant",
+                    [
+                        1
+                    ]
+                ]
             },
             {
                 "id": 86,
-                "name": "Read Ptr",
                 "creator": {
                     "category": "Storage",
                     "name": "Memory"
@@ -6785,23 +7380,29 @@
                         870.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
                     "edge_triggered": true
-                }
+                },
+                "property_data": [
+                    "Read Ptr",
+                    true,
+                    [
+                        0
+                    ]
+                ]
             },
             {
                 "id": 87,
-                "name": "Or",
                 "creator": {
                     "category": "Logic",
                     "name": "Or"
@@ -6831,11 +7432,11 @@
                             ],
                             [
                                 1060,
-                                340
+                                320
                             ],
                             [
                                 1460,
-                                340
+                                320
                             ],
                             [
                                 1460,
@@ -6867,11 +7468,11 @@
                             ],
                             [
                                 1040,
-                                320
+                                300
                             ],
                             [
                                 1440,
-                                320
+                                300
                             ],
                             [
                                 1440,
@@ -6892,21 +7493,24 @@
                         450.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Or",
+                    2
+                ]
             },
             {
                 "id": 88,
-                "name": "Add",
                 "creator": {
                     "category": "Arithmetic",
                     "name": "Add"
@@ -6914,9 +7518,9 @@
                 "inputs": [
                     {
                         "index": 0,
-                        "value": true,
-                        "new_value": true,
-                        "old_value": false,
+                        "value": false,
+                        "new_value": false,
+                        "old_value": true,
                         "connection": {
                             "component_id": 13,
                             "index": 0
@@ -6942,9 +7546,9 @@
                     },
                     {
                         "index": 1,
-                        "value": true,
-                        "new_value": true,
-                        "old_value": false,
+                        "value": false,
+                        "new_value": false,
+                        "old_value": true,
                         "connection": {
                             "component_id": 13,
                             "index": 0
@@ -6984,11 +7588,11 @@
                             ],
                             [
                                 1180,
-                                260
+                                340
                             ],
                             [
                                 1480,
-                                260
+                                340
                             ],
                             [
                                 1480,
@@ -7000,7 +7604,7 @@
                 "outputs": [
                     {
                         "index": 0,
-                        "value": 2
+                        "value": 0
                     }
                 ],
                 "display": {
@@ -7009,21 +7613,24 @@
                         690.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Add",
+                    3
+                ]
             },
             {
                 "id": 89,
-                "name": "ord",
                 "creator": {
                     "category": "Convert",
                     "name": "ord"
@@ -7070,21 +7677,23 @@
                         750.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "ord"
+                ]
             },
             {
                 "id": 90,
-                "name": "Index",
                 "creator": {
                     "category": "String",
                     "name": "Index"
@@ -7159,21 +7768,23 @@
                         830.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "Index"
+                ]
             },
             {
                 "id": 91,
-                "name": "And",
                 "creator": {
                     "category": "Logic",
                     "name": "And"
@@ -7209,9 +7820,9 @@
                     },
                     {
                         "index": 1,
-                        "value": true,
-                        "new_value": true,
-                        "old_value": false,
+                        "value": false,
+                        "new_value": false,
+                        "old_value": true,
                         "connection": {
                             "component_id": 13,
                             "index": 0
@@ -7268,21 +7879,24 @@
                         770.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
-                "data": {}
+                "data": {},
+                "property_data": [
+                    "And",
+                    3
+                ]
             },
             {
                 "id": 92,
-                "name": "Clear Screen",
                 "creator": {
                     "category": "Input",
                     "name": "Button"
@@ -7300,14 +7914,14 @@
                         -730.0
                     ],
                     "outline_color": [
-                        0,
-                        0,
-                        0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "fill_color": [
-                        1,
-                        1,
-                        1
+                        1.0,
+                        1.0,
+                        1.0
                     ]
                 },
                 "data": {
@@ -7318,11 +7932,243 @@
                         false,
                         true
                     ]
-                }
+                },
+                "property_data": [
+                    "Clear Screen",
+                    false,
+                    [
+                        false,
+                        true
+                    ]
+                ]
+            },
+            {
+                "id": 93,
+                "creator": {
+                    "category": "Output",
+                    "name": "Display"
+                },
+                "inputs": [
+                    {
+                        "index": 0,
+                        "value": 0,
+                        "new_value": 0,
+                        "old_value": null,
+                        "connection": {
+                            "component_id": 29,
+                            "index": 0
+                        },
+                        "wire_positions": [
+                            [
+                                680,
+                                -680
+                            ],
+                            [
+                                680,
+                                100
+                            ],
+                            [
+                                440,
+                                100
+                            ],
+                            [
+                                440,
+                                180
+                            ]
+                        ]
+                    }
+                ],
+                "outputs": [],
+                "display": {
+                    "position": [
+                        720,
+                        -690.0
+                    ],
+                    "outline_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "fill_color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "data": {},
+                "property_data": [
+                    "Code Index"
+                ]
+            },
+            {
+                "id": 94,
+                "creator": {
+                    "category": "Output",
+                    "name": "Display"
+                },
+                "inputs": [
+                    {
+                        "index": 0,
+                        "value": "+",
+                        "new_value": "+",
+                        "old_value": null,
+                        "connection": {
+                            "component_id": 81,
+                            "index": 0
+                        },
+                        "wire_positions": [
+                            [
+                                700,
+                                -640
+                            ],
+                            [
+                                700,
+                                160
+                            ]
+                        ]
+                    }
+                ],
+                "outputs": [],
+                "display": {
+                    "position": [
+                        720,
+                        -650.0
+                    ],
+                    "outline_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "fill_color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "data": {},
+                "property_data": [
+                    "Code Value"
+                ]
+            },
+            {
+                "id": 95,
+                "creator": {
+                    "category": "Output",
+                    "name": "Display"
+                },
+                "inputs": [
+                    {
+                        "index": 0,
+                        "value": 0,
+                        "new_value": 0,
+                        "old_value": null,
+                        "connection": {
+                            "component_id": 0,
+                            "index": 0
+                        },
+                        "wire_positions": [
+                            [
+                                820,
+                                -680
+                            ],
+                            [
+                                820,
+                                -520
+                            ],
+                            [
+                                1780,
+                                -520
+                            ],
+                            [
+                                1780,
+                                460
+                            ]
+                        ]
+                    }
+                ],
+                "outputs": [],
+                "display": {
+                    "position": [
+                        860,
+                        -690.0
+                    ],
+                    "outline_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "fill_color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "data": {},
+                "property_data": [
+                    "Data Index"
+                ]
+            },
+            {
+                "id": 96,
+                "creator": {
+                    "category": "Output",
+                    "name": "Display"
+                },
+                "inputs": [
+                    {
+                        "index": 0,
+                        "value": 0,
+                        "new_value": 0,
+                        "old_value": null,
+                        "connection": {
+                            "component_id": 15,
+                            "index": 0
+                        },
+                        "wire_positions": [
+                            [
+                                840,
+                                -640
+                            ],
+                            [
+                                840,
+                                -540
+                            ],
+                            [
+                                1940,
+                                -540
+                            ],
+                            [
+                                1940,
+                                440
+                            ]
+                        ]
+                    }
+                ],
+                "outputs": [],
+                "display": {
+                    "position": [
+                        860,
+                        -650.0
+                    ],
+                    "outline_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "fill_color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "data": {},
+                "property_data": [
+                    "Data Value"
+                ]
             }
         ],
         "updates": {
-            "5": [
+            "1": [
                 22
             ]
         }
