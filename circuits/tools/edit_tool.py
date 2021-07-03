@@ -108,7 +108,7 @@ class EditTool(tool.Tool):
 
     def draw(self, app: 'application.Application', cr: cairo.Context,
              mouse_pos: shapes.Vector2) -> None:
-        color = (0, 0, 1)
+        color = draw.COLOR_BLUE
         for component in self._components:
             rect = component.display.rect
             rect = shapes.Rectangle(

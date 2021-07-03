@@ -98,13 +98,13 @@ class ComponentDisplay:
     def get_save_data(self) -> dict[str, t.Any]:
         return {
             'position': list(self.position),
-            'outline_color': self.outline_color,
-            'fill_color': self.fill_color
+            'outline_color': self.outline_color.rgb,
+            'fill_color': self.fill_color.rgb
         }
 
     def load(self, data: dict[str, t.Any]) -> None:
         def get_color(field: list[float]) -> draw.Color:
-            return (field[0], field[1], field[2])
+            return draw.Color((field[0], field[1], field[2]))
         self.position = shapes.Vector2(data['position'])
         self.outline_color = get_color(data['outline_color'])
         self.fill_color = get_color(data['fill_color'])

@@ -91,7 +91,7 @@ class WireTool(tool.Tool):
         end_pos = app.snap_position(mouse_pos)
 
         positions = [node_pos] + self._wire_positions + [end_pos]
-        color = (0, 0, 0)
+        color = draw.COLOR_BLACK
         draw.lines(cr, positions, color)
         for pos in self._wire_positions:
             draw.circle(cr, pos, 2, color, color)

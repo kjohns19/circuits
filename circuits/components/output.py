@@ -51,7 +51,7 @@ def console(circuit: circuit_mod.Circuit) -> component_mod.Component:
         rect = shapes.Rectangle(
             position=position-(4, 12*max_height),
             size=(max_width*7+8, max_height*12+4))
-        draw.rectangle(cr, rect, (0.9, 0.9, 0.9), (0, 0, 0))
+        draw.rectangle(cr, rect, draw.Color((0.9, 0.9, 0.9)), draw.COLOR_BLACK)
         for i, line in enumerate(reversed(lines)):
             pos = position - (0, i*12)
             draw.text(

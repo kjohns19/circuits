@@ -10,17 +10,36 @@ import cairo
 from . import shapes
 
 
-Color = tuple[float, float, float]
+class Color:
+    def __init__(self, rgb: tuple[float, float, float]) -> None:
+        self._rgb = rgb
 
-COLOR_BLACK = (0.0, 0.0, 0.0)
-COLOR_GRAY = (0.8, 0.8, 0.8)
-COLOR_WHITE = (1.0, 1.0, 1.0)
-COLOR_RED = (1.0, 0.0, 0.0)
-COLOR_YELLOW = (1.0, 1.0, 0.0)
-COLOR_GREEN = (0.0, 1.0, 0.0)
-COLOR_CYAN = (0.0, 1.0, 1.0)
-COLOR_BLUE = (0.0, 0.0, 1.0)
-COLOR_MAGENTA = (1.0, 0.0, 1.0)
+    @property
+    def rgb(self) -> tuple[float, float, float]:
+        return self._rgb
+
+    @property
+    def red(self) -> float:
+        return self._rgb[0]
+
+    @property
+    def green(self) -> float:
+        return self._rgb[1]
+
+    @property
+    def blue(self) -> float:
+        return self._rgb[2]
+
+
+COLOR_BLACK = Color((0.0, 0.0, 0.0))
+COLOR_GRAY = Color((0.8, 0.8, 0.8))
+COLOR_WHITE = Color((1.0, 1.0, 1.0))
+COLOR_RED = Color((1.0, 0.0, 0.0))
+COLOR_YELLOW = Color((1.0, 1.0, 0.0))
+COLOR_GREEN = Color((0.0, 1.0, 0.0))
+COLOR_CYAN = Color((0.0, 1.0, 1.0))
+COLOR_BLUE = Color((0.0, 0.0, 1.0))
+COLOR_MAGENTA = Color((1.0, 0.0, 1.0))
 
 
 class TextHAlign(enum.Enum):
@@ -74,7 +93,7 @@ def text(cr: cairo.Context, text: str, position: shapes.Vector2, size: int = 12,
     corner = position + offset
 
     if background_color is not None:
-        cr.set_source_rgb(*background_color)
+        cr.set_source_rgb(*background_color.rgb)
         rect_corner = corner - (2, h/2 + 6)
         cr.rectangle(rect_corner.x, rect_corner.y, w+4, h+4)
         cr.fill()
@@ -86,7 +105,7 @@ def text(cr: cairo.Context, text: str, position: shapes.Vector2, size: int = 12,
 
 def line(cr: cairo.Context, pos1: shapes.Vector2, pos2: shapes.Vector2,
          color: Color, thickness: float = 2.0) -> None:
-    cr.set_source_rgb(*color)
+    cr.set_source_rgb(*color.rgb)
     cr.move_to(*pos1)
     cr.line_to(*pos2)
     cr.set_line_width(thickness)
@@ -106,10 +125,10 @@ def circle(cr: cairo.Context, position: shapes.Vector2, radius: float,
     cr.new_path()
     cr.arc(position.x, position.y, radius, 0, math.pi*2)
 
-    cr.set_source_rgb(*fill_color)
+    cr.set_source_rgb(*fill_color.rgb)
     cr.fill_preserve()
 
-    cr.set_source_rgb(*outline_color)
+    cr.set_source_rgb(*outline_color.rgb)
     cr.set_line_width(2)
     cr.stroke()
 
@@ -120,13 +139,13 @@ def rectangle(cr: cairo.Context, rect: shapes.Rectangle,
     cr.rectangle(*rect.top_left, *rect.size)
 
     if fill_color:
-        cr.set_source_rgb(*fill_color)
+        cr.set_source_rgb(*fill_color.rgb)
         if outline_color:
             cr.fill_preserve()
         else:
             cr.fill()
 
     if outline_color:
-        cr.set_source_rgb(*outline_color)
+        cr.set_source_rgb(*outline_color.rgb)
         cr.set_line_width(2)
         cr.stroke()

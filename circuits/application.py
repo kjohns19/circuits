@@ -341,10 +341,10 @@ class Application:
                 }
                 # Components updating next are slightly blue
                 for component in next_updates:
-                    component.display.fill_color = (0.9, 0.9, 1.0)
+                    component.display.fill_color = draw.Color((0.9, 0.9, 1.0))
                 # Components updating later are light gray
                 for component in later_updates:
-                    component.display.fill_color = (0.9, 0.9, 0.9)
+                    component.display.fill_color = draw.Color((0.9, 0.9, 0.9))
 
             for component in self._circuit.components:
                 component.display.draw(self, cr)
