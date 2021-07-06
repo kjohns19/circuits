@@ -1,5 +1,4 @@
 import collections.abc as abc
-import functools
 import typing as t
 
 import cairo
@@ -24,12 +23,9 @@ class ComponentException(Exception):
 
 class Component:
     OnUpdateFunc = abc.Callable[['Component'], None]
-    OnUpdateBoundFunc = abc.Callable[[], None]
     OnDrawFunc = abc.Callable[['Component', 'application.Application', cairo.Context],
                               None]
-    OnDrawBoundFunc = abc.Callable[['application.Application', cairo.Context], None]
     OnClickFunc = abc.Callable[['Component', 'utils.MouseButton'], None]
-    OnClickBoundFunc = abc.Callable[['utils.MouseButton'], None]
 
     def __init__(self, circuit: 'circuit_mod.Circuit',
                  num_inputs: int, num_outputs: int,
@@ -51,9 +47,9 @@ class Component:
         self.num_inputs = num_inputs
         self.num_outputs = num_outputs
 
-        self._on_update = functools.partial(on_update or _default_on_update, self)
-        self._on_draw = functools.partial(on_draw or _default_on_draw, self)
-        self._on_click = functools.partial(on_click or _default_on_click, self)
+        self._on_update = on_update or _default_on_update
+        self._on_draw = on_draw or _default_on_draw
+        self._on_click = on_click or _default_on_click
 
         self._circuit.add_component(self)
 
@@ -117,29 +113,23 @@ class Component:
     def data(self) -> dict[str, t.Any]:
         return self._data
 
-    @property
-    def on_update(self) -> 'Component.OnUpdateBoundFunc':
-        return self._on_update
+    def on_update(self) -> None:
+        self._on_update(self)
 
-    @on_update.setter
-    def on_update(self, value: 'Component.OnUpdateFunc') -> None:
-        self._on_update = functools.partial(value, self)
+    def set_on_update(self, func: 'Component.OnUpdateFunc') -> None:
+        self._on_update = func
 
-    @property
-    def on_draw(self) -> 'Component.OnDrawBoundFunc':
-        return self._on_draw
+    def on_draw(self, app: 'application.Application', cr: cairo.Context) -> None:
+        self._on_draw(self, app, cr)
 
-    @on_draw.setter
-    def on_draw(self, value: 'Component.OnDrawFunc') -> None:
-        self._on_draw = functools.partial(value, self)
+    def set_on_draw(self, func: 'Component.OnDrawFunc') -> None:
+        self._on_draw = func
 
-    @property
-    def on_click(self) -> 'Component.OnClickBoundFunc':
-        return self._on_click
+    def on_click(self, button: 'utils.MouseButton') -> None:
+        self._on_click(self, button)
 
-    @on_click.setter
-    def on_click(self, value: 'Component.OnClickFunc') -> None:
-        self._on_click = functools.partial(value, self)
+    def set_on_click(self, func: 'Component.OnClickFunc') -> None:
+        self._on_click = func
 
     @property
     def name(self) -> str:
