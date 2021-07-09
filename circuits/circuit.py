@@ -3,6 +3,8 @@ import collections
 import threading
 import typing as t
 
+from gi.repository import Gdk  # type: ignore
+
 from . import component as component_mod
 from . import shapes
 
@@ -15,6 +17,7 @@ class Circuit:
         self._time = 0
         self._current_id = 0
         self._update_lock = threading.Lock()
+        self._key_callbacks: dict[int, abc.Callable[[Gdk.EventKey], None]] = {}
 
     @property
     def time(self) -> int:
@@ -43,6 +46,19 @@ class Circuit:
                 'components': component_data,
                 'updates': update_data
             }
+
+    def register_key_callback(self,
+                              callback: abc.Callable[[Gdk.EventKey], None]) -> int:
+        callback_id = len(self._key_callbacks)
+        self._key_callbacks[callback_id] = callback
+        return callback_id
+
+    def unregister_key_callback(self, callback_id: int) -> None:
+        del self._key_callbacks[callback_id]
+
+    def handle_key_press(self, event: Gdk.EventKey) -> None:
+        for callback in self._key_callbacks.values():
+            callback(event)
 
     def load(self, data: dict[str, t.Any]) -> set[component_mod.Component]:
         with self._update_lock:
@@ -83,6 +99,7 @@ class Circuit:
         return new_components
 
     def remove_component(self, component: component_mod.Component) -> None:
+        component.on_destroy()
         self._components.remove(component)
         with self._update_lock:
             for updates in self._updates.values():
@@ -90,6 +107,8 @@ class Circuit:
                     updates.remove(component)
 
     def clear(self) -> None:
+        for component in self._components:
+            component.on_destroy()
         self._components = set()
         self._updates = collections.defaultdict(set)
         self._time = 0

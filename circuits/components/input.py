@@ -1,5 +1,7 @@
 import typing as t
 
+from gi.repository import Gdk  # type: ignore
+
 from .. import circuit as circuit_mod
 from .. import component as component_mod
 from .. import draw
@@ -96,3 +98,21 @@ button.add_property(properties.MultiValueProperty(
     setter=button_on_off_setter,
     labels=['Off', 'On'],
     title='Values'))
+
+
+@registry.register('Keyboard', CATEGORY)
+def keyboard(circuit: circuit_mod.Circuit) -> component_mod.Component:
+    def on_click(component: component_mod.Component, button: utils.MouseButton) -> None:
+        pass
+
+    def on_destroy(component: component_mod.Component) -> None:
+        circuit.unregister_key_callback(component.data['callback_id'])
+
+    component = component_mod.Component(circuit, num_inputs=2, num_outputs=1,
+                                        on_click=on_click, on_destroy=on_destroy)
+
+    def on_key_press(key: Gdk.EventKey) -> None:
+        print('KEYPRESS')
+
+    component.data['callback_id'] = circuit.register_key_callback(on_key_press)
+    return component

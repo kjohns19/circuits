@@ -374,6 +374,9 @@ class Application:
         position = self.position_from_screen(shapes.Vector2((event.x, event.y)))
         component = self._circuit.component_at_position(position)
 
+        if event.type == Gdk.EventType.BUTTON_PRESS:
+            self._draw_area.grab_focus()
+
         button = event.button
         if event.type == Gdk.EventType.BUTTON_RELEASE:
             button = -event.button
@@ -386,6 +389,10 @@ class Application:
         self._mouse_pos = self.position_from_screen(shapes.Vector2((event.x, event.y)))
         self._tool.on_move(self, event, self._mouse_pos)
         self.repaint()
+
+    def handler_draw_area_key_press(self, widget: Gtk.Widget,
+                                    event: Gdk.EventKey) -> None:
+        self._circuit.handle_key_press(event)
 
     def handler_key_press(self, window: Gtk.Window, event: Gdk.EventKey) -> None:
         keyname = Gdk.keyval_name(event.keyval)

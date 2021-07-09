@@ -26,6 +26,7 @@ class Component:
     OnDrawFunc = abc.Callable[['Component', 'application.Application', cairo.Context],
                               None]
     OnClickFunc = abc.Callable[['Component', 'utils.MouseButton'], None]
+    OnDestroyFunc = abc.Callable[['Component'], None]
 
     def __init__(self, circuit: 'circuit_mod.Circuit',
                  num_inputs: int, num_outputs: int,
@@ -33,7 +34,8 @@ class Component:
                  output_labels: t.Optional[list[str]] = None,
                  on_update: t.Optional['Component.OnUpdateFunc'] = None,
                  on_draw: t.Optional['Component.OnDrawFunc'] = None,
-                 on_click: t.Optional['Component.OnClickFunc'] = None) -> None:
+                 on_click: t.Optional['Component.OnClickFunc'] = None,
+                 on_destroy: t.Optional['Component.OnDestroyFunc'] = None) -> None:
         self._circuit = circuit
         self._id = -1
 
@@ -50,6 +52,7 @@ class Component:
         self._on_update = on_update or _default_on_update
         self._on_draw = on_draw or _default_on_draw
         self._on_click = on_click or _default_on_click
+        self._on_destroy = on_destroy or _default_on_destroy
 
         self._circuit.add_component(self)
 
@@ -130,6 +133,12 @@ class Component:
 
     def set_on_click(self, func: 'Component.OnClickFunc') -> None:
         self._on_click = func
+
+    def on_destroy(self) -> None:
+        self._on_destroy(self)
+
+    def set_on_destroy(self, func: 'Component.OnDestroyFunc') -> None:
+        self._on_destroy = func
 
     @property
     def name(self) -> str:
@@ -246,6 +255,10 @@ def _default_on_draw(component: Component, app: 'application.Application',
 
 
 def _default_on_click(component: Component, button: 'utils.MouseButton') -> None:
+    pass
+
+
+def _default_on_destroy(component: Component) -> None:
     pass
 
 
