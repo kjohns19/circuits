@@ -1,5 +1,7 @@
 import typing as t
 
+from gi.repository import Gdk  # type: ignore
+
 from .. import circuit as circuit_mod
 from .. import component as component_mod
 from .. import draw
@@ -50,7 +52,7 @@ def button(circuit: circuit_mod.Circuit) -> component_mod.Component:
                 on = True
                 component.data['click_state'] = 2
             component.data['on'] = on
-            color = (draw.COLOR_WHITE, draw.COLOR_GRAY)[int(on)]
+            color = draw.COLOR_GRAY if on else draw.COLOR_WHITE
             component.display.fill_color = color
             component.outputs[0].value = component.data['off_on'][int(on)]
             component.schedule_update()
@@ -96,3 +98,41 @@ button.add_property(properties.MultiValueProperty(
     setter=button_on_off_setter,
     labels=['Off', 'On'],
     title='Values'))
+
+
+@registry.register('Keyboard', CATEGORY)
+def keyboard(circuit: circuit_mod.Circuit) -> component_mod.Component:
+    def on_click(component: component_mod.Component, button: utils.MouseButton) -> None:
+        if button != utils.MouseButton.LEFT:
+            return
+        enabled = not component.data['enabled']
+        component.data['enabled'] = enabled
+        component.display.fill_color = draw.COLOR_GRAY if enabled else draw.COLOR_WHITE
+
+    def on_destroy(component: component_mod.Component) -> None:
+        circuit.unregister_key_callback(component.data['callback_id'])
+
+    def on_key_press(key: Gdk.EventKey) -> None:
+        if component.data['enabled']:
+            name = Gdk.keyval_name(key.keyval)
+            if name == 'Return':
+                component.outputs[0].value = component.data['text_buffer']
+                component.data['text_buffer'] = ''
+            else:
+                unicode_value = Gdk.keyval_to_unicode(key.keyval)
+                if unicode_value != 0:
+                    current = component.data['text_buffer']
+                    if name == 'BackSpace':
+                        component.data['text_buffer'] = current[:-1]
+                    else:
+                        component.data['text_buffer'] = current + chr(unicode_value)
+
+    component = component_mod.Component(circuit, num_inputs=0, num_outputs=1,
+                                        on_click=on_click, on_destroy=on_destroy)
+    component.outputs[0].value = ''
+
+    component.data['callback_id'] = circuit.register_key_callback(on_key_press,
+                                                                  release_callback=None)
+    component.data['enabled'] = False
+    component.data['text_buffer'] = ''
+    return component
