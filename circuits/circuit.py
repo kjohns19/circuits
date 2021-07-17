@@ -83,6 +83,7 @@ class Circuit:
         return new_components
 
     def remove_component(self, component: component_mod.Component) -> None:
+        component.on_destroy()
         self._components.remove(component)
         with self._update_lock:
             for updates in self._updates.values():
@@ -90,6 +91,8 @@ class Circuit:
                     updates.remove(component)
 
     def clear(self) -> None:
+        for component in self._components:
+            component.on_destroy()
         self._components = set()
         self._updates = collections.defaultdict(set)
         self._time = 0
