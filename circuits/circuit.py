@@ -3,11 +3,15 @@ import collections
 import threading
 import typing as t
 
+from gi.repository import Gdk  # type: ignore
+
 from . import component as component_mod
 from . import shapes
 
 
 class Circuit:
+    KeyCallback = abc.Callable[[Gdk.EventKey], None]
+
     def __init__(self) -> None:
         self._components: set[component_mod.Component] = set()
         self._updates: dict[int, set[component_mod.Component]] = \
@@ -15,6 +19,8 @@ class Circuit:
         self._time = 0
         self._current_id = 0
         self._update_lock = threading.Lock()
+        self._key_callbacks: dict[int, tuple[t.Optional['Circuit.KeyCallback'],
+                                             t.Optional['Circuit.KeyCallback']]] = {}
 
     @property
     def time(self) -> int:
@@ -43,6 +49,27 @@ class Circuit:
                 'components': component_data,
                 'updates': update_data
             }
+
+    def register_key_callback(
+            self,
+            press_callback: t.Optional['Circuit.KeyCallback'],
+            release_callback: t.Optional['Circuit.KeyCallback']) -> int:
+        callback_id = len(self._key_callbacks)
+        self._key_callbacks[callback_id] = (press_callback, release_callback)
+        return callback_id
+
+    def unregister_key_callback(self, callback_id: int) -> None:
+        del self._key_callbacks[callback_id]
+
+    def handle_key_press(self, event: Gdk.EventKey) -> None:
+        for callback, _ in self._key_callbacks.values():
+            if callback:
+                callback(event)
+
+    def handle_key_release(self, event: Gdk.EventKey) -> None:
+        for _, callback in self._key_callbacks.values():
+            if callback:
+                callback(event)
 
     def load(self, data: dict[str, t.Any]) -> set[component_mod.Component]:
         with self._update_lock:
