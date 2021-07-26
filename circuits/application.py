@@ -179,9 +179,13 @@ class Application:
 
         widgets = creator.get_property_widgets(component, callback)
         box = dialog.get_content_area()
+
+        box.add(Gtk.Label(label=f'Component: {creator.name}'))
+
         for widget in widgets:
             box.add(widget)
 
+        dialog.show_all()
         dialog.run()
         dialog.destroy()
 
