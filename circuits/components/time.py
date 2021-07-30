@@ -76,3 +76,27 @@ delay.add_property(properties.NumberProperty(
     setter=utils.data_setter('delay'),
     min_value=1, max_value=100,
     label='Delay'))
+
+
+class PassThroughComponent(component_mod.Component):
+    ''' A specialized component that instantly updates its output '''
+    def __init__(self, circuit: circuit_mod.Circuit) -> None:
+        super().__init__(circuit, num_inputs=1, num_outputs=1)
+        self._updating = False
+
+    def on_update(self) -> None:
+        self.outputs[0].value = self.inputs[0].value
+
+    def schedule_update(self, delay: int = 1) -> None:
+        # Prevent loops where the input is connected to the output
+        # (directly or indirectly)
+        if not self._updating:
+            self._updating = True
+            self.update_inputs()
+            self.on_update()
+            self._updating = False
+
+
+@registry.register('PassThrough', CATEGORY)
+def pass_through(circuit: circuit_mod.Circuit) -> component_mod.Component:
+    return PassThroughComponent(circuit)
