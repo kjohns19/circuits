@@ -224,6 +224,8 @@ class Component:
             creator_data['category'], creator_data['name'])
         component = creator(circuit)
 
+        creator.apply_property_data(component, data['property_data'])
+
         component.num_inputs = len(data['inputs'])
 
         output_data = data['outputs']
@@ -233,8 +235,6 @@ class Component:
 
         component._data = data['data']
         component.display.load(data['display'])
-
-        creator.apply_property_data(component, data['property_data'])
 
         return component
 
